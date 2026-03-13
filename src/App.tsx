@@ -19,6 +19,10 @@ import {
   List,
   Youtube,
   BookOpen,
+  Trash2,
+  Link as LinkIcon,
+  X,
+  Plus,
 } from "lucide-react";
 
 // --- Helper Functions for Dates ---
@@ -65,6 +69,12 @@ interface CircularProgressProps {
   color: string;
   label: string;
   icon: ElementType;
+}
+
+interface CustomResource {
+  id: string;
+  title: string;
+  url: string;
 }
 
 // --- Comprehensive Day-by-Day Curriculum ---
@@ -781,142 +791,225 @@ const curriculumData: Task[] = [
     id: "m3d1",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 1: Install PostgreSQL and DBeaver (or pgAdmin)",
+    title: "Day 1: PostgreSQL Setup",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "Download and install PostgreSQL",
+      "Install DBeaver (SQL Client)",
+      "Connect DBeaver to your local Postgres database",
+    ],
   },
   {
     id: "m3d2",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 2: DDL Commands: CREATE, ALTER, and DROP Tables",
+    title: "Day 2: DDL Commands (Data Definition)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "CREATE TABLE syntax and choosing data types",
+      "ALTER TABLE to add/remove columns",
+      "DROP vs TRUNCATE table",
+    ],
   },
   {
     id: "m3d3",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 3: DML Commands: INSERT, UPDATE, and DELETE data",
+    title: "Day 3: DML Commands (Data Manipulation)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "INSERT INTO syntax (single and multiple rows)",
+      "UPDATE statement (always use a WHERE clause!)",
+      "DELETE FROM statement",
+    ],
   },
   {
     id: "m3d4",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 4: Database Constraints (NOT NULL, UNIQUE, DEFAULT)",
+    title: "Day 4: Database Constraints",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "NOT NULL constraint",
+      "UNIQUE constraint",
+      "DEFAULT values",
+      "CHECK constraints",
+    ],
   },
   {
     id: "m3d5",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 5: Understanding Database Transactions & ACID Properties",
+    title: "Day 5: Transactions & ACID Properties",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "BEGIN, COMMIT, and ROLLBACK",
+      "Atomicity (All or nothing)",
+      "Consistency, Isolation, Durability definitions",
+    ],
   },
   {
     id: "m3d6",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 6: What is an Index? How does it speed up queries?",
+    title: "Day 6: Database Indexing",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "What is an Index? (The book index analogy)",
+      "Creating a B-Tree index",
+      "How indexes speed up SELECTs but slow down INSERTs",
+    ],
   },
   {
     id: "m3d7",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title:
-      "Day 7: Relational Database Modeling: Entity Relationship Diagrams (ERDs)",
+    title: "Day 7: Relational Data Modeling (ERDs)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "One-to-One relationships",
+      "One-to-Many relationships",
+      "Many-to-Many relationships (Junction tables)",
+      "Drawing an ERD using draw.io or lucidchart",
+    ],
   },
   {
     id: "m3d8",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title:
-      "Day 8: Normalization concepts (1NF, 2NF, 3NF) - Removing redundancy",
+    title: "Day 8: Normalization",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "What is Data Redundancy?",
+      "1st Normal Form (Atomic values)",
+      "2nd and 3rd Normal Form concepts",
+    ],
   },
   {
     id: "m3d9",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 9: OLTP vs OLAP: Operational Databases vs Data Warehouses",
+    title: "Day 9: OLTP vs OLAP",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "OLTP: Online Transaction Processing (App databases)",
+      "OLAP: Online Analytical Processing (Data Warehouses)",
+      "Key differences in read/write patterns",
+    ],
   },
   {
     id: "m3d10",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title:
-      "Day 10: Data Warehouse Architecture: Fact Tables vs Dimension Tables",
+    title: "Day 10: Data Warehouse: Facts and Dimensions",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "What is a Fact Table? (Measurements, metrics, events)",
+      "What is a Dimension Table? (Context, who, what, where)",
+      "Surrogate Keys vs Natural Keys",
+    ],
   },
   {
     id: "m3d11",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 11: Dimensional Modeling: The Star Schema and Snowflake Schema",
+    title: "Day 11: Dimensional Modeling",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "The Star Schema architecture",
+      "The Snowflake Schema architecture",
+      "Pros and cons of Star vs Snowflake",
+    ],
   },
   {
     id: "m3d12",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 12: Slowly Changing Dimensions (SCD Type 1, 2, 3)",
+    title: "Day 12: Slowly Changing Dimensions (SCD)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "SCD Type 1 (Overwrite old data)",
+      "SCD Type 2 (Add new row, maintain history, valid_from/to dates)",
+      "SCD Type 3 (Add new column)",
+    ],
   },
   {
     id: "m3d13",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title:
-      "Day 13: Intro to Cloud Data Warehouses (Concepts of Snowflake/BigQuery)",
+    title: "Day 13: Cloud Data Warehouses",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "How Cloud DWs differ from traditional DBs",
+      "Separation of Storage and Compute",
+      "Overview of Snowflake and BigQuery concepts",
+    ],
   },
   {
     id: "m3d14",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 14: Columnar Storage vs Row Storage",
+    title: "Day 14: Columnar vs Row Storage",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "Row-based storage (Postgres) - good for transactional writes",
+      "Columnar storage (Snowflake/Parquet) - good for analytical reads",
+      "Compression benefits of Columnar storage",
+    ],
   },
   {
     id: "m3d15",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 15: Intro to NoSQL: Document Databases (MongoDB basics)",
+    title: "Day 15: Intro to NoSQL (Document DBs)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "When to use NoSQL instead of Relational",
+      "Document databases overview (MongoDB)",
+      "Storing data as JSON-like documents",
+    ],
   },
   {
     id: "m3d16",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 16: Key-Value stores and Column-Family NoSQL concepts",
+    title: "Day 16: Intro to NoSQL (Other types)",
     type: "DB",
     estDays: 1,
+    subtopics: [
+      "Key-Value stores (Redis)",
+      "Column-family stores (Cassandra)",
+      "Graph databases (Neo4j)",
+    ],
   },
   {
     id: "p3",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title:
-      "PROJECT: Draw an ERD for an E-commerce store, then write the SQL scripts to CREATE all tables with foreign keys",
+    title: "PROJECT: Data Modeling from Scratch",
     type: "Project",
     estDays: 4,
+    subtopics: [
+      "1. Design a Star Schema for a fictional Ride-Sharing app (Uber)",
+      "2. Identify the Fact table (Rides) and 3 Dimension tables (Users, Drivers, Time)",
+      "3. Draw the ERD showing Primary and Foreign keys",
+      "4. Write the SQL DDL script to CREATE all these tables in Postgres",
+    ],
   },
 
   // ==========================================
@@ -926,138 +1019,226 @@ const curriculumData: Task[] = [
     id: "m4d1",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 1: What is ETL? (Extract, Transform, Load)",
+    title: "Day 1: What is ETL?",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Extract: Pulling data from source systems (APIs, DBs)",
+      "Transform: Cleaning, joining, and aggregating",
+      "Load: Pushing data into the Data Warehouse",
+    ],
   },
   {
     id: "m4d2",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 2: Modern approach: ETL vs ELT differences",
+    title: "Day 2: ETL vs ELT",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "The shift to ELT in modern data stacks",
+      "Why Cloud Data Warehouses made ELT popular",
+      "Transformation happening inside the Warehouse",
+    ],
   },
   {
     id: "m4d3",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 3: Batch Processing vs Streaming Data",
+    title: "Day 3: Batch vs Streaming",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Batch processing (Running on a schedule, e.g., nightly)",
+      "Streaming/Real-time data (Processing as it arrives)",
+      "Latency vs Throughput",
+    ],
   },
   {
     id: "m4d4",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 4: What is Orchestration? Introduction to Apache Airflow",
+    title: "Day 4: Intro to Apache Airflow",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "What is data orchestration?",
+      "Why cron is not enough for complex pipelines",
+      "Airflow Core Components: Scheduler, Webserver, Worker, Metadata DB",
+    ],
   },
   {
     id: "m4d5",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 5: Understanding DAGs (Directed Acyclic Graphs) and Tasks",
+    title: "Day 5: Understanding DAGs",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Directed Acyclic Graphs (DAGs) explained",
+      "Why DAGs cannot have loops",
+      "Tasks and Operators concepts",
+    ],
   },
   {
     id: "m4d6",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 6: Setting up Airflow locally (using Docker is easiest)",
+    title: "Day 6: Setting up Airflow locally",
     type: "Pipeline",
     estDays: 2,
+    subtopics: [
+      "Install Docker Desktop on your machine",
+      "Download the official Airflow docker-compose.yaml file",
+      "Run `docker-compose up` to start Airflow",
+      "Access the Web UI at localhost:8080",
+    ],
   },
   {
     id: "m4d8",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 8: Airflow Web UI Tour (Graph view, Tree view, Logs)",
+    title: "Day 8: Airflow Web UI Tour",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Navigating the DAGs list",
+      "Graph View (visualizing task dependencies)",
+      "Tree/Grid View (viewing historical runs)",
+      "Checking Task Logs for errors",
+    ],
   },
   {
     id: "m4d9",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 9: Writing your first DAG file in Python",
+    title: "Day 9: Writing your first DAG",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Importing DAG from airflow module",
+      "Defining default_args (owner, retries)",
+      "Instantiating the DAG object with a schedule_interval",
+    ],
   },
   {
     id: "m4d10",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 10: Using the BashOperator to run terminal commands",
+    title: "Day 10: The BashOperator",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Importing BashOperator",
+      'Creating a task that runs a terminal command (e.g., echo "hello")',
+      "Assigning the task to your DAG",
+    ],
   },
   {
     id: "m4d11",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 11: Using the PythonOperator to run Python functions",
+    title: "Day 11: The PythonOperator",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Importing PythonOperator",
+      "Defining a standard Python function",
+      "Passing the function to the python_callable argument",
+    ],
   },
   {
     id: "m4d12",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 12: Setting Task Dependencies (Task A >> Task B)",
+    title: "Day 12: Setting Task Dependencies",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Using bitshift operators (>> and <<)",
+      "Setting sequential execution (Task 1 >> Task 2)",
+      "Setting parallel execution ([Task 2, Task 3] >> Task 4)",
+    ],
   },
   {
     id: "m4d13",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 13: Scheduling DAGs: Understanding Cron syntax (* * * * *)",
+    title: "Day 13: Scheduling and Cron Syntax",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Understanding the 5 cron fields (* * * * *)",
+      "Setting a DAG to run daily at midnight (0 0 * * *)",
+      "Using Airflow presets (@daily, @hourly)",
+    ],
   },
   {
     id: "m4d14",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 14: Catchup and Backfilling concepts in Airflow",
+    title: "Day 14: Catchup and Backfilling",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Understanding start_date",
+      "What catchup=True does (running historical missing dates)",
+      "Execution date vs Logical date",
+    ],
   },
   {
     id: "m4d15",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 15: Passing data between tasks using XComs",
+    title: "Day 15: XComs (Cross-Communication)",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Why tasks are isolated by default",
+      "Using xcom_push to output small data (like an ID)",
+      "Using xcom_pull in the next task to retrieve it",
+    ],
   },
   {
     id: "m4d16",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 16: Setting up Connections & Variables securely in Airflow UI",
+    title: "Day 16: Connections & Variables",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Storing API keys securely in Airflow Variables UI",
+      "Creating Database Connections in the UI",
+      "Using hooks to access connections in code",
+    ],
   },
   {
     id: "m4d17",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 17: Handling failures: Retries and Email Alerts",
+    title: "Day 17: Handling Failures",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Configuring task retries and retry_delay",
+      "Setting up email_on_failure in default_args",
+    ],
   },
   {
     id: "p4",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title:
-      "PROJECT: Build an Airflow DAG that runs daily, triggers your Python script from Month 2, and logs success/failure",
+    title: "PROJECT: Orchestrate your Python Script",
     type: "Project",
     estDays: 6,
+    subtopics: [
+      "1. Take your Python script from Month 2 (Weather API)",
+      "2. Break it into two functions: fetch_data() and load_to_db()",
+      "3. Create a new Airflow DAG scheduled to run @daily",
+      "4. Create two PythonOperators mapping to your functions",
+      "5. Set dependency: fetch_task >> load_task",
+      "6. Turn on the DAG in the UI and watch it run successfully!",
+    ],
   },
 
   // ==========================================
@@ -1067,66 +1248,104 @@ const curriculumData: Task[] = [
     id: "m5d1",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 1: What is Big Data? The 3 Vs (Volume, Velocity, Variety)",
+    title: "Day 1: What is Big Data?",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "The 3 Vs: Volume, Velocity, Variety",
+      'When does data become "Big"? (Memory limits)',
+      "Vertical Scaling vs Horizontal Scaling",
+    ],
   },
   {
     id: "m5d2",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 2: Distributed Computing Concepts (Why we need clusters)",
+    title: "Day 2: Distributed Computing Concepts",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "The Master-Worker Node architecture",
+      "How data is partitioned across multiple machines",
+      "Fault tolerance in distributed systems",
+    ],
   },
   {
     id: "m5d3",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title:
-      "Day 3: Introduction to Apache Spark Architecture (Driver, Executors)",
+    title: "Day 3: Intro to Apache Spark",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "What is Spark? (In-memory processing engine)",
+      "Spark Driver vs Executors",
+      "RDDs (Resilient Distributed Datasets) vs DataFrames",
+    ],
   },
   {
     id: "m5d4",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 4: Setting up PySpark in a local Jupyter Notebook/VS Code",
+    title: "Day 4: Setting up PySpark locally",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "pip install pyspark",
+      "Setting up a local SparkSession in a Python script/Jupyter Notebook",
+    ],
   },
   {
     id: "m5d5",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 5: Understanding PySpark DataFrames (Lazy Evaluation)",
+    title: "Day 5: PySpark DataFrames & Lazy Eval",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Transformations vs Actions",
+      "Why Spark uses Lazy Evaluation (building the execution plan)",
+      "Using .show() and .printSchema()",
+    ],
   },
   {
     id: "m5d6",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 6: Reading large CSV/JSON/Parquet files in PySpark",
+    title: "Day 6: Reading Data in PySpark",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Reading CSVs (spark.read.csv(header=True))",
+      "Reading JSON files",
+      "Understanding the Parquet file format (Columnar, compressed)",
+    ],
   },
   {
     id: "m5d7",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 7: PySpark Transformations: Select, Filter, WithColumn",
+    title: "Day 7: PySpark Transformations",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Selecting columns (.select())",
+      "Filtering rows (.filter() or .where())",
+      "Creating new columns (.withColumn())",
+    ],
   },
   {
     id: "m5d8",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 8: PySpark Aggregations: GroupBy, Agg, Count, Sum",
+    title: "Day 8: PySpark Aggregations",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Importing pyspark.sql.functions as F",
+      "Using .groupBy().agg()",
+      "Calculating F.sum() and F.count()",
+    ],
   },
   {
     id: "m5d9",
@@ -1135,63 +1354,102 @@ const curriculumData: Task[] = [
     title: "Day 9: Joining DataFrames in PySpark",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      'df1.join(df2, on="id", how="inner")',
+      "Handling duplicate column names after joining",
+    ],
   },
   {
     id: "m5d10",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 10: Using Spark SQL (writing pure SQL queries on DataFrames)",
+    title: "Day 10: Spark SQL",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Creating temporary views (createOrReplaceTempView)",
+      'Using spark.sql("SELECT ...") to write pure SQL instead of Python syntax',
+    ],
   },
   {
     id: "m5d11",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 11: Writing data back out to Parquet format",
+    title: "Day 11: Writing Data Out",
     type: "BigData",
     estDays: 1,
+    subtopics: [
+      "Writing DataFrames back to disk (.write)",
+      "Saving as partitioned Parquet files (partitionBy)",
+    ],
   },
   {
     id: "m5d12",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 12: Intro to the Cloud: Create an AWS free tier account",
+    title: "Day 12: Intro to the Cloud (AWS)",
     type: "Cloud",
     estDays: 1,
+    subtopics: [
+      "Create an AWS Free Tier account",
+      "Tour the AWS Management Console",
+      "Understanding Regions and Availability Zones",
+    ],
   },
   {
     id: "m5d13",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 13: Cloud Storage: Understanding AWS S3 (Buckets, Objects)",
+    title: "Day 13: AWS S3 (Cloud Storage)",
     type: "Cloud",
     estDays: 1,
+    subtopics: [
+      "What is Object Storage?",
+      "Creating an S3 Bucket",
+      "Uploading files manually via the UI",
+      "Understanding S3 URIs (s3://bucket-name/file)",
+    ],
   },
   {
     id: "m5d14",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 14: Security: IAM Users, Roles, and Policies basics",
+    title: "Day 14: AWS Security (IAM)",
     type: "Cloud",
     estDays: 1,
+    subtopics: [
+      "Creating an IAM User",
+      "Generating Access Keys and Secret Keys",
+      "Attaching policies (e.g., AmazonS3FullAccess)",
+    ],
   },
   {
     id: "m5d15",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title: "Day 15: Connecting Python to AWS S3 using Boto3 library",
+    title: "Day 15: Python to AWS via Boto3",
     type: "Cloud",
     estDays: 1,
+    subtopics: [
+      "pip install boto3",
+      "Configuring AWS CLI with your keys",
+      "Writing a Python script to list S3 buckets and upload a local file",
+    ],
   },
   {
     id: "p5",
     month: 5,
     phase: "Month 5: Spark & Cloud Data",
-    title:
-      "PROJECT: Use PySpark to process a 1GB+ dataset locally, clean it, and upload the final Parquet file to AWS S3 using Boto3",
+    title: "PROJECT: PySpark to AWS S3",
     type: "Project",
     estDays: 6,
+    subtopics: [
+      "1. Find a large dataset (e.g., NYC Taxi Trip data CSV)",
+      "2. Write a PySpark script to load the data",
+      "3. Filter out invalid rows and aggregate trips by day",
+      "4. Save the cleaned DataFrame locally as Parquet",
+      "5. Write a Boto3 function to upload that Parquet file to your AWS S3 bucket",
+    ],
   },
 
   // ==========================================
@@ -1201,141 +1459,228 @@ const curriculumData: Task[] = [
     id: "m6d1",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 1: Modern Data Stack: What is dbt (Data Build Tool)?",
+    title: "Day 1: What is dbt?",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Data Build Tool overview",
+      'Transforming data inside the warehouse (The "T" in ELT)',
+      "Why analytics engineers use dbt",
+    ],
   },
   {
     id: "m6d2",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 2: dbt Core setup and connecting to a Database/Warehouse",
+    title: "Day 2: dbt Core Setup",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "pip install dbt-postgres (or bigquery/snowflake)",
+      "Running `dbt init` to scaffold a project",
+      "Configuring the profiles.yml file to connect to your database",
+    ],
   },
   {
     id: "m6d3",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 3: Writing your first dbt models (SELECT statements)",
+    title: "Day 3: Writing dbt Models",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Understanding that a dbt model is just a SELECT statement in a .sql file",
+      "Writing your first model in the /models folder",
+      "Running `dbt run` to materialize it in the DB",
+    ],
   },
   {
     id: "m6d4",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 4: dbt Materializations (Table vs View) and `ref()` function",
+    title: "Day 4: dbt refs and materializations",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      'Using the {{ ref("model_name") }} macro to build dependencies',
+      "Configuring materializations (table vs view)",
+    ],
   },
   {
     id: "m6d5",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 5: dbt Testing (Not Null, Unique) to ensure data quality",
+    title: "Day 5: dbt Testing and Docs",
     type: "Pipeline",
     estDays: 1,
+    subtopics: [
+      "Setting up schema.yml files",
+      "Adding tests (unique, not_null, accepted_values)",
+      "Running `dbt test` to check data quality",
+    ],
   },
   {
     id: "m6d6",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 6: Version Control: Install Git and create a GitHub account",
+    title: "Day 6: Version Control (Git)",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      "Install Git",
+      "Create a GitHub account",
+      "Git concepts (Repository, Branch, Commit)",
+    ],
   },
   {
     id: "m6d7",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 7: Basic Git Commands: clone, add, commit, push, pull",
+    title: "Day 7: Basic Git Commands",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      "git init and git clone",
+      'git add . and git commit -m "message"',
+      "git push to send code to GitHub",
+    ],
   },
+
   {
     id: "p6",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Part 1): Python extracts API data to AWS S3",
+    title: "MEGA CAPSTONE (Step 1): Data Extraction",
     type: "Project",
     estDays: 3,
+    subtopics: [
+      "1. Choose a public API (e.g., Reddit API, Crypto API)",
+      "2. Write a Python script to extract JSON data daily",
+      '3. Use Boto3 to upload the raw JSON directly to an AWS S3 "Landing" bucket',
+    ],
   },
   {
     id: "p7",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title:
-      "MEGA CAPSTONE (Part 2): PySpark cleans S3 data and loads to Warehouse",
+    title: "MEGA CAPSTONE (Step 2): Data Processing",
     type: "Project",
     estDays: 3,
+    subtopics: [
+      "1. Write a PySpark script to read the JSON from S3",
+      "2. Clean data, enforce schema, and drop duplicates",
+      '3. Save the clean data as Parquet back to a different S3 "Processed" bucket',
+      "4. (Optional) Load from S3 into Postgres/Snowflake",
+    ],
   },
   {
     id: "p8",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title:
-      "MEGA CAPSTONE (Part 3): dbt transforms Warehouse data into Star Schema",
+    title: "MEGA CAPSTONE (Step 3): Data Modeling",
     type: "Project",
     estDays: 3,
+    subtopics: [
+      "1. Setup a dbt project connected to your Database",
+      "2. Create staging models to clean column names",
+      "3. Create a final Fact model (e.g., fact_crypto_prices)",
+      "4. Add dbt tests to ensure no null IDs",
+    ],
   },
   {
     id: "p9",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title:
-      "MEGA CAPSTONE (Part 4): Airflow orchestrates the entire pipeline daily",
+    title: "MEGA CAPSTONE (Step 4): Orchestration",
     type: "Project",
     estDays: 3,
+    subtopics: [
+      "1. Build an Airflow DAG",
+      "2. Task 1: PythonOperator (run extraction script)",
+      "3. Task 2: BashOperator (run spark-submit script)",
+      "4. Task 3: BashOperator (run dbt build)",
+      "5. Schedule it to run automatically every night",
+    ],
   },
+
   {
     id: "m6d20",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 20: Document your Capstone! Write a great README.md on GitHub",
+    title: "Day 20: Document your Capstone!",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      "Push all code to a public GitHub repository",
+      "Write a README.md file",
+      "Include an Architecture Diagram (draw.io)",
+      "Explain what tools you used and why",
+    ],
   },
   {
     id: "m6d21",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 21: Resume rewrite: Focus heavily on Projects & SQL/Python",
+    title: "Day 21: Resume rewrite",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      'Move "Projects" to the top of your resume',
+      "Link your GitHub repo directly on the resume",
+      "Highlight SQL, Python, Airflow, and Spark in your skills section",
+    ],
   },
   {
     id: "m6d22",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: 'Day 22: Update LinkedIn profile and set title to "Data Engineer"',
+    title: "Day 22: Update LinkedIn profile",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      'Change headline to "Aspiring Data Engineer" or similar',
+      "Post a screenshot of your Airflow DAG running successfully",
+      "Link your GitHub project in the featured section",
+    ],
   },
   {
     id: "m6d23",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 23: Interview Prep: Practice standard SQL Interview Questions",
+    title: "Day 23: Interview Prep (SQL)",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      'Do 5 "Medium" SQL questions on LeetCode/StrataScratch',
+      "Practice explaining Window Functions out loud",
+      "Review Joins vs Unions",
+    ],
   },
   {
     id: "m6d24",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title:
-      "Day 24: Interview Prep: Be able to explain ETL vs ELT and Star Schema clearly",
+    title: "Day 24: Interview Prep (Concepts)",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      "Practice explaining the difference between ETL and ELT",
+      'Prepare your "Tell me about your project" elevator pitch',
+      "Review Star Schema concepts",
+    ],
   },
   {
     id: "m6d25",
     month: 6,
     phase: "Month 6: The Escape Plan",
-    title: "Day 25: START APPLYING. Your escape begins now.",
+    title: "Day 25: START APPLYING.",
     type: "Project",
     estDays: 1,
+    subtopics: [
+      "Apply to 5 Junior/Entry Data Engineer roles",
+      "Apply to Data Analyst roles (they often do DE work!)",
+      "Keep building, keep pushing. Your escape has begun.",
+    ],
   },
 ];
 
@@ -1417,11 +1762,26 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Now handles multiple resources per subtopic ID
+  const [customResources, setCustomResources] = useState<
+    Record<string, CustomResource[]>
+  >(() => {
+    const saved = localStorage.getItem("de-tracker-custom-resources-multi");
+    return saved ? JSON.parse(saved) : {};
+  });
+
   // Track which task rows are expanded to show subtopics
   const [expandedTasks, setExpandedTasks] = useState<Record<string, boolean>>(
     {},
   );
   const [activeMonth, setActiveMonth] = useState<number>(1);
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeSubtopicId, setActiveSubtopicId] = useState<string | null>(null);
+  const [activeSubtopicName, setActiveSubtopicName] = useState<string>("");
+  const [customTitle, setCustomTitle] = useState("");
+  const [customUrl, setCustomUrl] = useState("");
 
   // --- Save to LocalStorage ---
   useEffect(() => {
@@ -1431,27 +1791,19 @@ export default function App() {
       "de-tracker-subtasks",
       JSON.stringify(completedSubtopics),
     );
-  }, [startDate, completedTasks, completedSubtopics]);
+    localStorage.setItem(
+      "de-tracker-custom-resources-multi",
+      JSON.stringify(customResources),
+    );
+  }, [startDate, completedTasks, completedSubtopics, customResources]);
 
   // --- Task Toggle Logic ---
   const handleParentClick = (task: Task) => {
-    // If it has subtopics, expanding it is the only way to interact with it.
     if (task.subtopics && task.subtopics.length > 0) {
       setExpandedTasks((prev) => ({
         ...prev,
         [task.id]: !prev[task.id],
       }));
-    } else {
-      // If no subtopics exist (e.g. older tasks), just toggle completion directly
-      setCompletedTasks((prev) => {
-        const newState = { ...prev };
-        if (newState[task.id]) {
-          delete newState[task.id];
-        } else {
-          newState[task.id] = new Date().toISOString().split("T")[0];
-        }
-        return newState;
-      });
     }
   };
 
@@ -1461,10 +1813,9 @@ export default function App() {
     subIdx: number,
     totalSubtopics: number,
   ) => {
-    e.stopPropagation(); // Prevents expanding/collapsing the parent row
+    e.stopPropagation();
     const subId = `${taskId}-${subIdx}`;
 
-    // Calculate new subtopics array locally first
     const isCurrentlyCompleted = completedSubtopics.includes(subId);
     const newSubtopics = isCurrentlyCompleted
       ? completedSubtopics.filter((id) => id !== subId)
@@ -1472,7 +1823,7 @@ export default function App() {
 
     setCompletedSubtopics(newSubtopics);
 
-    // AUTO-COMPLETE ENGINE: Check if parent task should be marked as done automatically
+    // AUTO-COMPLETE ENGINE
     const taskSubtopicIds = Array.from(
       { length: totalSubtopics },
       (_, i) => `${taskId}-${i}`,
@@ -1484,16 +1835,61 @@ export default function App() {
     setCompletedTasks((prevTasks) => {
       const newTasks = { ...prevTasks };
       if (completedCount === totalSubtopics) {
-        // All subtopics checked! Mark parent complete today (if not already completed)
         if (!newTasks[taskId]) {
           newTasks[taskId] = new Date().toISOString().split("T")[0];
         }
       } else {
-        // Subtopic unchecked! Unmark parent automatically.
         delete newTasks[taskId];
       }
       return newTasks;
     });
+  };
+
+  // --- Multi-Resource Modal Logic ---
+  const openModal = (e: MouseEvent, subId: string, subName: string) => {
+    e.stopPropagation();
+    setActiveSubtopicId(subId);
+    setActiveSubtopicName(subName);
+    setCustomTitle("");
+    setCustomUrl("");
+    setIsModalOpen(true);
+  };
+
+  const addCustomResource = () => {
+    if (activeSubtopicId && customTitle && customUrl) {
+      const newResource: CustomResource = {
+        id:
+          typeof crypto !== "undefined" && crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now().toString(),
+        title: customTitle,
+        url: customUrl,
+      };
+
+      setCustomResources((prev) => {
+        const existing = prev[activeSubtopicId] || [];
+        return {
+          ...prev,
+          [activeSubtopicId]: [...existing, newResource],
+        };
+      });
+
+      setCustomTitle("");
+      setCustomUrl("");
+    }
+  };
+
+  const deleteCustomResource = (resourceId: string) => {
+    if (activeSubtopicId) {
+      setCustomResources((prev) => {
+        const existing = prev[activeSubtopicId] || [];
+        const updated = existing.filter((r) => r.id !== resourceId);
+        return {
+          ...prev,
+          [activeSubtopicId]: updated,
+        };
+      });
+    }
   };
 
   // --- Dynamic Timeline Calculations ---
@@ -1516,7 +1912,6 @@ export default function App() {
         let taskDisplayDate = "";
         const isCompleted = !!completedTasks[task.id];
 
-        // Calculate smooth overall progress based on subtopics
         const totalSubCount = task.subtopics ? task.subtopics.length : 1;
         const completedSubCount = task.subtopics
           ? task.subtopics.filter((_, idx) =>
@@ -1556,7 +1951,7 @@ export default function App() {
       };
     }, [startDate, completedTasks, completedSubtopics]);
 
-  // --- Dashboard Stats Calculations (ALL TOPICS BASED ON SUBTOPICS) ---
+  // --- Dashboard Stats Calculations ---
   const stats = useMemo(() => {
     const types = [
       "SQL",
@@ -1630,7 +2025,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 p-4 md:p-6 font-sans selection:bg-blue-500/30 text-left">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto space-y-8 relative">
         {/* Header & Date Configuration */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-800 pb-6">
           <div>
@@ -1677,7 +2072,7 @@ export default function App() {
           </div>
         </header>
 
-        {/* Dashboard Charts - ALL 8 TOPICS */}
+        {/* Dashboard Charts */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           <CircularProgress
             percentage={totalProgress}
@@ -1891,6 +2286,11 @@ export default function App() {
                             const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchPrefix} ${sub} tutorial`)}`;
                             const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchPrefix} ${sub} documentation tutorial example`)}`;
 
+                            // Saved custom resources for this specific subtopic
+                            const subtopicResources =
+                              customResources[subId] || [];
+                            const resourceCount = subtopicResources.length;
+
                             return (
                               <li
                                 key={idx}
@@ -1946,6 +2346,20 @@ export default function App() {
                                   >
                                     <BookOpen size={14} /> Read
                                   </a>
+
+                                  {/* Multiple Resources Badge Button */}
+                                  <button
+                                    onClick={(e) => openModal(e, subId, sub)}
+                                    className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 shadow-sm ml-1"
+                                    title="Manage custom resources"
+                                  >
+                                    <LinkIcon size={16} />
+                                    {resourceCount > 0 && (
+                                      <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
+                                        {resourceCount}
+                                      </span>
+                                    )}
+                                  </button>
                                 </div>
                               </li>
                             );
@@ -1958,6 +2372,113 @@ export default function App() {
               })}
           </div>
         </div>
+
+        {/* --- Custom Resource Management Modal --- */}
+        {isModalOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+            onClick={() => setIsModalOpen(false)}
+          >
+            <div
+              className="bg-[#1e2336] border border-slate-700 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()} // Prevent clicking inside modal from closing it
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                  <LinkIcon size={20} className="text-[#a855f7]" /> Saved
+                  Resources
+                </h3>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-slate-400 hover:text-white transition-colors p-1"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+                  <span className="font-semibold text-slate-300">Task:</span>{" "}
+                  {activeSubtopicName}
+                </p>
+
+                {/* List of Existing Saved Resources */}
+                <div className="space-y-3 mb-6 max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                  {(customResources[activeSubtopicId!] || []).map((res) => (
+                    <div
+                      key={res.id}
+                      className="flex items-center justify-between bg-[#151928] border border-slate-700 rounded-lg p-3 group"
+                    >
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <BookOpen
+                          size={16}
+                          className="text-slate-500 flex-shrink-0"
+                        />
+                        <a
+                          href={res.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-slate-200 text-sm font-medium hover:text-[#a855f7] truncate transition-colors"
+                        >
+                          {res.title}
+                        </a>
+                      </div>
+                      <button
+                        onClick={() => deleteCustomResource(res.id)}
+                        className="text-slate-500 hover:text-red-400 transition-colors ml-3 p-1 flex-shrink-0"
+                        title="Delete resource"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+
+                  {(!customResources[activeSubtopicId!] ||
+                    customResources[activeSubtopicId!].length === 0) && (
+                    <div className="text-center py-4 bg-[#151928]/50 border border-slate-700/50 rounded-lg border-dashed">
+                      <p className="text-slate-500 text-sm">
+                        No resources added yet.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Add New Resource Form */}
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  Add New Resource
+                </h4>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    value={customTitle}
+                    onChange={(e) => setCustomTitle(e.target.value)}
+                    placeholder="Resource Title (e.g. Medium Article)"
+                    className="w-full bg-[#151928] border border-slate-700 rounded-lg px-3 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-[#a855f7] focus:ring-1 focus:ring-[#a855f7] transition-all text-sm"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={customUrl}
+                      onChange={(e) => setCustomUrl(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") addCustomResource();
+                      }}
+                      placeholder="https://..."
+                      className="flex-grow w-full bg-[#151928] border border-slate-700 rounded-lg px-3 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-[#a855f7] focus:ring-1 focus:ring-[#a855f7] transition-all text-sm"
+                    />
+                    <button
+                      onClick={addCustomResource}
+                      disabled={!customTitle || !customUrl}
+                      className="px-4 py-2.5 rounded-lg bg-[#a855f7] text-white hover:bg-[#9333ea] disabled:bg-[#a855f7]/30 disabled:text-white/50 font-medium text-sm transition-colors flex items-center gap-1.5 shadow-lg shadow-purple-500/20 flex-shrink-0"
+                    >
+                      <Plus size={16} /> Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
