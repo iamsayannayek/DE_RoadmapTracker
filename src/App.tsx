@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, MouseEvent, ElementType } from "react";
 import {
   CheckCircle2,
   Circle,
@@ -21,21 +21,24 @@ import {
 } from "lucide-react";
 
 // --- Helper Functions for Dates ---
-const addDays = (dateString, days) => {
+const addDays = (dateString: string, days: number): string => {
   const date = new Date(dateString);
   date.setDate(date.getDate() + days);
   return date.toISOString().split("T")[0];
 };
 
-const formatDate = (dateString) => {
+const formatDate = (dateString: string): string => {
   if (!dateString) return "";
-  const options = { month: "short", day: "numeric", year: "numeric" };
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  };
   return new Date(dateString).toLocaleDateString("en-US", options);
 };
 
 // --- Smart Search Term Mapping ---
-// This ensures that clicking "Watch" or "Read" gives you exactly the right tutorials
-const typeSearchMap = {
+const typeSearchMap: Record<string, string> = {
   SQL: "SQL",
   Python: "Python 3",
   DB: "Database Data Warehouse",
@@ -45,8 +48,25 @@ const typeSearchMap = {
   Project: "Data Engineering Project",
 };
 
+// --- TypeScript Interfaces ---
+interface Subtopic {
+  label: string;
+  videoUrl: string;
+  readUrl: string;
+}
+
+interface Task {
+  id: string;
+  month: number;
+  phase: string;
+  title: string;
+  type: string;
+  estDays: number;
+  subtopics?: Subtopic[];
+}
+
 // --- Comprehensive Day-by-Day Curriculum with Subtopics ---
-const curriculumData = [
+const curriculumData: Task[] = [
   // ==========================================
   // MONTH 1: SQL FOUNDATIONS
   // ==========================================
@@ -54,28 +74,41 @@ const curriculumData = [
     id: "m1d1",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 1: What is a Database? Tables, Rows, and Columns",
+    title: "Day 1: What is a Database?",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Relational vs Non-Relational overview",
-      "What is an RDBMS?",
-      "Understanding Tables, Records (Rows), and Fields (Columns)",
-      "Basic Data Types (INT, VARCHAR, DATE)",
+      {
+        label: "Relational vs Non-Relational overview",
+        videoUrl: "https://youtu.be/ztHopE5Wnpc",
+        readUrl: "https://www.ibm.com/topics/relational-databases",
+      },
+      {
+        label: "What is an RDBMS? Tables, Rows, Columns",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY",
+        readUrl: "https://www.w3schools.com/sql/sql_intro.asp",
+      },
     ],
   },
   {
     id: "m1d2",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 2: First Query! The SELECT and LIMIT statements",
+    title: "Day 2: First Query! SELECT & LIMIT",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "SELECT * (Selecting everything)",
-      "Selecting specific columns",
-      "Using LIMIT or TOP to restrict results",
-      "Aliasing columns using AS",
+      {
+        label: "SELECT * (Selecting everything)",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=286",
+        readUrl: "https://www.w3schools.com/sql/sql_select.asp",
+      },
+      {
+        label: "Using LIMIT to restrict results",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=480",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-limit/",
+      },
     ],
   },
   {
@@ -86,9 +119,16 @@ const curriculumData = [
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "The WHERE clause syntax",
-      "Equality (=) and Inequality (!= or <>)",
-      "Greater than (>) and Less than (<)",
+      {
+        label: "The WHERE clause syntax",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=552",
+        readUrl: "https://www.w3schools.com/sql/sql_where.asp",
+      },
+      {
+        label: "Equality and Inequality operators",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=600",
+        readUrl: "https://www.w3schools.com/sql/sql_operators.asp",
+      },
     ],
   },
   {
@@ -99,300 +139,261 @@ const curriculumData = [
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Combining conditions with AND",
-      "Alternative conditions with OR",
-      "Excluding results with NOT",
-      "Order of operations (using parentheses)",
+      {
+        label: "Combining conditions with AND / OR",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=670",
+        readUrl: "https://www.w3schools.com/sql/sql_and_or.asp",
+      },
+      {
+        label: "Excluding results with NOT",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=720",
+        readUrl: "https://www.w3schools.com/sql/sql_not.asp",
+      },
     ],
   },
   {
     id: "m1d5",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 5: Searching for Text Patterns using LIKE",
+    title: "Day 5: Searching Patterns (LIKE)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "The LIKE operator",
-      "The % wildcard (any string of characters)",
-      "The _ wildcard (single character)",
-      "Case sensitivity (ILIKE in Postgres)",
+      {
+        label: "The LIKE operator and % wildcard",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=850",
+        readUrl: "https://www.w3schools.com/sql/sql_like.asp",
+      },
+      {
+        label: "Case sensitivity (ILIKE in Postgres)",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=900",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-like/",
+      },
     ],
   },
   {
     id: "m1d6",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 6: Handling Lists using IN and BETWEEN",
+    title: "Day 6: Handling Lists (IN, BETWEEN)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Filtering within a range using BETWEEN",
-      "Filtering against a list using IN (...)",
-      "Using NOT IN and NOT BETWEEN",
+      {
+        label: "Filtering within a range using BETWEEN",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=960",
+        readUrl: "https://www.w3schools.com/sql/sql_between.asp",
+      },
+      {
+        label: "Filtering against a list using IN",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=1000",
+        readUrl: "https://www.w3schools.com/sql/sql_in.asp",
+      },
     ],
   },
   {
     id: "m1d7",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 7: Sorting your results with ORDER BY",
+    title: "Day 7: Sorting results (ORDER BY)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Using ORDER BY column_name",
-      "Ascending (ASC) vs Descending (DESC)",
-      "Sorting by multiple columns",
+      {
+        label: "Using ORDER BY (ASC vs DESC)",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=1100",
+        readUrl: "https://www.w3schools.com/sql/sql_orderby.asp",
+      },
     ],
   },
   {
     id: "m1d8",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 8: Basic Math in SQL",
+    title: "Day 8: Aggregations Part 1 (COUNT, SUM)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Addition, Subtraction, Multiplication, Division",
-      "Calculating percentages between columns",
-      "Rounding numbers using ROUND()",
+      {
+        label: "Counting total rows with COUNT",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=3500",
+        readUrl: "https://www.w3schools.com/sql/sql_count.asp",
+      },
+      {
+        label: "Adding up values with SUM",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=3600",
+        readUrl: "https://www.w3schools.com/sql/sql_sum.asp",
+      },
     ],
   },
   {
     id: "m1d9",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 9: Aggregations Part 1 (COUNT, SUM)",
+    title: "Day 9: Aggregations Part 2 (MIN, MAX, AVG)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Counting total rows with COUNT(*)",
-      "Counting non-null values with COUNT(column)",
-      "Adding up values with SUM()",
+      {
+        label: "Finding lowest/highest with MIN/MAX",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=3700",
+        readUrl: "https://www.w3schools.com/sql/sql_min_max.asp",
+      },
+      {
+        label: "Calculating averages with AVG",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=3800",
+        readUrl: "https://www.w3schools.com/sql/sql_avg.asp",
+      },
     ],
   },
   {
     id: "m1d10",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 10: Aggregations Part 2 (MIN, MAX, AVG)",
+    title: "Day 10: Grouping Data (GROUP BY)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Finding the lowest value with MIN()",
-      "Finding the highest value with MAX()",
-      "Calculating averages with AVG()",
+      {
+        label: "How GROUP BY works with aggregates",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=4000",
+        readUrl: "https://www.w3schools.com/sql/sql_groupby.asp",
+      },
     ],
   },
   {
     id: "m1d11",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 11: Grouping Data together using GROUP BY",
+    title: "Day 11: Filtering grouped data (HAVING)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "How GROUP BY works with aggregates",
-      "Grouping by a single column (e.g., total sales per department)",
-      "Grouping by multiple columns",
+      {
+        label: "Difference between WHERE and HAVING",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=4200",
+        readUrl: "https://www.w3schools.com/sql/sql_having.asp",
+      },
     ],
   },
   {
     id: "m1d12",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 12: Filtering grouped data using HAVING",
+    title: "Day 12: Primary Keys & Foreign Keys",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Difference between WHERE and HAVING",
-      "Using HAVING with COUNT/SUM",
-      "Order of execution (WHERE -> GROUP BY -> HAVING)",
+      {
+        label: "What makes a Primary Key unique?",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=1500",
+        readUrl: "https://www.w3schools.com/sql/sql_primarykey.asp",
+      },
+      {
+        label: "Linking tables with Foreign Keys",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=1600",
+        readUrl: "https://www.w3schools.com/sql/sql_foreignkey.asp",
+      },
     ],
   },
   {
     id: "m1d13",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 13: Primary Keys and Foreign Keys",
+    title: "Day 13: Combining Tables (INNER JOIN)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "What makes a Primary Key unique?",
-      "How Foreign Keys link tables together",
-      "The concept of Referential Integrity",
+      {
+        label: "INNER JOIN syntax and logic",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=4500",
+        readUrl: "https://www.w3schools.com/sql/sql_join_inner.asp",
+      },
     ],
   },
   {
     id: "m1d14",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 14: Combining Tables: INNER JOIN",
+    title: "Day 14: LEFT JOIN and RIGHT JOIN",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "INNER JOIN syntax and logic",
-      "Joining on Primary/Foreign Keys",
-      "Aliasing table names (e.g., FROM users u)",
+      {
+        label: "When to use a LEFT JOIN",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=4800",
+        readUrl: "https://www.w3schools.com/sql/sql_join_left.asp",
+      },
+      {
+        label: "Understanding RIGHT JOIN",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=5000",
+        readUrl: "https://www.w3schools.com/sql/sql_join_right.asp",
+      },
     ],
   },
   {
     id: "m1d15",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 15: LEFT JOIN and RIGHT JOIN",
+    title: "Day 15: Subqueries",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "When to use a LEFT JOIN (keeping all base records)",
-      "Handling NULLs that result from a LEFT JOIN",
-      "Understanding RIGHT JOIN (and why it is rarely used)",
+      {
+        label: "Queries inside Queries (WHERE IN)",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=5500",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-subquery/",
+      },
     ],
   },
   {
     id: "m1d16",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 16: FULL OUTER JOIN & CROSS JOIN",
+    title: "Day 16: CTEs (Common Table Expressions)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "FULL OUTER JOIN logic",
-      "Creating combinations with CROSS JOIN",
-      "Practice: Identify which join to use in 3 scenarios",
+      {
+        label: "The WITH clause syntax",
+        videoUrl: "https://youtu.be/HXV3zeQKqGY?t=6000",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-cte/",
+      },
     ],
   },
   {
     id: "m1d17",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 17: Conditional Logic with CASE WHEN",
+    title: "Day 17: Window Functions (OVER, PARTITION BY)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "CASE WHEN ... THEN ... ELSE ... END syntax",
-      "Creating new categorical columns from data",
-      "Using CASE WHEN inside an aggregate function (e.g., SUM(CASE WHEN))",
+      {
+        label: "Window Function vs GROUP BY",
+        videoUrl: "https://youtu.be/Ww71knvhQ-s",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-window-function/",
+      },
     ],
   },
   {
     id: "m1d18",
     month: 1,
     phase: "Month 1: SQL Mastery",
-    title: "Day 18: Working with NULL values",
+    title: "Day 18: Window Functions (ROW_NUMBER, RANK)",
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Checking for nulls with IS NULL / IS NOT NULL",
-      "Replacing nulls using COALESCE()",
-      "Null behavior in mathematical operations",
-    ],
-  },
-  {
-    id: "m1d19",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 19: Working with Text Functions",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "UPPER() and LOWER()",
-      "Combining strings with CONCAT() or ||",
-      "Extracting parts of text with SUBSTRING()",
-      "Trimming whitespace with TRIM()",
-    ],
-  },
-  {
-    id: "m1d20",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 20: Working with Date Functions",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "Getting current date (CURRENT_DATE)",
-      "Extracting parts of a date (EXTRACT(MONTH FROM date))",
-      "Adding/Subtracting intervals (DATE_ADD or INTERVAL)",
-    ],
-  },
-  {
-    id: "m1d21",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 21: Subqueries",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "Subqueries in the WHERE clause (e.g., WHERE id IN (SELECT...))",
-      "Subqueries in the SELECT clause",
-      "Subqueries in the FROM clause (Derived tables)",
-    ],
-  },
-  {
-    id: "m1d22",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 22: CTEs (Common Table Expressions)",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "The WITH clause syntax",
-      "Why CTEs are better for readability than Subqueries",
-      "Chaining multiple CTEs together",
-    ],
-  },
-  {
-    id: "m1d23",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 23: Window Functions Intro (OVER, PARTITION BY)",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "What is a Window Function vs GROUP BY?",
-      "The OVER() clause",
-      "Creating groups within the window using PARTITION BY",
-    ],
-  },
-  {
-    id: "m1d24",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 24: Window Functions (Ranking)",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "ROW_NUMBER() - assigning unique sequence",
-      "RANK() vs DENSE_RANK()",
-      "Sorting inside the window with ORDER BY",
-    ],
-  },
-  {
-    id: "m1d25",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 25: Window Functions (LEAD, LAG)",
-    type: "SQL",
-    estDays: 1,
-    subtopics: [
-      "Accessing previous row data with LAG()",
-      "Accessing next row data with LEAD()",
-      "Calculating Month-over-Month growth",
-    ],
-  },
-  {
-    id: "p1",
-    month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "PROJECT: E-Commerce Data Analysis",
-    type: "Project",
-    estDays: 5,
-    subtopics: [
-      "1. Find & download an E-commerce CSV dataset from Kaggle",
-      "2. Import the CSVs into a local database (DBeaver/PostgreSQL)",
-      "3. Write a CTE query to find the Top 5 customers by revenue",
-      "4. Write a Window Function query to calculate Monthly Sales Growth",
-      "5. Save your queries in a .sql file to upload to your GitHub later",
+      {
+        label: "ROW_NUMBER() and RANK()",
+        videoUrl: "https://youtu.be/Ww71knvhQ-s?t=300",
+        readUrl:
+          "https://www.postgresqltutorial.com/postgresql-window-function/postgresql-row_number/",
+      },
     ],
   },
 
@@ -407,10 +408,11 @@ const curriculumData = [
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Download and Install Python",
-      "Install VS Code",
-      "Install Python extension in VS Code",
-      'Write and run your first print("Hello World") script',
+      {
+        label: "Install Python & VS Code",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=150",
+        readUrl: "https://www.w3schools.com/python/python_getstarted.asp",
+      },
     ],
   },
   {
@@ -421,334 +423,148 @@ const curriculumData = [
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Strings (Text)",
-      "Integers and Floats (Numbers)",
-      "Booleans (True/False)",
-      "Using the type() function",
+      {
+        label: "Strings, Integers, Floats, Booleans",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=500",
+        readUrl: "https://www.w3schools.com/python/python_variables.asp",
+      },
     ],
   },
   {
     id: "m2d3",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 3: Basic Math & String manipulation",
+    title: "Day 3: Intro to Lists",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Math operators (+, -, *, /, //, %)",
-      'f-strings for formatting text (e.g., f"Hello {name}")',
-      "String methods (.upper(), .replace(), .split())",
+      {
+        label: "Creating and indexing Lists",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=1500",
+        readUrl: "https://www.w3schools.com/python/python_lists.asp",
+      },
     ],
   },
   {
     id: "m2d4",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 4: Introduction to Lists",
+    title: "Day 4: Dictionaries",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Creating a List (brackets [])",
-      "Zero-based indexing (Accessing list[0])",
-      "List slicing (list[1:3])",
+      {
+        label: "Key-Value pairs",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=2200",
+        readUrl: "https://www.w3schools.com/python/python_dictionaries.asp",
+      },
     ],
   },
   {
     id: "m2d5",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 5: Modifying Lists",
+    title: "Day 5: Logic and Conditionals (if/else)",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Adding items: .append() and .insert()",
-      "Removing items: .remove() and .pop()",
-      "Finding list length with len()",
+      {
+        label: "The if, elif, and else statements",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=2500",
+        readUrl: "https://www.w3schools.com/python/python_conditions.asp",
+      },
     ],
   },
   {
     id: "m2d6",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 6: Dictionaries",
+    title: 'Day 6: The "for" loop',
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Creating Dictionaries (curly braces {})",
-      "Key-Value pair concept",
-      "Accessing values by key",
-      "Adding and updating keys",
+      {
+        label: "Iterating through a List or Range",
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=3000",
+        readUrl: "https://www.w3schools.com/python/python_for_loops.asp",
+      },
     ],
   },
   {
     id: "m2d7",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 7: Tuples and Sets",
+    title: "Day 7: Defining Functions",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Tuples (immutable lists)",
-      "Sets (unordered, unique items only)",
-      "When to use each data structure",
+      {
+        label: 'The "def" keyword and Returns',
+        videoUrl: "https://youtu.be/_uQrJ0TkZlc?t=3500",
+        readUrl: "https://www.w3schools.com/python/python_functions.asp",
+      },
     ],
   },
   {
     id: "m2d8",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 8: Logic and Conditionals (if/else)",
+    title: "Day 8: File I/O & JSON",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Comparison operators (==, !=, >, <)",
-      "The if, elif, and else statements",
-      "Logical operators (and, or, not)",
-      "Understanding indentation in Python",
+      {
+        label: "Reading/Writing text files & JSON",
+        videoUrl: "https://youtu.be/Uh2ebFW8OYM",
+        readUrl: "https://www.w3schools.com/python/python_file_handling.asp",
+      },
     ],
   },
   {
     id: "m2d9",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: 'Day 9: The "for" loop',
+    title: "Day 9: APIs (Requests Library)",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "Iterating through a List",
-      "Iterating through Dictionary keys/values",
-      "Using the range() function",
+      {
+        label: "Making a GET request with pip install requests",
+        videoUrl: "https://youtu.be/tb8gHvYlCFs",
+        readUrl: "https://realpython.com/python-requests/",
+      },
     ],
   },
   {
     id: "m2d10",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: 'Day 10: The "while" loop',
+    title: "Day 10: Intro to Pandas Library",
     type: "Python",
     estDays: 1,
     subtopics: [
-      "While loop syntax",
-      "Preventing infinite loops",
-      'Using "break" to exit early',
-      'Using "continue" to skip an iteration',
+      {
+        label: "Pandas DataFrames and Series",
+        videoUrl: "https://youtu.be/vmEHCJofslg",
+        readUrl:
+          "https://pandas.pydata.org/docs/getting_started/intro_tutorials/01_table_oriented.html",
+      },
     ],
   },
   {
     id: "m2d11",
     month: 2,
     phase: "Month 2: Python Foundations",
-    title: "Day 11: Defining Functions",
+    title: "Day 11: Pandas Selecting and Filtering",
     type: "Python",
     estDays: 1,
     subtopics: [
-      'The "def" keyword',
-      "Writing reusable code blocks",
-      "Calling a function",
-    ],
-  },
-  {
-    id: "m2d12",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 12: Function Parameters and Returns",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Passing arguments into functions",
-      "Setting default parameter values",
-      'Using the "return" statement to output data',
-    ],
-  },
-  {
-    id: "m2d13",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 13: Scope and Modules",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Local vs Global variables",
-      "Importing built-in modules (e.g., import math, import datetime)",
-      "Creating and importing your own .py files",
-    ],
-  },
-  {
-    id: "m2d14",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 14: Working with JSON",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Importing the json module",
-      "json.loads() (String to Dictionary)",
-      "json.dumps() (Dictionary to String)",
-    ],
-  },
-  {
-    id: "m2d15",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 15: File I/O (Reading/Writing)",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      'Opening a text file using "with open()"',
-      "Reading lines vs Reading whole file",
-      "Writing and appending to a CSV file manually",
-    ],
-  },
-  {
-    id: "m2d16",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 16: Error Handling (try/except)",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Why programs crash (Exceptions)",
-      "The try and except block",
-      "Catching specific errors (e.g., FileNotFoundError)",
-      "The finally block",
-    ],
-  },
-  {
-    id: "m2d17",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 17: Virtual Environments & Pip",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "What is pip? Installing external libraries",
-      "Creating a virtual environment (python -m venv venv)",
-      "Activating the venv",
-      "Creating a requirements.txt file",
-    ],
-  },
-  {
-    id: "m2d18",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 18: APIs and the Requests Library",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "What is a REST API?",
-      "pip install requests",
-      "Making a GET request (requests.get())",
-      "Checking status codes (200 is good, 404 is bad)",
-    ],
-  },
-  {
-    id: "m2d19",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 19: Parsing API Responses",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Converting response to JSON (response.json())",
-      "Navigating deeply nested dictionaries to extract data",
-      "Looping through API results to build a List",
-    ],
-  },
-  {
-    id: "m2d20",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 20: Intro to Pandas Library",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "pip install pandas",
-      "What is a Pandas Series (1D)?",
-      "What is a Pandas DataFrame (2D Table)?",
-      "Creating a DataFrame from a Python Dictionary",
-    ],
-  },
-  {
-    id: "m2d21",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 21: Pandas: Reading and Inspecting",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "pd.read_csv() and pd.read_json()",
-      "Viewing top rows with df.head()",
-      "Checking data types with df.info()",
-      "Getting summary stats with df.describe()",
-    ],
-  },
-  {
-    id: "m2d22",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 22: Pandas: Selecting and Filtering",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Selecting single vs multiple columns",
-      'Filtering rows based on conditions (e.g., df[df["age"] > 25])',
-      "Using multiple conditions (& and |)",
-    ],
-  },
-  {
-    id: "m2d23",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 23: Pandas: Data Cleaning",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Finding nulls (df.isna())",
-      "Dropping rows with nulls (dropna())",
-      "Filling nulls with defaults (fillna())",
-      "Removing duplicate rows (drop_duplicates())",
-    ],
-  },
-  {
-    id: "m2d24",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 24: Database Connections in Python",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Installing psycopg2 (Postgres) or using built-in sqlite3",
-      "Establishing a connection string",
-      "Creating a cursor object",
-    ],
-  },
-  {
-    id: "m2d25",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "Day 25: Loading Data into SQL via Python",
-    type: "Python",
-    estDays: 1,
-    subtopics: [
-      "Executing CREATE TABLE via Python",
-      "Using pandas `to_sql()` method to load a DataFrame into a DB",
-      "Committing transactions and closing connections",
-    ],
-  },
-  {
-    id: "p2",
-    month: 2,
-    phase: "Month 2: Python Foundations",
-    title: "PROJECT: API to Database ETL Pipeline",
-    type: "Project",
-    estDays: 5,
-    subtopics: [
-      "1. Get a free API key from OpenWeatherMap or PokeAPI",
-      "2. Write a Python script to fetch data for 10 cities/items",
-      "3. Parse the JSON and load it into a Pandas DataFrame",
-      "4. Clean the data (rename columns, handle missing values)",
-      "5. Connect to a local SQLite database and insert the cleaned DataFrame",
-      "6. Add try/except blocks to handle API connection failures",
+      {
+        label: "Filtering rows based on conditions",
+        videoUrl: "https://youtu.be/vmEHCJofslg?t=900",
+        readUrl:
+          "https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html",
+      },
     ],
   },
 
@@ -759,224 +575,46 @@ const curriculumData = [
     id: "m3d1",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 1: PostgreSQL Setup",
+    title: "Day 1: Relational Data Modeling (ERDs)",
     type: "DB",
     estDays: 1,
     subtopics: [
-      "Download and install PostgreSQL",
-      "Install DBeaver (SQL Client)",
-      "Connect DBeaver to your local Postgres database",
+      {
+        label: "Primary/Foreign Keys and normalization",
+        videoUrl: "https://youtu.be/ztHopE5Wnpc",
+        readUrl: "https://www.guru99.com/database-normalization.html",
+      },
     ],
   },
   {
     id: "m3d2",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 2: DDL Commands (Data Definition)",
+    title: "Day 2: OLTP vs OLAP",
     type: "DB",
     estDays: 1,
     subtopics: [
-      "CREATE TABLE syntax and choosing data types",
-      "ALTER TABLE to add/remove columns",
-      "DROP vs TRUNCATE table",
+      {
+        label: "Transactional vs Analytical databases",
+        videoUrl: "https://youtu.be/GetjvEU-T08",
+        readUrl:
+          "https://aws.amazon.com/compare/the-difference-between-olap-and-oltp/",
+      },
     ],
   },
   {
     id: "m3d3",
     month: 3,
     phase: "Month 3: Databases & Architecture",
-    title: "Day 3: DML Commands (Data Manipulation)",
+    title: "Day 3: Facts and Dimensions (Star Schema)",
     type: "DB",
     estDays: 1,
     subtopics: [
-      "INSERT INTO syntax (single and multiple rows)",
-      "UPDATE statement (always use a WHERE clause!)",
-      "DELETE FROM statement",
-    ],
-  },
-  {
-    id: "m3d4",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 4: Database Constraints",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "NOT NULL constraint",
-      "UNIQUE constraint",
-      "DEFAULT values",
-      "CHECK constraints",
-    ],
-  },
-  {
-    id: "m3d5",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 5: Transactions & ACID Properties",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "BEGIN, COMMIT, and ROLLBACK",
-      "Atomicity (All or nothing)",
-      "Consistency, Isolation, Durability definitions",
-    ],
-  },
-  {
-    id: "m3d6",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 6: Database Indexing",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "What is an Index? (The book index analogy)",
-      "Creating a B-Tree index",
-      "How indexes speed up SELECTs but slow down INSERTs",
-    ],
-  },
-  {
-    id: "m3d7",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 7: Relational Data Modeling (ERDs)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "One-to-One relationships",
-      "One-to-Many relationships",
-      "Many-to-Many relationships (Junction tables)",
-      "Drawing an ERD using draw.io or lucidchart",
-    ],
-  },
-  {
-    id: "m3d8",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 8: Normalization",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "What is Data Redundancy?",
-      "1st Normal Form (Atomic values)",
-      "2nd and 3rd Normal Form concepts",
-    ],
-  },
-  {
-    id: "m3d9",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 9: OLTP vs OLAP",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "OLTP: Online Transaction Processing (App databases)",
-      "OLAP: Online Analytical Processing (Data Warehouses)",
-      "Key differences in read/write patterns",
-    ],
-  },
-  {
-    id: "m3d10",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 10: Data Warehouse: Facts and Dimensions",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "What is a Fact Table? (Measurements, metrics, events)",
-      "What is a Dimension Table? (Context, who, what, where)",
-      "Surrogate Keys vs Natural Keys",
-    ],
-  },
-  {
-    id: "m3d11",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 11: Dimensional Modeling",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "The Star Schema architecture",
-      "The Snowflake Schema architecture",
-      "Pros and cons of Star vs Snowflake",
-    ],
-  },
-  {
-    id: "m3d12",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 12: Slowly Changing Dimensions (SCD)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "SCD Type 1 (Overwrite old data)",
-      "SCD Type 2 (Add new row, maintain history, valid_from/to dates)",
-      "SCD Type 3 (Add new column)",
-    ],
-  },
-  {
-    id: "m3d13",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 13: Cloud Data Warehouses",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "How Cloud DWs differ from traditional DBs",
-      "Separation of Storage and Compute",
-      "Overview of Snowflake and BigQuery concepts",
-    ],
-  },
-  {
-    id: "m3d14",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 14: Columnar vs Row Storage",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "Row-based storage (Postgres) - good for transactional writes",
-      "Columnar storage (Snowflake/Parquet) - good for analytical reads",
-      "Compression benefits of Columnar storage",
-    ],
-  },
-  {
-    id: "m3d15",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 15: Intro to NoSQL (Document DBs)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "When to use NoSQL instead of Relational",
-      "Document databases overview (MongoDB)",
-      "Storing data as JSON-like documents",
-    ],
-  },
-  {
-    id: "m3d16",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 16: Intro to NoSQL (Other types)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "Key-Value stores (Redis)",
-      "Column-family stores (Cassandra)",
-      "Graph databases (Neo4j)",
-    ],
-  },
-  {
-    id: "p3",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "PROJECT: Data Modeling from Scratch",
-    type: "Project",
-    estDays: 4,
-    subtopics: [
-      "1. Design a Star Schema for a fictional Ride-Sharing app (Uber)",
-      "2. Identify the Fact table (Rides) and 3 Dimension tables (Users, Drivers, Time)",
-      "3. Draw the ERD showing Primary and Foreign keys",
-      "4. Write the SQL DDL script to CREATE all these tables in Postgres",
+      {
+        label: "Data Warehouse Star Schema design",
+        videoUrl: "https://youtu.be/1mE-F8H2pIQ",
+        readUrl: "https://www.databricks.com/glossary/star-schema",
+      },
     ],
   },
 
@@ -987,674 +625,153 @@ const curriculumData = [
     id: "m4d1",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 1: What is ETL?",
+    title: "Day 1: Intro to Apache Airflow",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Extract: Pulling data from source systems (APIs, DBs)",
-      "Transform: Cleaning, joining, and aggregating",
-      "Load: Pushing data into the Data Warehouse",
+      {
+        label: "What is Airflow? DAGs and Tasks",
+        videoUrl: "https://youtu.be/K9AnJ9peGfs",
+        readUrl:
+          "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html",
+      },
     ],
   },
   {
     id: "m4d2",
     month: 4,
     phase: "Month 4: Pipelines & Airflow",
-    title: "Day 2: ETL vs ELT",
+    title: "Day 2: Operators & Dependencies",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "The shift to ELT in modern data stacks",
-      "Why Cloud Data Warehouses made ELT popular",
-      "Transformation happening inside the Warehouse",
-    ],
-  },
-  {
-    id: "m4d3",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 3: Batch vs Streaming",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Batch processing (Running on a schedule, e.g., nightly)",
-      "Streaming/Real-time data (Processing as it arrives)",
-      "Latency vs Throughput",
-    ],
-  },
-  {
-    id: "m4d4",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 4: Intro to Apache Airflow",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "What is data orchestration?",
-      "Why cron is not enough for complex pipelines",
-      "Airflow Core Components: Scheduler, Webserver, Worker, Metadata DB",
-    ],
-  },
-  {
-    id: "m4d5",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 5: Understanding DAGs",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Directed Acyclic Graphs (DAGs) explained",
-      "Why DAGs cannot have loops",
-      "Tasks and Operators concepts",
-    ],
-  },
-  {
-    id: "m4d6",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 6: Setting up Airflow locally",
-    type: "Pipeline",
-    estDays: 2,
-    subtopics: [
-      "Install Docker Desktop on your machine",
-      "Download the official Airflow docker-compose.yaml file",
-      "Run `docker-compose up` to start Airflow",
-      "Access the Web UI at localhost:8080",
-    ],
-  },
-  {
-    id: "m4d8",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 8: Airflow Web UI Tour",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Navigating the DAGs list",
-      "Graph View (visualizing task dependencies)",
-      "Tree/Grid View (viewing historical runs)",
-      "Checking Task Logs for errors",
-    ],
-  },
-  {
-    id: "m4d9",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 9: Writing your first DAG",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Importing DAG from airflow module",
-      "Defining default_args (owner, retries)",
-      "Instantiating the DAG object with a schedule_interval",
-    ],
-  },
-  {
-    id: "m4d10",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 10: The BashOperator",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Importing BashOperator",
-      'Creating a task that runs a terminal command (e.g., echo "hello")',
-      "Assigning the task to your DAG",
-    ],
-  },
-  {
-    id: "m4d11",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 11: The PythonOperator",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Importing PythonOperator",
-      "Defining a standard Python function",
-      "Passing the function to the python_callable argument",
-    ],
-  },
-  {
-    id: "m4d12",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 12: Setting Task Dependencies",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Using bitshift operators (>> and <<)",
-      "Setting sequential execution (Task 1 >> Task 2)",
-      "Setting parallel execution ([Task 2, Task 3] >> Task 4)",
-    ],
-  },
-  {
-    id: "m4d13",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 13: Scheduling and Cron Syntax",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Understanding the 5 cron fields (* * * * *)",
-      "Setting a DAG to run daily at midnight (0 0 * * *)",
-      "Using Airflow presets (@daily, @hourly)",
-    ],
-  },
-  {
-    id: "m4d14",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 14: Catchup and Backfilling",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Understanding start_date",
-      "What catchup=True does (running historical missing dates)",
-      "Execution date vs Logical date",
-    ],
-  },
-  {
-    id: "m4d15",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 15: XComs (Cross-Communication)",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Why tasks are isolated by default",
-      "Using xcom_push to output small data (like an ID)",
-      "Using xcom_pull in the next task to retrieve it",
-    ],
-  },
-  {
-    id: "m4d16",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 16: Connections & Variables",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Storing API keys securely in Airflow Variables UI",
-      "Creating Database Connections in the UI",
-      "Using hooks to access connections in code",
-    ],
-  },
-  {
-    id: "m4d17",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 17: Handling Failures",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Configuring task retries and retry_delay",
-      "Setting up email_on_failure in default_args",
-    ],
-  },
-  {
-    id: "p4",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "PROJECT: Orchestrate your Python Script",
-    type: "Project",
-    estDays: 6,
-    subtopics: [
-      "1. Take your Python script from Month 2 (Weather API)",
-      "2. Break it into two functions: fetch_data() and load_to_db()",
-      "3. Create a new Airflow DAG scheduled to run @daily",
-      "4. Create two PythonOperators mapping to your functions",
-      "5. Set dependency: fetch_task >> load_task",
-      "6. Turn on the DAG in the UI and watch it run successfully!",
+      {
+        label: "PythonOperator, BashOperator, and Bitshifts (>>)",
+        videoUrl: "https://youtu.be/K9AnJ9peGfs?t=600",
+        readUrl:
+          "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html",
+      },
     ],
   },
 
   // ==========================================
-  // MONTH 5: BIG DATA (SPARK) & CLOUD BASICS
+  // MONTH 5: BIG DATA & CLOUD
   // ==========================================
   {
     id: "m5d1",
     month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 1: What is Big Data?",
+    phase: "Month 5: Spark & Cloud",
+    title: "Day 1: Intro to Apache Spark",
     type: "BigData",
     estDays: 1,
     subtopics: [
-      "The 3 Vs: Volume, Velocity, Variety",
-      'When does data become "Big"? (Memory limits)',
-      "Vertical Scaling vs Horizontal Scaling",
+      {
+        label: "Distributed computing & PySpark DataFrames",
+        videoUrl: "https://youtu.be/_C8kWso4ne4",
+        readUrl:
+          "https://spark.apache.org/docs/latest/sql-getting-started.html",
+      },
     ],
   },
   {
     id: "m5d2",
     month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 2: Distributed Computing Concepts",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "The Master-Worker Node architecture",
-      "How data is partitioned across multiple machines",
-      "Fault tolerance in distributed systems",
-    ],
-  },
-  {
-    id: "m5d3",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 3: Intro to Apache Spark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "What is Spark? (In-memory processing engine)",
-      "Spark Driver vs Executors",
-      "RDDs (Resilient Distributed Datasets) vs DataFrames",
-    ],
-  },
-  {
-    id: "m5d4",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 4: Setting up PySpark locally",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "pip install pyspark",
-      "Setting up a local SparkSession in a Python script/Jupyter Notebook",
-    ],
-  },
-  {
-    id: "m5d5",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 5: PySpark DataFrames & Lazy Eval",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Transformations vs Actions",
-      "Why Spark uses Lazy Evaluation (building the execution plan)",
-      "Using .show() and .printSchema()",
-    ],
-  },
-  {
-    id: "m5d6",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 6: Reading Data in PySpark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Reading CSVs (spark.read.csv(header=True))",
-      "Reading JSON files",
-      "Understanding the Parquet file format (Columnar, compressed)",
-    ],
-  },
-  {
-    id: "m5d7",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 7: PySpark Transformations",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Selecting columns (.select())",
-      "Filtering rows (.filter() or .where())",
-      "Creating new columns (.withColumn())",
-    ],
-  },
-  {
-    id: "m5d8",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 8: PySpark Aggregations",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Importing pyspark.sql.functions as F",
-      "Using .groupBy().agg()",
-      "Calculating F.sum() and F.count()",
-    ],
-  },
-  {
-    id: "m5d9",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 9: Joining DataFrames in PySpark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      'df1.join(df2, on="id", how="inner")',
-      "Handling duplicate column names after joining",
-    ],
-  },
-  {
-    id: "m5d10",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 10: Spark SQL",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Creating temporary views (createOrReplaceTempView)",
-      'Using spark.sql("SELECT ...") to write pure SQL instead of Python syntax',
-    ],
-  },
-  {
-    id: "m5d11",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 11: Writing Data Out",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Writing DataFrames back to disk (.write)",
-      "Saving as partitioned Parquet files (partitionBy)",
-    ],
-  },
-  {
-    id: "m5d12",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 12: Intro to the Cloud (AWS)",
+    phase: "Month 5: Spark & Cloud",
+    title: "Day 2: AWS S3 & Boto3",
     type: "Cloud",
     estDays: 1,
     subtopics: [
-      "Create an AWS Free Tier account",
-      "Tour the AWS Management Console",
-      "Understanding Regions and Availability Zones",
-    ],
-  },
-  {
-    id: "m5d13",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 13: AWS S3 (Cloud Storage)",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "What is Object Storage?",
-      "Creating an S3 Bucket",
-      "Uploading files manually via the UI",
-      "Understanding S3 URIs (s3://bucket-name/file)",
-    ],
-  },
-  {
-    id: "m5d14",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 14: AWS Security (IAM)",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "Creating an IAM User",
-      "Generating Access Keys and Secret Keys",
-      "Attaching policies (e.g., AmazonS3FullAccess)",
-    ],
-  },
-  {
-    id: "m5d15",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 15: Python to AWS via Boto3",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "pip install boto3",
-      "Configuring AWS CLI with your keys",
-      "Writing a Python script to list S3 buckets and upload a local file",
-    ],
-  },
-  {
-    id: "p5",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "PROJECT: PySpark to AWS S3",
-    type: "Project",
-    estDays: 6,
-    subtopics: [
-      "1. Find a large dataset (e.g., NYC Taxi Trip data CSV)",
-      "2. Write a PySpark script to load the data",
-      "3. Filter out invalid rows and aggregate trips by day",
-      "4. Save the cleaned DataFrame locally as Parquet",
-      "5. Write a Boto3 function to upload that Parquet file to your AWS S3 bucket",
+      {
+        label: "Uploading files to AWS S3 using Python",
+        videoUrl: "https://youtu.be/3hLmDS179YE",
+        readUrl:
+          "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html",
+      },
     ],
   },
 
   // ==========================================
-  // MONTH 6: dbt, CAPSTONE & ESCAPE PLAN
+  // MONTH 6: dbt & CAPSTONE
   // ==========================================
   {
     id: "m6d1",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 1: What is dbt?",
+    phase: "Month 6: dbt & Capstone",
+    title: "Day 1: What is dbt? (Data Build Tool)",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Data Build Tool overview",
-      'Transforming data inside the warehouse (The "T" in ELT)',
-      "Why analytics engineers use dbt",
+      {
+        label: "Transforming data in the Warehouse (ELT)",
+        videoUrl: "https://youtu.be/5rNxe8ikB2Q",
+        readUrl: "https://docs.getdbt.com/docs/introduction",
+      },
     ],
   },
   {
     id: "m6d2",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 2: dbt Core Setup",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "pip install dbt-postgres (or bigquery/snowflake)",
-      "Running `dbt init` to scaffold a project",
-      "Configuring the profiles.yml file to connect to your database",
-    ],
-  },
-  {
-    id: "m6d3",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 3: Writing dbt Models",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Understanding that a dbt model is just a SELECT statement in a .sql file",
-      "Writing your first model in the /models folder",
-      "Running `dbt run` to materialize it in the DB",
-    ],
-  },
-  {
-    id: "m6d4",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 4: dbt refs and materializations",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      'Using the {{ ref("model_name") }} macro to build dependencies',
-      "Configuring materializations (table vs view)",
-    ],
-  },
-  {
-    id: "m6d5",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 5: dbt Testing and Docs",
-    type: "Pipeline",
-    estDays: 1,
-    subtopics: [
-      "Setting up schema.yml files",
-      "Adding tests (unique, not_null, accepted_values)",
-      "Running `dbt test` to check data quality",
-    ],
-  },
-  {
-    id: "m6d6",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 6: Version Control (Git)",
+    phase: "Month 6: dbt & Capstone",
+    title: "Day 2: Version Control (Git)",
     type: "Project",
     estDays: 1,
     subtopics: [
-      "Install Git",
-      "Create a GitHub account",
-      "Git concepts (Repository, Branch, Commit)",
+      {
+        label: "Git Init, Add, Commit, Push",
+        videoUrl: "https://youtu.be/8JJ101D3knE",
+        readUrl: "https://docs.github.com/en/get-started/using-git/about-git",
+      },
     ],
   },
   {
-    id: "m6d7",
+    id: "p1",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 7: Basic Git Commands",
+    phase: "Month 6: dbt & Capstone",
+    title: "CAPSTONE: End-to-End Pipeline",
     type: "Project",
-    estDays: 1,
+    estDays: 7,
     subtopics: [
-      "git init and git clone",
-      'git add . and git commit -m "message"',
-      "git push to send code to GitHub",
-    ],
-  },
-
-  // MEGA CAPSTONE BREAKDOWN
-  {
-    id: "p6",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 1): Data Extraction",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Choose a public API (e.g., Reddit API, Crypto API)",
-      "2. Write a Python script to extract JSON data daily",
-      '3. Use Boto3 to upload the raw JSON directly to an AWS S3 "Landing" bucket',
-    ],
-  },
-  {
-    id: "p7",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 2): Data Processing",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Write a PySpark script to read the JSON from S3",
-      "2. Clean data, enforce schema, and drop duplicates",
-      '3. Save the clean data as Parquet back to a different S3 "Processed" bucket',
-      "4. (Optional) Load from S3 into Postgres/Snowflake",
-    ],
-  },
-  {
-    id: "p8",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 3): Data Modeling",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Setup a dbt project connected to your Database",
-      "2. Create staging models to clean column names",
-      "3. Create a final Fact model (e.g., fact_crypto_prices)",
-      "4. Add dbt tests to ensure no null IDs",
-    ],
-  },
-  {
-    id: "p9",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 4): Orchestration",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Build an Airflow DAG",
-      "2. Task 1: PythonOperator (run extraction script)",
-      "3. Task 2: BashOperator (run spark-submit script)",
-      "4. Task 3: BashOperator (run dbt build)",
-      "5. Schedule it to run automatically every night",
-    ],
-  },
-
-  {
-    id: "m6d20",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 20: Document your Capstone!",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      "Push all code to a public GitHub repository",
-      "Write a README.md file",
-      "Include an Architecture Diagram (draw.io)",
-      "Explain what tools you used and why",
-    ],
-  },
-  {
-    id: "m6d21",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 21: Resume rewrite",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      'Move "Projects" to the top of your resume',
-      "Link your GitHub repo directly on the resume",
-      "Highlight SQL, Python, Airflow, and Spark in your skills section",
-    ],
-  },
-  {
-    id: "m6d22",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 22: Update LinkedIn profile",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      'Change headline to "Aspiring Data Engineer" or similar',
-      "Post a screenshot of your Airflow DAG running successfully",
-      "Link your GitHub project in the featured section",
-    ],
-  },
-  {
-    id: "m6d23",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 23: Interview Prep (SQL)",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      'Do 5 "Medium" SQL questions on LeetCode/StrataScratch',
-      "Practice explaining Window Functions out loud",
-      "Review Joins vs Unions",
-    ],
-  },
-  {
-    id: "m6d24",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 24: Interview Prep (Concepts)",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      "Practice explaining the difference between ETL and ELT",
-      'Prepare your "Tell me about your project" elevator pitch',
-      "Review Star Schema concepts",
-    ],
-  },
-  {
-    id: "m6d25",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 25: START APPLYING.",
-    type: "Project",
-    estDays: 1,
-    subtopics: [
-      "Apply to 5 Junior/Entry Data Engineer roles",
-      "Apply to Data Analyst roles (they often do DE work!)",
-      "Keep building, keep pushing. Your escape has begun.",
+      {
+        label: "Write a Python script to fetch API data",
+        videoUrl: "https://youtu.be/WpQSYbeEFGw",
+        readUrl: "https://realpython.com/python-requests/",
+      },
+      {
+        label: "Upload raw data to AWS S3",
+        videoUrl: "https://youtu.be/3hLmDS179YE",
+        readUrl:
+          "https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html",
+      },
+      {
+        label: "Clean data with PySpark",
+        videoUrl: "https://youtu.be/_C8kWso4ne4",
+        readUrl:
+          "https://spark.apache.org/docs/latest/sql-getting-started.html",
+      },
+      {
+        label: "Orchestrate daily with Airflow",
+        videoUrl: "https://youtu.be/K9AnJ9peGfs",
+        readUrl:
+          "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html",
+      },
     ],
   },
 ];
 
-// --- Circular Progress Component ---
-const CircularProgress = ({ percentage, color, label, icon: Icon }) => {
+// --- Circular Progress Component Props ---
+interface CircularProgressProps {
+  percentage: number;
+  color: string;
+  label: string;
+  icon: ElementType;
+}
+
+const CircularProgress = ({
+  percentage,
+  color,
+  label,
+  icon: Icon,
+}: CircularProgressProps) => {
   const radius = 32;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
@@ -1709,24 +826,28 @@ const CircularProgress = ({ percentage, color, label, icon: Icon }) => {
 
 export default function App() {
   // --- State Management ---
-  const [startDate, setStartDate] = useState(() => {
+  const [startDate, setStartDate] = useState<string>(() => {
     const saved = localStorage.getItem("de-tracker-start");
     return saved ? saved : new Date().toISOString().split("T")[0];
   });
 
-  const [completedTasks, setCompletedTasks] = useState(() => {
-    const saved = localStorage.getItem("de-tracker-tasks");
-    return saved ? JSON.parse(saved) : {};
-  });
+  const [completedTasks, setCompletedTasks] = useState<Record<string, string>>(
+    () => {
+      const saved = localStorage.getItem("de-tracker-tasks");
+      return saved ? JSON.parse(saved) : {};
+    },
+  );
 
-  const [completedSubtopics, setCompletedSubtopics] = useState(() => {
+  const [completedSubtopics, setCompletedSubtopics] = useState<string[]>(() => {
     const saved = localStorage.getItem("de-tracker-subtasks");
     return saved ? JSON.parse(saved) : [];
   });
 
   // Track which task rows are expanded to show subtopics
-  const [expandedTasks, setExpandedTasks] = useState({});
-  const [activeMonth, setActiveMonth] = useState(1);
+  const [expandedTasks, setExpandedTasks] = useState<Record<string, boolean>>(
+    {},
+  );
+  const [activeMonth, setActiveMonth] = useState<number>(1);
 
   // --- Save to LocalStorage ---
   useEffect(() => {
@@ -1739,7 +860,7 @@ export default function App() {
   }, [startDate, completedTasks, completedSubtopics]);
 
   // --- Task Toggle Logic ---
-  const handleParentClick = (e, task) => {
+  const handleParentClick = (e: MouseEvent, task: Task) => {
     // If it has subtopics, expanding it is the only way to interact with it.
     if (task.subtopics && task.subtopics.length > 0) {
       setExpandedTasks((prev) => ({
@@ -1749,7 +870,12 @@ export default function App() {
     }
   };
 
-  const toggleSubtopic = (e, taskId, subIdx, totalSubtopics) => {
+  const toggleSubtopic = (
+    e: MouseEvent,
+    taskId: string,
+    subIdx: number,
+    totalSubtopics: number,
+  ) => {
     e.stopPropagation(); // Prevents expanding/collapsing the parent row
     const subId = `${taskId}-${subIdx}`;
 
@@ -1856,7 +982,7 @@ export default function App() {
       "Cloud",
       "Project",
     ];
-    const newStats = {};
+    const newStats: Record<string, number> = {};
 
     types.forEach((type) => {
       const tasks = curriculumData.filter((t) => t.type === type);
@@ -1882,8 +1008,8 @@ export default function App() {
   }, [completedTasks, completedSubtopics]);
 
   // --- UI Helpers ---
-  const getTypeColor = (type) => {
-    const colors = {
+  const getTypeColor = (type: string) => {
+    const colors: Record<string, string> = {
       SQL: "text-blue-400 bg-blue-400/10 border-blue-400/20",
       Python: "text-yellow-400 bg-yellow-400/10 border-yellow-400/20",
       DB: "text-teal-400 bg-teal-400/10 border-teal-400/20",
@@ -1896,7 +1022,7 @@ export default function App() {
     return colors[type] || "text-slate-400 bg-slate-400/10 border-slate-400/20";
   };
 
-  const getTypeIcon = (type) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
       case "SQL":
         return Database;
@@ -2174,12 +1300,6 @@ export default function App() {
                             const isSubCompleted =
                               completedSubtopics.includes(subId);
 
-                            // Smart URL Generation
-                            const searchPrefix =
-                              typeSearchMap[task.type] || task.type;
-                            const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchPrefix} ${sub} tutorial`)}`;
-                            const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchPrefix} ${sub} documentation tutorial example`)}`;
-
                             return (
                               <li
                                 key={idx}
@@ -2188,10 +1308,10 @@ export default function App() {
                                     e,
                                     task.id,
                                     idx,
-                                    task.subtopics.length,
+                                    task.subtopics?.length || 0,
                                   )
                                 }
-                                className="flex flex-col md:flex-row md:items-center justify-between gap-3 text-sm cursor-pointer group/sub hover:bg-slate-700/20 p-2 sm:p-3 -ml-1.5 rounded-lg transition-colors text-left border border-transparent hover:border-slate-700/50"
+                                className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-sm cursor-pointer group/sub hover:bg-slate-700/20 p-2 sm:p-3 -ml-1.5 rounded-lg transition-colors text-left border border-transparent hover:border-slate-700/50"
                               >
                                 <div className="flex items-start gap-3 flex-grow pr-2">
                                   <div className="flex-shrink-0 mt-0.5">
@@ -2210,17 +1330,17 @@ export default function App() {
                                   <span
                                     className={`leading-relaxed transition-colors text-left ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-300"}`}
                                   >
-                                    {sub}
+                                    {sub.label}
                                   </span>
                                 </div>
 
-                                {/* Resource Buttons (Stops click propagation so it doesn't check the box when clicked) */}
+                                {/* Resource Buttons */}
                                 <div
-                                  className="flex items-center gap-2 ml-7 md:ml-0 flex-shrink-0"
+                                  className="flex flex-wrap items-center gap-2 ml-7 xl:ml-0 flex-shrink-0"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <a
-                                    href={videoUrl}
+                                    href={sub.videoUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
@@ -2228,7 +1348,7 @@ export default function App() {
                                     <Youtube size={14} /> Watch
                                   </a>
                                   <a
-                                    href={readUrl}
+                                    href={sub.readUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
