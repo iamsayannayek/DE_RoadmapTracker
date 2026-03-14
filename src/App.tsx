@@ -1762,7 +1762,7 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Now handles multiple resources per subtopic ID
+  // Handles multiple resources per subtopic ID
   const [customResources, setCustomResources] = useState<
     Record<string, CustomResource[]>
   >(() => {
@@ -1799,6 +1799,7 @@ export default function App() {
 
   // --- Task Toggle Logic ---
   const handleParentClick = (task: Task) => {
+    // You MUST complete the subtopics. Clicking here only expands the row.
     if (task.subtopics && task.subtopics.length > 0) {
       setExpandedTasks((prev) => ({
         ...prev,
@@ -2149,7 +2150,7 @@ export default function App() {
             </h2>
           </div>
 
-          <div className="divide-y divide-slate-700/50 max-h-[800px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+          <div className="divide-y divide-slate-700/50 max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {enrichedCurriculum
               .filter((t) => t.month === activeMonth)
               .map((task) => {
@@ -2280,7 +2281,7 @@ export default function App() {
                             const isSubCompleted =
                               completedSubtopics.includes(subId);
 
-                            // Smart URL Generation
+                            // Smart URL Generation based on category
                             const searchPrefix =
                               typeSearchMap[task.type] || task.type;
                             const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchPrefix} ${sub} tutorial`)}`;
@@ -2403,7 +2404,7 @@ export default function App() {
                 </p>
 
                 {/* List of Existing Saved Resources */}
-                <div className="space-y-3 mb-6 max-h-48 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+                <div className="space-y-3 mb-6 max-h-48 overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {(customResources[activeSubtopicId!] || []).map((res) => (
                     <div
                       key={res.id}
