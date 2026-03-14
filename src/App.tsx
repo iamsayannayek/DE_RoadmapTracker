@@ -23,6 +23,8 @@ import {
   Link as LinkIcon,
   X,
   Plus,
+  Bookmark,
+  BookmarkCheck,
 } from "lucide-react";
 
 // --- Helper Functions for Dates ---
@@ -42,15 +44,36 @@ const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString("en-US", options);
 };
 
-// --- Smart Search Term Mapping ---
-const typeSearchMap: Record<string, string> = {
-  SQL: "SQL",
-  Python: "Python 3",
-  DB: "Database Data Warehouse",
-  Pipeline: "Apache Airflow ETL",
-  BigData: "Apache Spark PySpark Data Engineering",
-  Cloud: "AWS Cloud S3",
-  Project: "Data Engineering Project",
+// --- SMART INSTRUCTOR SEARCH ENGINE ---
+const typeSearchMap: Record<string, { yt: string; web: string }> = {
+  SQL: {
+    yt: "Baraa Khatib Salkini Advanced SQL",
+    web: "site:udemy.com Baraa Khatib Salkini SQL",
+  },
+  Python: {
+    yt: "Hitesh Choudhary Python Pandas",
+    web: "site:udemy.com Hitesh Choudhary Python",
+  },
+  DB: {
+    yt: "Nikolai Schuler Snowflake Data Modeling",
+    web: "site:udemy.com Nikolai Schuler Snowflake",
+  },
+  Pipeline: {
+    yt: "Marc Lamberti Airflow Jack Colsey dbt",
+    web: "site:udemy.com Marc Lamberti Airflow dbt",
+  },
+  BigData: {
+    yt: "Prashant Kumar Pandey PySpark Frank Kane Databricks",
+    web: "site:udemy.com Frank Kane PySpark",
+  },
+  Cloud: {
+    yt: "Stephane Maarek AWS Terraform Kafka",
+    web: "site:udemy.com Stephane Maarek AWS Kafka",
+  },
+  Project: {
+    yt: "Darshil Parmar Data Engineering Project System Design",
+    web: "Data Engineering Architecture Project Github",
+  },
 };
 
 // --- TypeScript Interfaces ---
@@ -77,16 +100,75 @@ interface CustomResource {
   url: string;
 }
 
-// --- Comprehensive Day-by-Day Curriculum ---
+// --- Circular Progress Component ---
+const CircularProgress = ({
+  percentage,
+  color,
+  label,
+  icon: Icon,
+}: CircularProgressProps) => {
+  const radius = 32;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-center p-4 sm:p-5 bg-slate-800 rounded-xl border border-slate-700 shadow-md w-full h-full">
+      <div className="flex items-center gap-2 mb-4 text-slate-300 w-full justify-center">
+        <Icon
+          size={16}
+          className={`flex-shrink-0 ${color.replace("text-", "text-")}`}
+        />
+        <span className="font-semibold text-xs sm:text-sm tracking-widest uppercase text-center line-clamp-1">
+          {label}
+        </span>
+      </div>
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
+        <svg
+          className="w-full h-full transform -rotate-90"
+          viewBox="0 0 100 100"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="10"
+            className="text-slate-700"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="10"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            className={`${color} transition-all duration-1000 ease-out`}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-xl sm:text-2xl font-bold text-white">
+            {Math.round(percentage)}%
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Comprehensive 7-Month Master Curriculum ---
 const curriculumData: Task[] = [
   // ==========================================
-  // MONTH 1: SQL FOUNDATIONS
+  // MONTH 1: SQL FOUNDATIONS & MODELING
   // ==========================================
   {
     id: "m1d1",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 1: What is a Database? Tables, Rows, and Columns",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 1: What is a Database?",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -99,8 +181,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d2",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 2: First Query! The SELECT and LIMIT statements",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 2: First Query! SELECT and LIMIT",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -113,7 +195,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d3",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 3: Filtering Data with WHERE",
     type: "SQL",
     estDays: 1,
@@ -126,7 +208,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d4",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 4: Multiple Filters (AND, OR, NOT)",
     type: "SQL",
     estDays: 1,
@@ -140,8 +222,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d5",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 5: Searching for Text Patterns using LIKE",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 5: Searching Text Patterns (LIKE)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -154,8 +236,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d6",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 6: Handling Lists using IN and BETWEEN",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 6: Handling Lists (IN, BETWEEN)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -167,8 +249,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d7",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 7: Sorting your results with ORDER BY",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 7: Sorting results (ORDER BY)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -180,7 +262,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d8",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 8: Basic Math in SQL",
     type: "SQL",
     estDays: 1,
@@ -193,7 +275,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d9",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 9: Aggregations Part 1 (COUNT, SUM)",
     type: "SQL",
     estDays: 1,
@@ -206,8 +288,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d10",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 10: Aggregations Part 2 (MIN, MAX, AVG)",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 10: Aggregations Part 2",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -219,8 +301,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d11",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 11: Grouping Data together using GROUP BY",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 11: Grouping Data (GROUP BY)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -232,8 +314,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d12",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 12: Filtering grouped data using HAVING",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 12: Filtering grouped data (HAVING)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -245,7 +327,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d13",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 13: Primary Keys and Foreign Keys",
     type: "SQL",
     estDays: 1,
@@ -258,8 +340,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d14",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 14: Combining Tables: INNER JOIN",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 14: Combining Tables (INNER JOIN)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -271,7 +353,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d15",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 15: LEFT JOIN and RIGHT JOIN",
     type: "SQL",
     estDays: 1,
@@ -284,8 +366,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d16",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 16: FULL OUTER JOIN & CROSS JOIN",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 16: FULL OUTER & CROSS JOIN",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -297,8 +379,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d17",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 17: Conditional Logic with CASE WHEN",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 17: Conditional Logic (CASE WHEN)",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -310,7 +392,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d18",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 18: Working with NULL values",
     type: "SQL",
     estDays: 1,
@@ -323,7 +405,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d19",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 19: Working with Text Functions",
     type: "SQL",
     estDays: 1,
@@ -337,7 +419,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d20",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 20: Working with Date Functions",
     type: "SQL",
     estDays: 1,
@@ -350,7 +432,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d21",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 21: Subqueries",
     type: "SQL",
     estDays: 1,
@@ -363,7 +445,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d22",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 22: CTEs (Common Table Expressions)",
     type: "SQL",
     estDays: 1,
@@ -376,8 +458,8 @@ const curriculumData: Task[] = [
   {
     id: "m1d23",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "Day 23: Window Functions Intro (OVER, PARTITION BY)",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 23: Window Functions Intro",
     type: "SQL",
     estDays: 1,
     subtopics: [
@@ -389,7 +471,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d24",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 24: Window Functions (Ranking)",
     type: "SQL",
     estDays: 1,
@@ -402,7 +484,7 @@ const curriculumData: Task[] = [
   {
     id: "m1d25",
     month: 1,
-    phase: "Month 1: SQL Mastery",
+    phase: "Month 1: SQL & Data Modeling",
     title: "Day 25: Window Functions (LEAD, LAG)",
     type: "SQL",
     estDays: 1,
@@ -413,18 +495,57 @@ const curriculumData: Task[] = [
     ],
   },
   {
+    id: "m1d26",
+    month: 1,
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 26: Data Modeling Fundamentals",
+    type: "DB",
+    estDays: 1,
+    subtopics: [
+      "Differences between Inmon (EDW) and Kimball (Dimensional Modeling)",
+      "Understanding the anatomy of Fact tables (additive, semi-additive)",
+      "Understanding Dimension tables",
+    ],
+  },
+  {
+    id: "m1d27",
+    month: 1,
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 27: Slowly Changing Dimensions",
+    type: "DB",
+    estDays: 1,
+    subtopics: [
+      "The critical concept of SCDs",
+      "Tracking historical changes using SCD Type 2",
+      "Effective dates and active flags in Dimension tables",
+    ],
+  },
+  {
+    id: "m1d28",
+    month: 1,
+    phase: "Month 1: SQL & Data Modeling",
+    title: "Day 28: Advanced Modeling & Formats",
+    type: "DB",
+    estDays: 1,
+    subtopics: [
+      "Comparing Star Schema vs Snowflake Schema",
+      "One Big Table (OBT) architecture",
+      "Big Data File Formats: Parquet and ORC vs CSV",
+      "Columnar storage efficiency and compression",
+    ],
+  },
+  {
     id: "p1",
     month: 1,
-    phase: "Month 1: SQL Mastery",
-    title: "PROJECT: E-Commerce Data Analysis",
+    phase: "Month 1: SQL & Data Modeling",
+    title: "PROJECT: E-Commerce Star Schema Analysis",
     type: "Project",
     estDays: 5,
     subtopics: [
-      "1. Find & download an E-commerce CSV dataset from Kaggle",
-      "2. Import the CSVs into a local database (DBeaver/PostgreSQL)",
-      "3. Write a CTE query to find the Top 5 customers by revenue",
-      "4. Write a Window Function query to calculate Monthly Sales Growth",
-      "5. Save your queries in a .sql file to upload to your GitHub later",
+      "Find & download an E-commerce CSV dataset",
+      "Design a conceptual Star Schema on draw.io",
+      "Implement the Star Schema in a local PostgreSQL database",
+      "Write a Window Function query to calculate Monthly Sales Growth on the Fact table",
     ],
   },
 
@@ -775,422 +896,451 @@ const curriculumData: Task[] = [
     type: "Project",
     estDays: 5,
     subtopics: [
-      "1. Get a free API key from OpenWeatherMap or PokeAPI",
-      "2. Write a Python script to fetch data for 10 cities/items",
-      "3. Parse the JSON and load it into a Pandas DataFrame",
-      "4. Clean the data (rename columns, handle missing values)",
-      "5. Connect to a local SQLite database and insert the cleaned DataFrame",
-      "6. Add try/except blocks to handle API connection failures",
+      "Get a free API key from OpenWeatherMap or PokeAPI",
+      "Write a Python script to fetch data for 10 cities/items",
+      "Parse the JSON and load it into a Pandas DataFrame",
+      "Clean the data (rename columns, handle missing values)",
+      "Connect to a local SQLite database and insert the cleaned DataFrame",
+      "Add try/except blocks to handle API connection failures",
     ],
   },
 
   // ==========================================
-  // MONTH 3: DATABASES & DATA WAREHOUSING
+  // MONTH 3: DISTRIBUTED COMPUTE & SPARK
   // ==========================================
   {
     id: "m3d1",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 1: PostgreSQL Setup",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 1: The Hadoop Legacy",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "Download and install PostgreSQL",
-      "Install DBeaver (SQL Client)",
-      "Connect DBeaver to your local Postgres database",
+      "Hadoop Distributed File System (HDFS) concepts",
+      "Understanding the MapReduce paradigm",
+      "Why disk-based processing was replaced by memory",
     ],
   },
   {
     id: "m3d2",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 2: DDL Commands (Data Definition)",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 2: Apache Spark Architecture",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "CREATE TABLE syntax and choosing data types",
-      "ALTER TABLE to add/remove columns",
-      "DROP vs TRUNCATE table",
+      "Spark Driver, Executors, and Cluster Managers",
+      "Execution Hierarchy: Jobs, Stages, and Tasks",
+      "In-memory processing mechanics",
     ],
   },
   {
     id: "m3d3",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 3: DML Commands (Data Manipulation)",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 3: Setting Up Spark Environments",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "INSERT INTO syntax (single and multiple rows)",
-      "UPDATE statement (always use a WHERE clause!)",
-      "DELETE FROM statement",
+      "Setting up a local PySpark environment",
+      "Initializing SparkSession",
+      "Navigating the Databricks Community Edition free tier",
     ],
   },
   {
     id: "m3d4",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 4: Database Constraints",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 4: PySpark Core & Data Structures",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "NOT NULL constraint",
-      "UNIQUE constraint",
-      "DEFAULT values",
-      "CHECK constraints",
+      "Understanding Resilient Distributed Datasets (RDDs)",
+      "The evolution from RDDs to the PySpark DataFrame API",
+      "Reading disparate file formats (CSV, JSON, Parquet)",
     ],
   },
   {
     id: "m3d5",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 5: Transactions & ACID Properties",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 5: PySpark Transformations",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "BEGIN, COMMIT, and ROLLBACK",
-      "Atomicity (All or nothing)",
-      "Consistency, Isolation, Durability definitions",
+      "Executing narrow transformations (filter, select, map)",
+      "Executing wide transformations (groupBy, join)",
+      "Translating Pandas syntax into PySpark",
     ],
   },
   {
     id: "m3d6",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 6: Database Indexing",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 6: Lazy Evaluation & Catalyst Optimizer",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "What is an Index? (The book index analogy)",
-      "Creating a B-Tree index",
-      "How indexes speed up SELECTs but slow down INSERTs",
+      "Transformations vs. Actions",
+      "How Spark builds logical execution plans",
+      "Understanding the Catalyst Optimizer engine",
     ],
   },
   {
     id: "m3d7",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 7: Relational Data Modeling (ERDs)",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 7: Spark SQL Integration",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "One-to-One relationships",
-      "One-to-Many relationships",
-      "Many-to-Many relationships (Junction tables)",
-      "Drawing an ERD using draw.io or lucidchart",
+      "Using spark.sql() to execute raw SQL queries",
+      "Mapping advanced SQL (CTEs, Window Functions) to Spark",
+      "Creating and managing temporary views",
     ],
   },
   {
     id: "m3d8",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 8: Normalization",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 8: PySpark Optimization Fundamentals",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "What is Data Redundancy?",
-      "1st Normal Form (Atomic values)",
-      "2nd and 3rd Normal Form concepts",
+      "Understanding data shuffling costs",
+      "Managing partitions effectively",
+      "Resolving Out-Of-Memory (OOM) errors",
     ],
   },
   {
     id: "m3d9",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 9: OLTP vs OLAP",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 9: Advanced Spark Joins",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "OLTP: Online Transaction Processing (App databases)",
-      "OLAP: Online Analytical Processing (Data Warehouses)",
-      "Key differences in read/write patterns",
+      "When the optimizer uses a Sort-Merge Join",
+      "When the optimizer uses a Broadcast Hash Join",
+      "Forcing Broadcast joins for performance",
     ],
   },
   {
     id: "m3d10",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 10: Data Warehouse: Facts and Dimensions",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 10: Handling Data Skew",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "What is a Fact Table? (Measurements, metrics, events)",
-      "What is a Dimension Table? (Context, who, what, where)",
-      "Surrogate Keys vs Natural Keys",
+      "Identifying skewed data across partitions",
+      "Resolving skew using salting techniques",
+      "Tuning spark.sql.shuffle.partitions",
     ],
   },
   {
     id: "m3d11",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 11: Dimensional Modeling",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 11: The Data Lakehouse Platform",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "The Star Schema architecture",
-      "The Snowflake Schema architecture",
-      "Pros and cons of Star vs Snowflake",
+      "Merging Data Lakes with Data Warehouses",
+      "Databricks platform architecture",
+      "Workspace, Compute, and Repos overviews",
     ],
   },
   {
     id: "m3d12",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 12: Slowly Changing Dimensions (SCD)",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 12: Delta Lake Fundamentals",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "SCD Type 1 (Overwrite old data)",
-      "SCD Type 2 (Add new row, maintain history, valid_from/to dates)",
-      "SCD Type 3 (Add new column)",
+      "ACID transactions on object storage (AWS S3)",
+      "Understanding the Delta transaction logs",
+      "Time travel and versioning in Delta Lake",
     ],
   },
   {
     id: "m3d13",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 13: Cloud Data Warehouses",
-    type: "DB",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "Day 13: The Medallion Architecture",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "How Cloud DWs differ from traditional DBs",
-      "Separation of Storage and Compute",
-      "Overview of Snowflake and BigQuery concepts",
-    ],
-  },
-  {
-    id: "m3d14",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 14: Columnar vs Row Storage",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "Row-based storage (Postgres) - good for transactional writes",
-      "Columnar storage (Snowflake/Parquet) - good for analytical reads",
-      "Compression benefits of Columnar storage",
-    ],
-  },
-  {
-    id: "m3d15",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 15: Intro to NoSQL (Document DBs)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "When to use NoSQL instead of Relational",
-      "Document databases overview (MongoDB)",
-      "Storing data as JSON-like documents",
-    ],
-  },
-  {
-    id: "m3d16",
-    month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "Day 16: Intro to NoSQL (Other types)",
-    type: "DB",
-    estDays: 1,
-    subtopics: [
-      "Key-Value stores (Redis)",
-      "Column-family stores (Cassandra)",
-      "Graph databases (Neo4j)",
+      "Bronze Layer: Raw data ingestion",
+      "Silver Layer: Filtered, cleaned, and conformed data",
+      "Gold Layer: Business-level aggregates",
     ],
   },
   {
     id: "p3",
     month: 3,
-    phase: "Month 3: Databases & Architecture",
-    title: "PROJECT: Data Modeling from Scratch",
+    phase: "Month 3: Distributed Compute (Spark)",
+    title: "PROJECT: Databricks Medallion Pipeline",
     type: "Project",
-    estDays: 4,
+    estDays: 6,
     subtopics: [
-      "1. Design a Star Schema for a fictional Ride-Sharing app (Uber)",
-      "2. Identify the Fact table (Rides) and 3 Dimension tables (Users, Drivers, Time)",
-      "3. Draw the ERD showing Primary and Foreign keys",
-      "4. Write the SQL DDL script to CREATE all these tables in Postgres",
+      "Load a massive open dataset (e.g., NYC Taxi) to PySpark",
+      "Save raw ingestion as a Bronze Delta Table",
+      "Apply transformations to clean nulls and write to Silver",
+      "Perform distributed aggregations to create a Gold table",
+      "Optimize the final Gold table partitions",
     ],
   },
 
   // ==========================================
-  // MONTH 4: DATA PIPELINES & AIRFLOW
+  // MONTH 4: CLOUD DATA WAREHOUSING & dbt
   // ==========================================
   {
     id: "m4d1",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 1: What is ETL?",
-    type: "Pipeline",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 1: Snowflake Architecture",
+    type: "DB",
     estDays: 1,
     subtopics: [
-      "Extract: Pulling data from source systems (APIs, DBs)",
-      "Transform: Cleaning, joining, and aggregating",
-      "Load: Pushing data into the Data Warehouse",
+      "Cloud Services layer overview",
+      "Virtual Compute Warehouses (Compute layer)",
+      "Centralized Storage layer mechanics",
     ],
   },
   {
     id: "m4d2",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 2: ETL vs ELT",
-    type: "Pipeline",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 2: Data Ingestion in Snowflake",
+    type: "DB",
     estDays: 1,
     subtopics: [
-      "The shift to ELT in modern data stacks",
-      "Why Cloud Data Warehouses made ELT popular",
-      "Transformation happening inside the Warehouse",
+      "Setting up External Stages (AWS S3/Azure)",
+      "Using the COPY INTO command for bulk loading",
+      "Handling structured and semi-structured (JSON) data",
     ],
   },
   {
     id: "m4d3",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 3: Batch vs Streaming",
-    type: "Pipeline",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 3: Storage & Micro-partitioning",
+    type: "DB",
     estDays: 1,
     subtopics: [
-      "Batch processing (Running on a schedule, e.g., nightly)",
-      "Streaming/Real-time data (Processing as it arrives)",
-      "Latency vs Throughput",
+      "Columnar storage efficiency & compression",
+      "Micro-partitioning vs traditional B-Tree indexing",
+      "Understanding clustering depth",
     ],
   },
   {
     id: "m4d4",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 4: Intro to Apache Airflow",
-    type: "Pipeline",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 4: Compute & Cost Optimization",
+    type: "DB",
     estDays: 1,
     subtopics: [
-      "What is data orchestration?",
-      "Why cron is not enough for complex pipelines",
-      "Airflow Core Components: Scheduler, Webserver, Worker, Metadata DB",
+      "Scaling compute resources dynamically",
+      "Warehouse sizing strategies (X-Small to 4X-Large)",
+      "Configuring auto-suspend and auto-resume to save money",
     ],
   },
   {
     id: "m4d5",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 5: Understanding DAGs",
-    type: "Pipeline",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 5: Advanced Snowflake Capabilities",
+    type: "DB",
     estDays: 1,
     subtopics: [
-      "Directed Acyclic Graphs (DAGs) explained",
-      "Why DAGs cannot have loops",
-      "Tasks and Operators concepts",
+      "Time Travel: Querying historical data states",
+      "Zero-Copy Cloning for instant testing environments",
+      "Snowflake Streams and Tasks basics",
     ],
   },
   {
     id: "m4d6",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 6: Setting up Airflow locally",
-    type: "Pipeline",
-    estDays: 2,
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 6: CDC Simulation in Snowflake",
+    type: "DB",
+    estDays: 1,
     subtopics: [
-      "Install Docker Desktop on your machine",
-      "Download the official Airflow docker-compose.yaml file",
-      "Run `docker-compose up` to start Airflow",
-      "Access the Web UI at localhost:8080",
+      "Capturing inserts and updates from a raw table",
+      "Merging updates into a production dimension table",
+      "Validating data integrity during upserts",
+    ],
+  },
+  {
+    id: "m4d7",
+    month: 4,
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 7: Intro to Analytics Engineering & dbt",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "The shift from ETL to ELT",
+      "Treating SQL as modular, version-controlled software",
+      "Overview of the dbt workflow",
     ],
   },
   {
     id: "m4d8",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 8: Airflow Web UI Tour",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 8: dbt Core Setup & Configuration",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Navigating the DAGs list",
-      "Graph View (visualizing task dependencies)",
-      "Tree/Grid View (viewing historical runs)",
-      "Checking Task Logs for errors",
+      "Installing dbt Core locally",
+      "Configuring the profiles.yml file",
+      "Connecting dbt to your Snowflake instance",
     ],
   },
   {
     id: "m4d9",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 9: Writing your first DAG",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 9: Foundational dbt Models",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Importing DAG from airflow module",
-      "Defining default_args (owner, retries)",
-      "Instantiating the DAG object with a schedule_interval",
+      "Writing models as simple SELECT statements",
+      "Materializations: Tables vs Views vs Ephemeral",
+      "Establishing lineage with the ref() function",
     ],
   },
   {
     id: "m4d10",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 10: The BashOperator",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 10: Refactoring Legacy SQL",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Importing BashOperator",
-      'Creating a task that runs a terminal command (e.g., echo "hello")',
-      "Assigning the task to your DAG",
+      "Breaking monolithic scripts into staging models",
+      "Building intermediate models for complex logic",
+      "Creating final fact and dimension models",
     ],
   },
   {
     id: "m4d11",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 11: The PythonOperator",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 11: dbt Data Quality & Testing",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Importing PythonOperator",
-      "Defining a standard Python function",
-      "Passing the function to the python_callable argument",
+      "Configuring schema.yml files",
+      "Generic tests: not_null, unique, accepted_values",
+      "Writing custom singular tests in SQL",
     ],
   },
   {
     id: "m4d12",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 12: Setting Task Dependencies",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 12: Advanced dbt (Jinja & Macros)",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Using bitshift operators (>> and <<)",
-      "Setting sequential execution (Task 1 >> Task 2)",
-      "Setting parallel execution ([Task 2, Task 3] >> Task 4)",
+      "Jinja templating fundamentals",
+      "Writing macros for dynamic SQL generation",
+      "Applying DRY (Don't Repeat Yourself) principles",
     ],
   },
   {
     id: "m4d13",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 13: Scheduling and Cron Syntax",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "Day 13: SCDs and dbt Snapshots",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Understanding the 5 cron fields (* * * * *)",
-      "Setting a DAG to run daily at midnight (0 0 * * *)",
-      "Using Airflow presets (@daily, @hourly)",
+      "Handling SCD Type 2 automatically",
+      "Implementing dbt Snapshots",
+      "Tracking effective dates and active flags",
     ],
   },
   {
-    id: "m4d14",
+    id: "p4",
     month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 14: Catchup and Backfilling",
+    phase: "Month 4: Cloud Data Warehousing",
+    title: "PROJECT: End-to-End Snowflake & dbt Pipeline",
+    type: "Project",
+    estDays: 6,
+    subtopics: [
+      "Set up a free Snowflake trial and load staging data",
+      "Build dbt staging models for raw data",
+      "Transform staging data into a rigorous Star Schema",
+      "Execute quality tests via dbt test",
+      "Generate and host the dbt documentation site",
+    ],
+  },
+
+  // ==========================================
+  // MONTH 5: WORKFLOW ORCHESTRATION & AIRFLOW
+  // ==========================================
+  {
+    id: "m5d1",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 1: Airflow Architecture",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Understanding start_date",
-      "What catchup=True does (running historical missing dates)",
-      "Execution date vs Logical date",
+      "The role of the Scheduler, Webserver, and Metadata DB",
+      "Executor mechanisms overview",
+      "Why cron is insufficient for complex pipelines",
     ],
   },
   {
-    id: "m4d15",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 15: XComs (Cross-Communication)",
+    id: "m5d2",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 2: Anatomy of a DAG",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "Defining Directed Acyclic Graphs (DAGs)",
+      "Defining tasks as code",
+      "Setting dependencies using bitshift operators (>>)",
+    ],
+  },
+  {
+    id: "m5d3",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 3: Basic Operators & Idempotency",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "Implementing the PythonOperator and BashOperator",
+      "Concept of pipeline Idempotency",
+      "Setting up Airflow locally via Docker Compose",
+    ],
+  },
+  {
+    id: "m5d4",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 4: The TaskFlow API",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "Transitioning to modern Airflow practices",
+      "Using @dag and @task decorators",
+      "Writing cleaner, intuitive Python pipelines",
+    ],
+  },
+  {
+    id: "m5d5",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 5: XComs (Cross-Communication)",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
@@ -1200,10 +1350,36 @@ const curriculumData: Task[] = [
     ],
   },
   {
-    id: "m4d16",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 16: Connections & Variables",
+    id: "m5d6",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 6: Scheduling & Backfilling",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "Understanding strict cron syntax",
+      "Logical dates vs Execution dates",
+      "Catchup=True and backfilling historical runs",
+    ],
+  },
+  {
+    id: "m5d7",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 7: Airflow Sensors",
+    type: "Pipeline",
+    estDays: 1,
+    subtopics: [
+      "Waiting for external events (e.g., S3KeySensor)",
+      "Poke vs Reschedule modes",
+      "Understanding trigger rules",
+    ],
+  },
+  {
+    id: "m5d8",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 8: Cloud Providers & Connections",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
@@ -1213,535 +1389,275 @@ const curriculumData: Task[] = [
     ],
   },
   {
-    id: "m4d17",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "Day 17: Handling Failures",
+    id: "m5d9",
+    month: 5,
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 9: Error Handling & Resilience",
     type: "Pipeline",
     estDays: 1,
     subtopics: [
       "Configuring task retries and retry_delay",
       "Setting up email_on_failure in default_args",
-    ],
-  },
-  {
-    id: "p4",
-    month: 4,
-    phase: "Month 4: Pipelines & Airflow",
-    title: "PROJECT: Orchestrate your Python Script",
-    type: "Project",
-    estDays: 6,
-    subtopics: [
-      "1. Take your Python script from Month 2 (Weather API)",
-      "2. Break it into two functions: fetch_data() and load_to_db()",
-      "3. Create a new Airflow DAG scheduled to run @daily",
-      "4. Create two PythonOperators mapping to your functions",
-      "5. Set dependency: fetch_task >> load_task",
-      "6. Turn on the DAG in the UI and watch it run successfully!",
-    ],
-  },
-
-  // ==========================================
-  // MONTH 5: BIG DATA (SPARK) & CLOUD BASICS
-  // ==========================================
-  {
-    id: "m5d1",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 1: What is Big Data?",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "The 3 Vs: Volume, Velocity, Variety",
-      'When does data become "Big"? (Memory limits)',
-      "Vertical Scaling vs Horizontal Scaling",
-    ],
-  },
-  {
-    id: "m5d2",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 2: Distributed Computing Concepts",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "The Master-Worker Node architecture",
-      "How data is partitioned across multiple machines",
-      "Fault tolerance in distributed systems",
-    ],
-  },
-  {
-    id: "m5d3",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 3: Intro to Apache Spark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "What is Spark? (In-memory processing engine)",
-      "Spark Driver vs Executors",
-      "RDDs (Resilient Distributed Datasets) vs DataFrames",
-    ],
-  },
-  {
-    id: "m5d4",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 4: Setting up PySpark locally",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "pip install pyspark",
-      "Setting up a local SparkSession in a Python script/Jupyter Notebook",
-    ],
-  },
-  {
-    id: "m5d5",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 5: PySpark DataFrames & Lazy Eval",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Transformations vs Actions",
-      "Why Spark uses Lazy Evaluation (building the execution plan)",
-      "Using .show() and .printSchema()",
-    ],
-  },
-  {
-    id: "m5d6",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 6: Reading Data in PySpark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Reading CSVs (spark.read.csv(header=True))",
-      "Reading JSON files",
-      "Understanding the Parquet file format (Columnar, compressed)",
-    ],
-  },
-  {
-    id: "m5d7",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 7: PySpark Transformations",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Selecting columns (.select())",
-      "Filtering rows (.filter() or .where())",
-      "Creating new columns (.withColumn())",
-    ],
-  },
-  {
-    id: "m5d8",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 8: PySpark Aggregations",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Importing pyspark.sql.functions as F",
-      "Using .groupBy().agg()",
-      "Calculating F.sum() and F.count()",
-    ],
-  },
-  {
-    id: "m5d9",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 9: Joining DataFrames in PySpark",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      'df1.join(df2, on="id", how="inner")',
-      "Handling duplicate column names after joining",
+      "Establishing SLAs (Service Level Agreements)",
     ],
   },
   {
     id: "m5d10",
     month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 10: Spark SQL",
-    type: "BigData",
+    phase: "Month 5: Orchestration & Airflow",
+    title: "Day 10: Executors Deep Dive & Mapping",
+    type: "Pipeline",
     estDays: 1,
     subtopics: [
-      "Creating temporary views (createOrReplaceTempView)",
-      'Using spark.sql("SELECT ...") to write pure SQL instead of Python syntax',
-    ],
-  },
-  {
-    id: "m5d11",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 11: Writing Data Out",
-    type: "BigData",
-    estDays: 1,
-    subtopics: [
-      "Writing DataFrames back to disk (.write)",
-      "Saving as partitioned Parquet files (partitionBy)",
-    ],
-  },
-  {
-    id: "m5d12",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 12: Intro to the Cloud (AWS)",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "Create an AWS Free Tier account",
-      "Tour the AWS Management Console",
-      "Understanding Regions and Availability Zones",
-    ],
-  },
-  {
-    id: "m5d13",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 13: AWS S3 (Cloud Storage)",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "What is Object Storage?",
-      "Creating an S3 Bucket",
-      "Uploading files manually via the UI",
-      "Understanding S3 URIs (s3://bucket-name/file)",
-    ],
-  },
-  {
-    id: "m5d14",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 14: AWS Security (IAM)",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "Creating an IAM User",
-      "Generating Access Keys and Secret Keys",
-      "Attaching policies (e.g., AmazonS3FullAccess)",
-    ],
-  },
-  {
-    id: "m5d15",
-    month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "Day 15: Python to AWS via Boto3",
-    type: "Cloud",
-    estDays: 1,
-    subtopics: [
-      "pip install boto3",
-      "Configuring AWS CLI with your keys",
-      "Writing a Python script to list S3 buckets and upload a local file",
+      "LocalExecutor vs CeleryExecutor vs KubernetesPodExecutor",
+      "Dynamic task mapping at runtime",
+      "Airflow best practices (no heavy compute in DAGs)",
     ],
   },
   {
     id: "p5",
     month: 5,
-    phase: "Month 5: Spark & Cloud Data",
-    title: "PROJECT: PySpark to AWS S3",
+    phase: "Month 5: Orchestration & Airflow",
+    title: "PROJECT: Fully Automated ELT DAG",
     type: "Project",
     estDays: 6,
     subtopics: [
-      "1. Find a large dataset (e.g., NYC Taxi Trip data CSV)",
-      "2. Write a PySpark script to load the data",
-      "3. Filter out invalid rows and aggregate trips by day",
-      "4. Save the cleaned DataFrame locally as Parquet",
-      "5. Write a Boto3 function to upload that Parquet file to your AWS S3 bucket",
+      "Take your Python script from Month 2 (Weather API)",
+      "Break it into functions: fetch_data() and load_to_db()",
+      "Create a new Airflow DAG scheduled to run @daily",
+      "Create TaskFlow API functions mapped to your script",
+      "Turn on the DAG in the UI and watch it run successfully!",
     ],
   },
 
   // ==========================================
-  // MONTH 6: dbt, CAPSTONE & ESCAPE PLAN
+  // MONTH 6: EVENT STREAMING & CLOUD INFRASTRUCTURE
   // ==========================================
   {
     id: "m6d1",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 1: What is dbt?",
-    type: "Pipeline",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 1: Kafka Architecture & Commit Logs",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "Data Build Tool overview",
-      'Transforming data inside the warehouse (The "T" in ELT)',
-      "Why analytics engineers use dbt",
+      "Apache Kafka as the central nervous system",
+      "Brokers, Topics, and Partitions",
+      "Transitioning from Zookeeper to KRaft consensus",
+      "The append-only commit log paradigm",
     ],
   },
   {
     id: "m6d2",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 2: dbt Core Setup",
-    type: "Pipeline",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 2: Kafka Producers & Consumers",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "pip install dbt-postgres (or bigquery/snowflake)",
-      "Running `dbt init` to scaffold a project",
-      "Configuring the profiles.yml file to connect to your database",
+      "How producers write events sequentially",
+      "How consumers maintain offsets to read data independently",
+      "Consumer Groups: Achieving high throughput distributed reads",
+      "Spinning up a local Kafka cluster via Docker",
     ],
   },
   {
     id: "m6d3",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 3: Writing dbt Models",
-    type: "Pipeline",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 3: Stream Processing Engines",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      "Understanding that a dbt model is just a SELECT statement in a .sql file",
-      "Writing your first model in the /models folder",
-      "Running `dbt run` to materialize it in the DB",
+      "PySpark Structured Streaming (micro-batch aggregations)",
+      "Apache Flink (stateful stream processing overview)",
+      "Event time vs Processing time",
+      "Handling late data with watermarks and Tumbling/Sliding windows",
     ],
   },
   {
     id: "m6d4",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 4: dbt refs and materializations",
-    type: "Pipeline",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 4: Change Data Capture (CDC)",
+    type: "BigData",
     estDays: 1,
     subtopics: [
-      'Using the {{ ref("model_name") }} macro to build dependencies',
-      "Configuring materializations (table vs view)",
+      "What is Change Data Capture?",
+      "Utilizing Debezium to read database transaction logs",
+      "Streaming Postgres updates directly into Kafka topics",
     ],
   },
   {
     id: "m6d5",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 5: dbt Testing and Docs",
-    type: "Pipeline",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 5: AWS Ecosystem: Networking & IAM",
+    type: "Cloud",
     estDays: 1,
     subtopics: [
-      "Setting up schema.yml files",
-      "Adding tests (unique, not_null, accepted_values)",
-      "Running `dbt test` to check data quality",
+      "Fundamental cloud networking (VPCs, Subnets)",
+      "Rigorous Identity and Access Management (IAM) role configurations",
     ],
   },
   {
     id: "m6d6",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 6: Version Control (Git)",
-    type: "Project",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 6: AWS Ecosystem: Storage & Querying",
+    type: "Cloud",
     estDays: 1,
     subtopics: [
-      "Install Git",
-      "Create a GitHub account",
-      "Git concepts (Repository, Branch, Commit)",
+      "Configuring S3 for scalable data lake storage",
+      "Utilizing AWS Glue for serverless ETL and data cataloging",
+      "Leveraging Amazon Athena for ad-hoc serverless querying over S3",
+      "Amazon Redshift architecture overview",
     ],
   },
   {
     id: "m6d7",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 7: Basic Git Commands",
-    type: "Project",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 7: Infrastructure as Code (Terraform)",
+    type: "Cloud",
     estDays: 1,
     subtopics: [
-      "git init and git clone",
-      'git add . and git commit -m "message"',
-      "git push to send code to GitHub",
+      "Why manual cloud configuration is an anti-pattern",
+      "Defining cloud infrastructure using declarative config files",
+      "Terraform init, plan, and apply",
+      "Managing state files securely",
     ],
   },
-
+  {
+    id: "m6d8",
+    month: 6,
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "Day 8: CI/CD & Containerization (Docker)",
+    type: "Cloud",
+    estDays: 1,
+    subtopics: [
+      "Introduction to GitHub Actions / GitLab CI",
+      "Building Continuous Integration/Continuous Deployment pipelines",
+      "Automated testing of dbt models and Airflow DAGs",
+      "Containerization strategies using Docker",
+    ],
+  },
   {
     id: "p6",
     month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 1): Data Extraction",
+    phase: "Month 6: Streaming & Cloud Infra",
+    title: "PROJECT: Streaming Clickstream Pipeline",
     type: "Project",
-    estDays: 3,
+    estDays: 6,
     subtopics: [
-      "1. Choose a public API (e.g., Reddit API, Crypto API)",
-      "2. Write a Python script to extract JSON data daily",
-      '3. Use Boto3 to upload the raw JSON directly to an AWS S3 "Landing" bucket',
-    ],
-  },
-  {
-    id: "p7",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 2): Data Processing",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Write a PySpark script to read the JSON from S3",
-      "2. Clean data, enforce schema, and drop duplicates",
-      '3. Save the clean data as Parquet back to a different S3 "Processed" bucket',
-      "4. (Optional) Load from S3 into Postgres/Snowflake",
-    ],
-  },
-  {
-    id: "p8",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 3): Data Modeling",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Setup a dbt project connected to your Database",
-      "2. Create staging models to clean column names",
-      "3. Create a final Fact model (e.g., fact_crypto_prices)",
-      "4. Add dbt tests to ensure no null IDs",
-    ],
-  },
-  {
-    id: "p9",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "MEGA CAPSTONE (Step 4): Orchestration",
-    type: "Project",
-    estDays: 3,
-    subtopics: [
-      "1. Build an Airflow DAG",
-      "2. Task 1: PythonOperator (run extraction script)",
-      "3. Task 2: BashOperator (run spark-submit script)",
-      "4. Task 3: BashOperator (run dbt build)",
-      "5. Schedule it to run automatically every night",
+      "Deploy Kafka via Docker",
+      "Write a Python producer to simulate live clickstream data",
+      "Use PySpark Structured Streaming to read the Kafka topic",
+      "Apply schema validation and write to a Delta Lake Bronze layer",
+      "Calculate rolling active user metrics continuously",
     ],
   },
 
+  // ==========================================
+  // MONTH 7: PORTFOLIO & JOB READINESS
+  // ==========================================
   {
-    id: "m6d20",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 20: Document your Capstone!",
+    id: "m7p1",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "PORTFOLIO 1: The Batch Analytics Pipeline",
     type: "Project",
-    estDays: 1,
+    estDays: 5,
     subtopics: [
-      "Push all code to a public GitHub repository",
-      "Write a README.md file",
-      "Include an Architecture Diagram (draw.io)",
-      "Explain what tools you used and why",
+      "Extract from complex public API using Python back-off strategies",
+      "Write raw JSON to AWS S3 Landing bucket",
+      "Use Airflow to orchestrate COPY INTO Snowflake",
+      "Use dbt to flatten arrays and model into a Star Schema",
+      "Containerize and document exhaustively on GitHub",
     ],
   },
   {
-    id: "m6d21",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 21: Resume rewrite",
+    id: "m7p2",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "PORTFOLIO 2: The Streaming Lakehouse",
     type: "Project",
-    estDays: 1,
+    estDays: 5,
     subtopics: [
-      'Move "Projects" to the top of your resume',
-      "Link your GitHub repo directly on the resume",
-      "Highlight SQL, Python, Airflow, and Spark in your skills section",
+      "Deploy Databricks environment and Kafka cluster",
+      "Python producer simulates IoT telemetry into Kafka topic",
+      "PySpark Structured Streaming writes to Delta Bronze layer",
+      "Clean continuous pipeline to Silver layer",
+      "Aggregate to Gold layer optimized for dashboards",
     ],
   },
   {
-    id: "m6d22",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 22: Update LinkedIn profile",
-    type: "Project",
+    id: "m7d11",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "Day 11: Advanced SQL Interview Prep",
+    type: "SQL",
     estDays: 1,
     subtopics: [
-      'Change headline to "Aspiring Data Engineer" or similar',
-      "Post a screenshot of your Airflow DAG running successfully",
-      "Link your GitHub project in the featured section",
+      "Mastering complex window functions out loud",
+      "Solving Recursive CTE problems",
+      "Explaining Query Performance Tuning and EXPLAIN plans",
     ],
   },
   {
-    id: "m6d23",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 23: Interview Prep (SQL)",
+    id: "m7d12",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "Day 12: System Design Whiteboarding",
     type: "Project",
     estDays: 1,
     subtopics: [
-      'Do 5 "Medium" SQL questions on LeetCode/StrataScratch',
-      "Practice explaining Window Functions out loud",
-      "Review Joins vs Unions",
+      "Relational Database vs NoSQL document store trade-offs",
+      "Batch processing vs Streaming architecture decisions",
+      "Whiteboarding architectures using draw.io",
     ],
   },
   {
-    id: "m6d24",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 24: Interview Prep (Concepts)",
+    id: "m7d13",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "Day 13: High Availability & Fault Tolerance",
     type: "Project",
     estDays: 1,
     subtopics: [
-      "Practice explaining the difference between ETL and ELT",
-      'Prepare your "Tell me about your project" elevator pitch',
-      "Review Star Schema concepts",
+      "Designing systems that survive node failures",
+      "Replication vs Partitioning strategies",
+      "Understanding the CAP theorem practically",
     ],
   },
   {
-    id: "m6d25",
-    month: 6,
-    phase: "Month 6: The Escape Plan",
-    title: "Day 25: START APPLYING.",
+    id: "m7d14",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "Day 14: Emerging Trends (AI Engineering)",
+    type: "Cloud",
+    estDays: 1,
+    subtopics: [
+      "How data pipelines feed Large Language Models (LLMs)",
+      "Introduction to Vector Databases (Pinecone, Weaviate)",
+      "Retrieval-Augmented Generation (RAG) mechanics",
+    ],
+  },
+  {
+    id: "m7d15",
+    month: 7,
+    phase: "Month 7: Portfolio & Job Readiness",
+    title: "Day 15: Job Strategy & Application",
     type: "Project",
     estDays: 1,
     subtopics: [
-      "Apply to 5 Junior/Entry Data Engineer roles",
-      "Apply to Data Analyst roles (they often do DE work!)",
-      "Keep building, keep pushing. Your escape has begun.",
+      "Optimize LinkedIn headline and featured section",
+      "Tailor resume to highlight pipeline impact (not just tools)",
+      "Mock behavioral interviews (STAR method)",
+      "Start aggressive application outreach",
     ],
   },
 ];
-
-// --- Circular Progress Component ---
-const CircularProgress = ({
-  percentage,
-  color,
-  label,
-  icon: Icon,
-}: CircularProgressProps) => {
-  const radius = 32;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (percentage / 100) * circumference;
-
-  return (
-    <div className="flex flex-col items-center justify-center p-4 sm:p-5 bg-slate-800 rounded-xl border border-slate-700 shadow-md w-full h-full">
-      <div className="flex items-center gap-2 mb-4 text-slate-300 w-full justify-center">
-        <Icon
-          size={16}
-          className={`flex-shrink-0 ${color.replace("text-", "text-")}`}
-        />
-        <span className="font-semibold text-xs sm:text-sm tracking-widest uppercase text-center line-clamp-1">
-          {label}
-        </span>
-      </div>
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0">
-        <svg
-          className="w-full h-full transform -rotate-90"
-          viewBox="0 0 100 100"
-        >
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="transparent"
-            stroke="currentColor"
-            strokeWidth="10"
-            className="text-slate-700"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="transparent"
-            stroke="currentColor"
-            strokeWidth="10"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            className={`${color} transition-all duration-1000 ease-out`}
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl sm:text-2xl font-bold text-white">
-            {Math.round(percentage)}%
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function App() {
   // --- State Management ---
@@ -1762,7 +1678,6 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Handles multiple resources per subtopic ID
   const [customResources, setCustomResources] = useState<
     Record<string, CustomResource[]>
   >(() => {
@@ -1770,11 +1685,19 @@ export default function App() {
     return saved ? JSON.parse(saved) : {};
   });
 
-  // Track which task rows are expanded to show subtopics
+  const [bookmarkedSubtopics, setBookmarkedSubtopics] = useState<string[]>(
+    () => {
+      const saved = localStorage.getItem("de-tracker-bookmarks");
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
+
   const [expandedTasks, setExpandedTasks] = useState<Record<string, boolean>>(
     {},
   );
-  const [activeMonth, setActiveMonth] = useState<number>(1);
+
+  // Navigation: Allows 1-7 OR 'Revision'
+  const [activeMonth, setActiveMonth] = useState<number | "Revision">(1);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1795,11 +1718,20 @@ export default function App() {
       "de-tracker-custom-resources-multi",
       JSON.stringify(customResources),
     );
-  }, [startDate, completedTasks, completedSubtopics, customResources]);
+    localStorage.setItem(
+      "de-tracker-bookmarks",
+      JSON.stringify(bookmarkedSubtopics),
+    );
+  }, [
+    startDate,
+    completedTasks,
+    completedSubtopics,
+    customResources,
+    bookmarkedSubtopics,
+  ]);
 
   // --- Task Toggle Logic ---
   const handleParentClick = (task: Task) => {
-    // You MUST complete the subtopics. Clicking here only expands the row.
     if (task.subtopics && task.subtopics.length > 0) {
       setExpandedTasks((prev) => ({
         ...prev,
@@ -1824,7 +1756,6 @@ export default function App() {
 
     setCompletedSubtopics(newSubtopics);
 
-    // AUTO-COMPLETE ENGINE
     const taskSubtopicIds = Array.from(
       { length: totalSubtopics },
       (_, i) => `${taskId}-${i}`,
@@ -1843,6 +1774,14 @@ export default function App() {
         delete newTasks[taskId];
       }
       return newTasks;
+    });
+  };
+
+  const toggleBookmark = (e: MouseEvent, subId: string) => {
+    e.stopPropagation();
+    setBookmarkedSubtopics((prev) => {
+      if (prev.includes(subId)) return prev.filter((id) => id !== subId);
+      return [...prev, subId];
     });
   };
 
@@ -2024,9 +1963,157 @@ export default function App() {
     }
   };
 
+  // --- Bookmarks View Render Helper ---
+  const renderBookmarksView = () => {
+    if (bookmarkedSubtopics.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center py-20 text-slate-500">
+          <Bookmark size={48} className="mb-4 opacity-50" />
+          <h3 className="text-xl font-bold text-slate-400 mb-2">
+            No Revisions Saved
+          </h3>
+          <p className="max-w-md text-center">
+            Click the bookmark icon next to any subtopic to save it here for
+            quick review before interviews!
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4 p-4">
+        {bookmarkedSubtopics.map((subId) => {
+          const splitIdx = subId.lastIndexOf("-");
+          const taskId = subId.substring(0, splitIdx);
+          const subIdx = parseInt(subId.substring(splitIdx + 1));
+
+          const task = curriculumData.find((t) => t.id === taskId);
+          if (!task || !task.subtopics || !task.subtopics[subIdx]) return null;
+
+          const subName = task.subtopics[subIdx];
+          const isSubCompleted = completedSubtopics.includes(subId);
+          const searchConfig = typeSearchMap[task.type] || {
+            yt: task.type,
+            web: task.type,
+          };
+          const cleanTaskTitle = task.title.replace(/^Day \d+: /, "");
+          const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${subName}`)}`;
+          const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${subName}`)}`;
+          const subtopicResources = customResources[subId] || [];
+          const resourceCount = subtopicResources.length;
+          const Icon = getTypeIcon(task.type);
+
+          return (
+            <div
+              key={subId}
+              className="bg-slate-800/80 border border-slate-700 rounded-xl p-4 hover:bg-slate-700/50 transition-colors"
+            >
+              <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+                <div className="flex flex-col gap-1.5 flex-grow">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold border ${getTypeColor(task.type)}`}
+                    >
+                      <Icon size={10} /> {task.type}
+                    </span>
+                    <span className="text-xs text-slate-400 font-medium">
+                      {task.phase} • {task.title}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex-shrink-0 mt-0.5 cursor-pointer"
+                      onClick={(e) =>
+                        toggleSubtopic(
+                          e,
+                          task.id,
+                          subIdx,
+                          task.subtopics!.length,
+                        )
+                      }
+                    >
+                      {isSubCompleted ? (
+                        <CheckCircle2 size={20} className="text-teal-500" />
+                      ) : (
+                        <Circle
+                          size={20}
+                          className="text-slate-500 hover:text-blue-400"
+                        />
+                      )}
+                    </div>
+                    <span
+                      className={`text-base font-medium leading-relaxed ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-200"}`}
+                    >
+                      {subName}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 ml-9 xl:ml-0 flex-shrink-0">
+                  {/* Bookmark Toggle */}
+                  <button
+                    onClick={(e) => toggleBookmark(e, subId)}
+                    className="flex items-center justify-center p-2 rounded-md bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20 transition-colors border border-yellow-500/30 shadow-sm mr-1"
+                    title="Remove Revision"
+                  >
+                    <BookmarkCheck size={16} className="fill-current" />
+                  </button>
+
+                  <a
+                    href={videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30"
+                  >
+                    <Youtube size={14} /> Watch
+                  </a>
+                  <a
+                    href={readUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30"
+                  >
+                    <BookOpen size={14} /> Read
+                  </a>
+                  <button
+                    onClick={(e) => openModal(e, subId, subName)}
+                    className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 ml-1"
+                  >
+                    <LinkIcon size={16} />
+                    {resourceCount > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                        {resourceCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 p-4 md:p-6 font-sans selection:bg-blue-500/30 text-left">
-      <div className="max-w-6xl mx-auto space-y-8 relative">
+      {/* GLOBAL CSS TO HIDE MAIN WINDOW SCROLLBAR BUT KEEP SCROLLING */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        body {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+        body::-webkit-scrollbar {
+          display: none; /* Chrome, Safari and Opera */
+        }
+      `,
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto space-y-8 relative">
         {/* Header & Date Configuration */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-800 pb-6">
           <div>
@@ -2037,7 +2124,6 @@ export default function App() {
               </h1>
             </div>
             <p className="mt-2 text-slate-400 flex items-center gap-2 max-w-xl">
-              <Rocket size={18} className="text-blue-400 flex-shrink-0" />
               From Support to Data Engineer. Built day-by-day for absolute
               beginners. You can do this.
             </p>
@@ -2096,19 +2182,19 @@ export default function App() {
           <CircularProgress
             percentage={stats["DB"]}
             color="text-teal-400"
-            label="Databases"
+            label="Data Warehousing"
             icon={Server}
           />
           <CircularProgress
             percentage={stats["Pipeline"]}
             color="text-purple-400"
-            label="Airflow / ETL"
+            label="Airflow / dbt"
             icon={Workflow}
           />
           <CircularProgress
             percentage={stats["BigData"]}
             color="text-orange-400"
-            label="Spark / Big Data"
+            label="Spark / Streaming"
             icon={Activity}
           />
           <CircularProgress
@@ -2125,9 +2211,9 @@ export default function App() {
           />
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex overflow-x-auto gap-3 pb-2 pt-4 scrollbar-hide">
-          {[1, 2, 3, 4, 5, 6].map((month) => (
+        {/* Navigation Tabs (Horizontal scroll on small screens) */}
+        <div className="flex overflow-x-auto gap-3 pb-2 pt-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {[1, 2, 3, 4, 5, 6, 7].map((month) => (
             <button
               key={month}
               onClick={() => setActiveMonth(month)}
@@ -2137,241 +2223,297 @@ export default function App() {
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
               }`}
             >
-              Month {month}
+              M {month}
             </button>
           ))}
+          {/* Revision Tab */}
+          <button
+            onClick={() => setActiveMonth("Revision")}
+            className={`px-4 md:px-6 py-3 rounded-xl font-bold transition-all whitespace-nowrap text-sm md:text-base flex-shrink-0 flex items-center gap-2 ${
+              activeMonth === "Revision"
+                ? "bg-yellow-500 text-slate-900 shadow-lg shadow-yellow-500/20"
+                : "bg-slate-800 text-yellow-500/70 hover:bg-slate-700 hover:text-yellow-400"
+            }`}
+          >
+            <Bookmark
+              size={18}
+              className={activeMonth === "Revision" ? "fill-current" : ""}
+            />{" "}
+            Revision
+          </button>
         </div>
 
-        {/* Task List */}
+        {/* Dynamic List Area (Tasks OR Revision) */}
         <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl mt-4">
-          <div className="p-4 md:p-6 bg-slate-800/50 border-b border-slate-700">
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
-              {enrichedCurriculum.find((t) => t.month === activeMonth)?.phase}
-            </h2>
-          </div>
+          {activeMonth === "Revision" ? (
+            <div className="max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {renderBookmarksView()}
+            </div>
+          ) : (
+            <>
+              <div className="p-4 md:p-6 bg-slate-800/50 border-b border-slate-700">
+                <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                  {
+                    enrichedCurriculum.find((t) => t.month === activeMonth)
+                      ?.phase
+                  }
+                </h2>
+              </div>
 
-          <div className="divide-y divide-slate-700/50 max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {enrichedCurriculum
-              .filter((t) => t.month === activeMonth)
-              .map((task) => {
-                const Icon = getTypeIcon(task.type);
-                const isExpanded = expandedTasks[task.id];
+              <div className="divide-y divide-slate-700/50 max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {enrichedCurriculum
+                  .filter((t) => t.month === activeMonth)
+                  .map((task) => {
+                    const Icon = getTypeIcon(task.type);
+                    const isExpanded = expandedTasks[task.id];
 
-                // Calculate specific task progress
-                const totalSubCount = task.subtopics
-                  ? task.subtopics.length
-                  : 0;
-                const completedSubCount = task.subtopics
-                  ? task.subtopics.filter((_, idx) =>
-                      completedSubtopics.includes(`${task.id}-${idx}`),
-                    ).length
-                  : 0;
-                const progressPercent =
-                  totalSubCount > 0
-                    ? (completedSubCount / totalSubCount) * 100
-                    : 0;
+                    const totalSubCount = task.subtopics
+                      ? task.subtopics.length
+                      : 0;
+                    const completedSubCount = task.subtopics
+                      ? task.subtopics.filter((_, idx) =>
+                          completedSubtopics.includes(`${task.id}-${idx}`),
+                        ).length
+                      : 0;
+                    const progressPercent =
+                      totalSubCount > 0
+                        ? (completedSubCount / totalSubCount) * 100
+                        : 0;
 
-                return (
-                  <div
-                    key={task.id}
-                    onClick={() => handleParentClick(task)}
-                    className={`flex flex-col p-4 sm:p-5 hover:bg-slate-700/30 transition-colors cursor-pointer group ${
-                      task.isCompleted ? "bg-slate-800/40" : ""
-                    } ${task.type === "Project" ? "bg-slate-700/40 border-l-4 border-pink-500" : ""}`}
-                  >
-                    {/* Top Row: Task Header */}
-                    <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full justify-between">
-                      {/* Left: Checkmark & Title */}
-                      <div className="flex items-start gap-4 flex-grow text-left">
-                        <div className="flex-shrink-0 mt-0.5">
-                          {task.isCompleted ? (
-                            <CheckCircle2 className="w-6 h-6 md:w-7 md:h-7 text-teal-500 transition-transform scale-110" />
-                          ) : (
-                            <Circle className="w-6 h-6 md:w-7 md:h-7 text-slate-500 group-hover:text-blue-400 transition-colors" />
-                          )}
-                        </div>
-
-                        <div className="flex-grow flex flex-col justify-start text-left">
-                          <h3
-                            className={`font-medium text-base md:text-lg text-left transition-colors leading-tight md:leading-normal pr-4 ${
-                              task.isCompleted
-                                ? "text-slate-500 line-through"
-                                : task.type === "Project"
-                                  ? "text-pink-100 font-bold"
-                                  : "text-slate-200"
-                            }`}
-                          >
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-left text-slate-500 mt-1.5 flex items-center gap-2">
-                            {task.isCompleted ? (
-                              <span className="text-teal-500/80 font-medium">
-                                ✔ Completed on {formatDate(task.displayDate)}
-                              </span>
-                            ) : (
-                              <span>
-                                Target: {formatDate(task.displayDate)} (
-                                {task.estDays}{" "}
-                                {task.estDays === 1 ? "day" : "days"})
-                              </span>
-                            )}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Right: Progress Bar & Tags */}
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:ml-auto w-full lg:w-auto mt-2 lg:mt-0 pt-3 lg:pt-0 border-t border-slate-700 lg:border-t-0">
-                        {/* Horizontal Progress Bar */}
-                        {totalSubCount > 0 && (
-                          <div className="flex-grow w-full sm:w-36 flex flex-col gap-1.5">
-                            <div className="flex justify-between text-xs font-bold text-slate-400 w-full">
-                              <span>Progress</span>
-                              <span
-                                className={
-                                  task.isCompleted ? "text-teal-400" : ""
-                                }
-                              >
-                                {completedSubCount}/{totalSubCount}
-                              </span>
+                    return (
+                      <div
+                        key={task.id}
+                        onClick={() => handleParentClick(task)}
+                        className={`flex flex-col p-4 sm:p-5 hover:bg-slate-700/30 transition-colors cursor-pointer group ${
+                          task.isCompleted ? "bg-slate-800/40" : ""
+                        } ${task.type === "Project" ? "bg-slate-700/40 border-l-4 border-pink-500" : ""}`}
+                      >
+                        {/* Top Row: Task Header */}
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full justify-between">
+                          {/* Left: Checkmark & Title */}
+                          <div className="flex items-start gap-4 flex-grow text-left">
+                            <div className="flex-shrink-0 mt-0.5">
+                              {task.isCompleted ? (
+                                <CheckCircle2 className="w-6 h-6 md:w-7 md:h-7 text-teal-500 transition-transform scale-110" />
+                              ) : (
+                                <Circle className="w-6 h-6 md:w-7 md:h-7 text-slate-500 group-hover:text-blue-400 transition-colors" />
+                              )}
                             </div>
-                            <div className="w-full bg-slate-900 rounded-full h-2 border border-slate-700 overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all duration-500 ${task.isCompleted ? "bg-teal-500" : "bg-blue-500"}`}
-                                style={{ width: `${progressPercent}%` }}
-                              ></div>
+
+                            <div className="flex-grow flex flex-col justify-start text-left">
+                              <h3
+                                className={`font-medium text-base md:text-lg text-left transition-colors leading-tight md:leading-normal pr-4 ${
+                                  task.isCompleted
+                                    ? "text-slate-500 line-through"
+                                    : task.type === "Project"
+                                      ? "text-pink-100 font-bold"
+                                      : "text-slate-200"
+                                }`}
+                              >
+                                {task.title}
+                              </h3>
+                              <p className="text-xs md:text-sm text-left text-slate-500 mt-1.5 flex items-center gap-2">
+                                {task.isCompleted ? (
+                                  <span className="text-teal-500/80 font-medium">
+                                    ✔ Completed on{" "}
+                                    {formatDate(task.displayDate)}
+                                  </span>
+                                ) : (
+                                  <span>
+                                    Target: {formatDate(task.displayDate)} (
+                                    {task.estDays}{" "}
+                                    {task.estDays === 1 ? "day" : "days"})
+                                  </span>
+                                )}
+                              </p>
                             </div>
                           </div>
-                        )}
 
-                        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                          <span
-                            className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${getTypeColor(task.type)}`}
-                          >
-                            <Icon size={12} />
-                            {task.type}
-                          </span>
-
-                          {/* Expand/Collapse Button */}
-                          {task.subtopics && task.subtopics.length > 0 && (
-                            <button
-                              className={`p-1.5 rounded-full border transition-all ${isExpanded ? "bg-slate-700 border-slate-600 text-white" : "border-slate-700 text-slate-400 group-hover:bg-slate-700 group-hover:text-white"}`}
-                            >
-                              {isExpanded ? (
-                                <ChevronUp size={16} />
-                              ) : (
-                                <ChevronDown size={16} />
-                              )}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bottom Row: Expandable Subtopics & Resources */}
-                    {isExpanded && task.subtopics && (
-                      <div className="mt-5 ml-10 sm:ml-11 pl-4 border-l-2 border-slate-700">
-                        <h4 className="text-xs font-bold text-slate-400 text-left uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                          <List size={14} /> Action Items & Resources
-                        </h4>
-                        <ul
-                          className={`space-y-3 list-none mt-2 ${task.isCompleted ? "opacity-50" : ""}`}
-                        >
-                          {task.subtopics.map((sub, idx) => {
-                            const subId = `${task.id}-${idx}`;
-                            const isSubCompleted =
-                              completedSubtopics.includes(subId);
-
-                            // Smart URL Generation based on category
-                            const searchPrefix =
-                              typeSearchMap[task.type] || task.type;
-                            const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchPrefix} ${sub} tutorial`)}`;
-                            const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchPrefix} ${sub} documentation tutorial example`)}`;
-
-                            // Saved custom resources for this specific subtopic
-                            const subtopicResources =
-                              customResources[subId] || [];
-                            const resourceCount = subtopicResources.length;
-
-                            return (
-                              <li
-                                key={idx}
-                                onClick={(e) =>
-                                  toggleSubtopic(
-                                    e,
-                                    task.id,
-                                    idx,
-                                    task.subtopics?.length || 0,
-                                  )
-                                }
-                                className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-sm cursor-pointer group/sub hover:bg-slate-700/20 p-2 sm:p-3 -ml-1.5 rounded-lg transition-colors text-left border border-transparent hover:border-slate-700/50"
-                              >
-                                <div className="flex items-start gap-3 flex-grow pr-2">
-                                  <div className="flex-shrink-0 mt-0.5">
-                                    {isSubCompleted ? (
-                                      <CheckCircle2
-                                        size={18}
-                                        className="text-teal-500"
-                                      />
-                                    ) : (
-                                      <Circle
-                                        size={18}
-                                        className="text-slate-500 group-hover/sub:text-blue-400 transition-colors"
-                                      />
-                                    )}
-                                  </div>
+                          {/* Right: Progress Bar & Tags */}
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:ml-auto w-full lg:w-auto mt-2 lg:mt-0 pt-3 lg:pt-0 border-t border-slate-700 lg:border-t-0">
+                            {/* Horizontal Progress Bar */}
+                            {totalSubCount > 0 && (
+                              <div className="flex-grow w-full sm:w-36 flex flex-col gap-1.5">
+                                <div className="flex justify-between text-xs font-bold text-slate-400 w-full">
+                                  <span>Progress</span>
                                   <span
-                                    className={`leading-relaxed transition-colors text-left ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-300"}`}
+                                    className={
+                                      task.isCompleted ? "text-teal-400" : ""
+                                    }
                                   >
-                                    {sub}
+                                    {completedSubCount}/{totalSubCount}
                                   </span>
                                 </div>
-
-                                {/* Resource Buttons (Stops click propagation so it doesn't check the box when clicked) */}
-                                <div
-                                  className="flex flex-wrap items-center gap-2 ml-7 xl:ml-0 flex-shrink-0"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  <a
-                                    href={videoUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
-                                  >
-                                    <Youtube size={14} /> Watch
-                                  </a>
-                                  <a
-                                    href={readUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
-                                  >
-                                    <BookOpen size={14} /> Read
-                                  </a>
-
-                                  {/* Multiple Resources Badge Button */}
-                                  <button
-                                    onClick={(e) => openModal(e, subId, sub)}
-                                    className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 shadow-sm ml-1"
-                                    title="Manage custom resources"
-                                  >
-                                    <LinkIcon size={16} />
-                                    {resourceCount > 0 && (
-                                      <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
-                                        {resourceCount}
-                                      </span>
-                                    )}
-                                  </button>
+                                <div className="w-full bg-slate-900 rounded-full h-2 border border-slate-700 overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full transition-all duration-500 ${task.isCompleted ? "bg-teal-500" : "bg-blue-500"}`}
+                                    style={{ width: `${progressPercent}%` }}
+                                  ></div>
                                 </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
+                              </div>
+                            )}
+
+                            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                              <span
+                                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${getTypeColor(task.type)}`}
+                              >
+                                <Icon size={12} />
+                                {task.type}
+                              </span>
+
+                              {/* Expand/Collapse Button */}
+                              {task.subtopics && task.subtopics.length > 0 && (
+                                <button
+                                  className={`p-1.5 rounded-full border transition-all ${isExpanded ? "bg-slate-700 border-slate-600 text-white" : "border-slate-700 text-slate-400 group-hover:bg-slate-700 group-hover:text-white"}`}
+                                >
+                                  {isExpanded ? (
+                                    <ChevronUp size={16} />
+                                  ) : (
+                                    <ChevronDown size={16} />
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom Row: Expandable Subtopics & Resources */}
+                        {isExpanded && task.subtopics && (
+                          <div className="mt-5 ml-10 sm:ml-11 pl-4 border-l-2 border-slate-700">
+                            <h4 className="text-xs font-bold text-slate-400 text-left uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                              <List size={14} /> Action Items & Resources
+                            </h4>
+                            <ul
+                              className={`space-y-3 list-none mt-2 ${task.isCompleted ? "opacity-50" : ""}`}
+                            >
+                              {task.subtopics.map((sub, idx) => {
+                                const subId = `${task.id}-${idx}`;
+                                const isSubCompleted =
+                                  completedSubtopics.includes(subId);
+                                const isBookmarked =
+                                  bookmarkedSubtopics.includes(subId);
+
+                                // Smart URL Generation based on category mapping
+                                const searchConfig = typeSearchMap[
+                                  task.type
+                                ] || { yt: task.type, web: task.type };
+                                const cleanTaskTitle = task.title.replace(
+                                  /^Day \d+: /,
+                                  "",
+                                );
+                                const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${sub}`)}`;
+                                const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${sub}`)}`;
+
+                                const subtopicResources =
+                                  customResources[subId] || [];
+                                const resourceCount = subtopicResources.length;
+
+                                return (
+                                  <li
+                                    key={idx}
+                                    onClick={(e) =>
+                                      toggleSubtopic(
+                                        e,
+                                        task.id,
+                                        idx,
+                                        task.subtopics?.length || 0,
+                                      )
+                                    }
+                                    className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 text-sm cursor-pointer group/sub hover:bg-slate-700/20 p-2 sm:p-3 -ml-1.5 rounded-lg transition-colors text-left border border-transparent hover:border-slate-700/50"
+                                  >
+                                    <div className="flex items-start gap-3 flex-grow pr-2">
+                                      <div className="flex-shrink-0 mt-0.5">
+                                        {isSubCompleted ? (
+                                          <CheckCircle2
+                                            size={18}
+                                            className="text-teal-500"
+                                          />
+                                        ) : (
+                                          <Circle
+                                            size={18}
+                                            className="text-slate-500 group-hover/sub:text-blue-400 transition-colors"
+                                          />
+                                        )}
+                                      </div>
+                                      <span
+                                        className={`leading-relaxed transition-colors text-left ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-300"}`}
+                                      >
+                                        {sub}
+                                      </span>
+                                    </div>
+
+                                    {/* Resource Buttons (Stops click propagation) */}
+                                    <div
+                                      className="flex flex-wrap items-center gap-2 ml-7 xl:ml-0 flex-shrink-0"
+                                      onClick={(e) => e.stopPropagation()}
+                                    >
+                                      {/* Bookmark Toggle Button */}
+                                      <button
+                                        onClick={(e) =>
+                                          toggleBookmark(e, subId)
+                                        }
+                                        className={`flex items-center justify-center p-2 rounded-md transition-colors border shadow-sm mr-1 ${isBookmarked ? "bg-yellow-500/10 text-yellow-500 border-yellow-500/30 hover:bg-yellow-500/20" : "bg-slate-800 text-slate-500 border-slate-700 hover:text-yellow-500 hover:border-yellow-500/30"}`}
+                                        title={
+                                          isBookmarked
+                                            ? "Remove Revision"
+                                            : "Bookmark for Revision"
+                                        }
+                                      >
+                                        {isBookmarked ? (
+                                          <BookmarkCheck
+                                            size={16}
+                                            className="fill-current"
+                                          />
+                                        ) : (
+                                          <Bookmark size={16} />
+                                        )}
+                                      </button>
+
+                                      <a
+                                        href={videoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
+                                      >
+                                        <Youtube size={14} /> Watch
+                                      </a>
+                                      <a
+                                        href={readUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
+                                      >
+                                        <BookOpen size={14} /> Read
+                                      </a>
+
+                                      {/* Multiple Resources Badge Button */}
+                                      <button
+                                        onClick={(e) =>
+                                          openModal(e, subId, sub)
+                                        }
+                                        className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 shadow-sm ml-1"
+                                        title="Manage custom resources"
+                                      >
+                                        <LinkIcon size={16} />
+                                        {resourceCount > 0 && (
+                                          <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
+                                            {resourceCount}
+                                          </span>
+                                        )}
+                                      </button>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
+                    );
+                  })}
+              </div>
+            </>
+          )}
         </div>
 
         {/* --- Custom Resource Management Modal --- */}
