@@ -2223,7 +2223,7 @@ export default function App() {
                   : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200"
               }`}
             >
-              M {month}
+              Month {month}
             </button>
           ))}
           {/* Revision Tab */}
