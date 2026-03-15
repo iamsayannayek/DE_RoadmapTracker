@@ -160,6 +160,7 @@ const CircularProgress = ({
 };
 
 // --- Comprehensive 7-Month Master Curriculum ---
+// Special Formatting Rule: 'Task Title | Difficulty | URL' generates a custom Badge + Solve Button
 const curriculumData: Task[] = [
   // ==========================================
   // MONTH 1: SQL FOUNDATIONS & MODELING
@@ -190,6 +191,12 @@ const curriculumData: Task[] = [
       "Selecting specific columns",
       "Using LIMIT or TOP to restrict results",
       "Aliasing columns using AS",
+      "Practice: Revising the Select Query I|Easy|https://www.hackerrank.com/challenges/revising-the-select-query",
+      "Practice: Revising the Select Query II|Easy|https://www.hackerrank.com/challenges/revising-the-select-query-2",
+      "Practice: Select All|Easy|https://www.hackerrank.com/challenges/select-all-sql",
+      "Practice: Select By ID|Easy|https://www.hackerrank.com/challenges/select-by-id",
+      "Practice: Big Countries|Easy|https://leetcode.com/problems/big-countries/",
+      "Practice: Recyclable and Low Fat Products|Easy|https://leetcode.com/problems/recyclable-and-low-fat-products/",
     ],
   },
   {
@@ -203,6 +210,11 @@ const curriculumData: Task[] = [
       "The WHERE clause syntax",
       "Equality (=) and Inequality (!= or <>)",
       "Greater than (>) and Less than (<)",
+      "Practice: Japanese Cities Attributes|Easy|https://www.hackerrank.com/challenges/japanese-cities-attributes",
+      "Practice: Japanese Cities Names|Easy|https://www.hackerrank.com/challenges/japanese-cities-name",
+      "Practice: Weather Observation Station 1|Easy|https://www.hackerrank.com/challenges/weather-observation-station-1",
+      "Practice: Weather Observation Station 3|Easy|https://www.hackerrank.com/challenges/weather-observation-station-3",
+      "Practice: Find Customer Referee|Easy|https://leetcode.com/problems/find-customer-referee/",
     ],
   },
   {
@@ -217,6 +229,10 @@ const curriculumData: Task[] = [
       "Alternative conditions with OR",
       "Excluding results with NOT",
       "Order of operations (using parentheses)",
+      "Practice: Weather Observation Station 4|Easy|https://www.hackerrank.com/challenges/weather-observation-station-4",
+      "Practice: Weather Observation Station 5|Easy|https://www.hackerrank.com/challenges/weather-observation-station-5",
+      "Practice: Invalid Tweets|Easy|https://leetcode.com/problems/invalid-tweets/",
+      "Practice: Article Views I|Easy|https://leetcode.com/problems/article-views-i/",
     ],
   },
   {
@@ -231,6 +247,12 @@ const curriculumData: Task[] = [
       "The % wildcard (any string of characters)",
       "The _ wildcard (single character)",
       "Case sensitivity (ILIKE in Postgres)",
+      "Practice: Weather Observation Station 6|Easy|https://www.hackerrank.com/challenges/weather-observation-station-6",
+      "Practice: Weather Observation Station 7|Easy|https://www.hackerrank.com/challenges/weather-observation-station-7",
+      "Practice: Weather Observation Station 8|Easy|https://www.hackerrank.com/challenges/weather-observation-station-8",
+      "Practice: Weather Observation Station 9|Easy|https://www.hackerrank.com/challenges/weather-observation-station-9",
+      "Practice: Weather Observation Station 10|Easy|https://www.hackerrank.com/challenges/weather-observation-station-10",
+      "Practice: Weather Observation Station 11|Easy|https://www.hackerrank.com/challenges/weather-observation-station-11",
     ],
   },
   {
@@ -244,6 +266,9 @@ const curriculumData: Task[] = [
       "Filtering within a range using BETWEEN",
       "Filtering against a list using IN (...)",
       "Using NOT IN and NOT BETWEEN",
+      "Practice: Weather Observation Station 12|Easy|https://www.hackerrank.com/challenges/weather-observation-station-12",
+      "Practice: Employee Names|Easy|https://www.hackerrank.com/challenges/name-of-employees",
+      "Practice: Find Users With Valid E-Mails|Easy|https://leetcode.com/problems/find-users-with-valid-e-mails/",
     ],
   },
   {
@@ -257,6 +282,11 @@ const curriculumData: Task[] = [
       "Using ORDER BY column_name",
       "Ascending (ASC) vs Descending (DESC)",
       "Sorting by multiple columns",
+      "Practice: Higher Than 75 Marks|Easy|https://www.hackerrank.com/challenges/more-than-75-marks",
+      "Practice: Employee Salaries|Easy|https://www.hackerrank.com/challenges/salary-of-employees",
+      "Practice: Weather Observation Station 15|Easy|https://www.hackerrank.com/challenges/weather-observation-station-15",
+      "Practice: Weather Observation Station 16|Easy|https://www.hackerrank.com/challenges/weather-observation-station-16",
+      "Practice: Weather Observation Station 17|Easy|https://www.hackerrank.com/challenges/weather-observation-station-17",
     ],
   },
   {
@@ -270,6 +300,10 @@ const curriculumData: Task[] = [
       "Addition, Subtraction, Multiplication, Division",
       "Calculating percentages between columns",
       "Rounding numbers using ROUND()",
+      "Practice: The Blunder|Medium|https://www.hackerrank.com/challenges/the-blunder",
+      "Practice: Weather Observation Station 2|Easy|https://www.hackerrank.com/challenges/weather-observation-station-2",
+      "Practice: Calculate Special Bonus|Easy|https://leetcode.com/problems/calculate-special-bonus/",
+      "Practice: Not Boring Movies|Easy|https://leetcode.com/problems/not-boring-movies/",
     ],
   },
   {
@@ -283,6 +317,10 @@ const curriculumData: Task[] = [
       "Counting total rows with COUNT(*)",
       "Counting non-null values with COUNT(column)",
       "Adding up values with SUM()",
+      "Practice: Revising Aggregations - The Count Function|Easy|https://www.hackerrank.com/challenges/revising-aggregations-the-count-function",
+      "Practice: Revising Aggregations - The Sum Function|Easy|https://www.hackerrank.com/challenges/revising-aggregations-sum",
+      "Practice: Number of Unique Subjects Taught by Each Teacher|Easy|https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher/",
+      "Practice: Find Followers Count|Easy|https://leetcode.com/problems/find-followers-count/",
     ],
   },
   {
@@ -296,6 +334,11 @@ const curriculumData: Task[] = [
       "Finding the lowest value with MIN()",
       "Finding the highest value with MAX()",
       "Calculating averages with AVG()",
+      "Practice: Revising Aggregations - Averages|Easy|https://www.hackerrank.com/challenges/revising-aggregations-the-average-function",
+      "Practice: Average Population|Easy|https://www.hackerrank.com/challenges/average-population",
+      "Practice: Japan Population|Easy|https://www.hackerrank.com/challenges/japan-population",
+      "Practice: Weather Observation Station 13|Easy|https://www.hackerrank.com/challenges/weather-observation-station-13",
+      "Practice: Weather Observation Station 14|Easy|https://www.hackerrank.com/challenges/weather-observation-station-14",
     ],
   },
   {
@@ -309,6 +352,11 @@ const curriculumData: Task[] = [
       "How GROUP BY works with aggregates",
       "Grouping by a single column (e.g., total sales per department)",
       "Grouping by multiple columns",
+      "Practice: Top Earners|Easy|https://www.hackerrank.com/challenges/earnings-of-employees",
+      "Practice: Weather Observation Station 18|Medium|https://www.hackerrank.com/challenges/weather-observation-station-18",
+      "Practice: Weather Observation Station 19|Medium|https://www.hackerrank.com/challenges/weather-observation-station-19",
+      "Practice: Customer Placing the Largest Number of Orders|Easy|https://leetcode.com/problems/customer-placing-the-largest-number-of-orders/",
+      "Practice: Find Total Time Spent by Each Employee|Easy|https://leetcode.com/problems/find-total-time-spent-by-each-employee/",
     ],
   },
   {
@@ -322,6 +370,11 @@ const curriculumData: Task[] = [
       "Difference between WHERE and HAVING",
       "Using HAVING with COUNT/SUM",
       "Order of execution (WHERE -> GROUP BY -> HAVING)",
+      "Practice: Classes More Than 5 Students|Easy|https://leetcode.com/problems/classes-more-than-5-students/",
+      "Practice: Duplicate Emails|Easy|https://leetcode.com/problems/duplicate-emails/",
+      "Practice: Actors and Directors Who Cooperated At Least Three Times|Easy|https://leetcode.com/problems/actors-and-directors-who-cooperated-at-least-three-times/",
+      "Practice: Sales Analysis III|Easy|https://leetcode.com/problems/sales-analysis-iii/",
+      "Practice: Customers Who Bought All Products|Medium|https://leetcode.com/problems/customers-who-bought-all-products/",
     ],
   },
   {
@@ -348,6 +401,11 @@ const curriculumData: Task[] = [
       "INNER JOIN syntax and logic",
       "Joining on Primary/Foreign Keys",
       "Aliasing table names (e.g., FROM users u)",
+      "Practice: Asian Population|Easy|https://www.hackerrank.com/challenges/asian-population",
+      "Practice: African Cities|Easy|https://www.hackerrank.com/challenges/african-cities",
+      "Practice: Replace Employee ID With The Unique Identifier|Easy|https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/",
+      "Practice: Product Sales Analysis I|Easy|https://leetcode.com/problems/product-sales-analysis-i/",
+      "Practice: Average Population of Each Continent|Easy|https://www.hackerrank.com/challenges/average-population-of-each-continent",
     ],
   },
   {
@@ -361,6 +419,10 @@ const curriculumData: Task[] = [
       "When to use a LEFT JOIN (keeping all base records)",
       "Handling NULLs that result from a LEFT JOIN",
       "Understanding RIGHT JOIN (and why it is rarely used)",
+      "Practice: Customer Who Visited but Did Not Make Any Transactions|Easy|https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/",
+      "Practice: Employee Bonus|Easy|https://leetcode.com/problems/employee-bonus/",
+      "Practice: Students and Examinations|Medium|https://leetcode.com/problems/students-and-examinations/",
+      "Practice: Managers with at Least 5 Direct Reports|Medium|https://leetcode.com/problems/managers-with-at-least-5-direct-reports/",
     ],
   },
   {
@@ -373,7 +435,9 @@ const curriculumData: Task[] = [
     subtopics: [
       "FULL OUTER JOIN logic",
       "Creating combinations with CROSS JOIN",
-      "Practice: Identify which join to use in 3 scenarios",
+      "Practice: The Report|Medium|https://www.hackerrank.com/challenges/the-report",
+      "Practice: The Number of Employees Which Report to Each Employee|Easy|https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/",
+      "Practice: Top Competitors|Medium|https://www.hackerrank.com/challenges/full-score",
     ],
   },
   {
@@ -387,6 +451,11 @@ const curriculumData: Task[] = [
       "CASE WHEN ... THEN ... ELSE ... END syntax",
       "Creating new categorical columns from data",
       "Using CASE WHEN inside an aggregate function (e.g., SUM(CASE WHEN))",
+      "Practice: Type of Triangle|Easy|https://www.hackerrank.com/challenges/what-type-of-triangle",
+      "Practice: Tree Node|Medium|https://leetcode.com/problems/tree-node/",
+      "Practice: Capital Gain/Loss|Medium|https://leetcode.com/problems/capital-gainloss/",
+      "Practice: Market Analysis I|Medium|https://leetcode.com/problems/market-analysis-i/",
+      "Practice: Triangle Judgement|Easy|https://leetcode.com/problems/triangle-judgement/",
     ],
   },
   {
@@ -400,6 +469,9 @@ const curriculumData: Task[] = [
       "Checking for nulls with IS NULL / IS NOT NULL",
       "Replacing nulls using COALESCE()",
       "Null behavior in mathematical operations",
+      "Practice: Fix Names in a Table|Easy|https://leetcode.com/problems/fix-names-in-a-table/",
+      "Practice: Employees Whose Manager Left the Company|Easy|https://leetcode.com/problems/employees-whose-manager-left-the-company/",
+      "Practice: Rearrange Products Table|Easy|https://leetcode.com/problems/rearrange-products-table/",
     ],
   },
   {
@@ -414,6 +486,9 @@ const curriculumData: Task[] = [
       "Combining strings with CONCAT() or ||",
       "Extracting parts of text with SUBSTRING()",
       "Trimming whitespace with TRIM()",
+      "Practice: The PADS|Medium|https://www.hackerrank.com/challenges/the-pads",
+      "Practice: Group Sold Products By The Date|Easy|https://leetcode.com/problems/group-sold-products-by-the-date/",
+      "Practice: Invalid Tweets|Easy|https://leetcode.com/problems/invalid-tweets/",
     ],
   },
   {
@@ -427,6 +502,10 @@ const curriculumData: Task[] = [
       "Getting current date (CURRENT_DATE)",
       "Extracting parts of a date (EXTRACT(MONTH FROM date))",
       "Adding/Subtracting intervals (DATE_ADD or INTERVAL)",
+      "Practice: Rising Temperature|Easy|https://leetcode.com/problems/rising-temperature/",
+      "Practice: User Activity for the Past 30 Days I|Easy|https://leetcode.com/problems/user-activity-for-the-past-30-days-i/",
+      "Practice: Average Time of Process per Machine|Easy|https://leetcode.com/problems/average-time-of-process-per-machine/",
+      "Practice: Monthly Transactions I|Medium|https://leetcode.com/problems/monthly-transactions-i/",
     ],
   },
   {
@@ -437,9 +516,13 @@ const curriculumData: Task[] = [
     type: "SQL",
     estDays: 1,
     subtopics: [
-      "Subqueries in the WHERE clause (e.g., WHERE id IN (SELECT...))",
+      "Subqueries in the WHERE clause",
       "Subqueries in the SELECT clause",
       "Subqueries in the FROM clause (Derived tables)",
+      "Practice: Ollivander's Inventory|Medium|https://www.hackerrank.com/challenges/harry-potter-and-wands",
+      "Practice: Challenges|Medium|https://www.hackerrank.com/challenges/challenges",
+      "Practice: Contest Leaderboard|Medium|https://www.hackerrank.com/challenges/contest-leaderboard",
+      "Practice: SQL Project Planning|Medium|https://www.hackerrank.com/challenges/sql-projects",
     ],
   },
   {
@@ -453,6 +536,10 @@ const curriculumData: Task[] = [
       "The WITH clause syntax",
       "Why CTEs are better for readability than Subqueries",
       "Chaining multiple CTEs together",
+      "Practice: Friend Requests II: Who Has the Most Friends|Medium|https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/",
+      "Practice: Exchange Seats|Medium|https://leetcode.com/problems/exchange-seats/",
+      "Practice: Count Salary Categories|Medium|https://leetcode.com/problems/count-salary-categories/",
+      "Practice: Print Prime Numbers|Medium|https://www.hackerrank.com/challenges/print-prime-numbers",
     ],
   },
   {
@@ -466,6 +553,9 @@ const curriculumData: Task[] = [
       "What is a Window Function vs GROUP BY?",
       "The OVER() clause",
       "Creating groups within the window using PARTITION BY",
+      "Practice: Primary Department for Each Employee|Easy|https://leetcode.com/problems/primary-department-for-each-employee/",
+      "Practice: Last Person to Fit in the Bus|Medium|https://leetcode.com/problems/last-person-to-fit-in-the-bus/",
+      "Practice: Product Price at a Given Date|Medium|https://leetcode.com/problems/product-price-at-a-given-date/",
     ],
   },
   {
@@ -479,6 +569,10 @@ const curriculumData: Task[] = [
       "ROW_NUMBER() - assigning unique sequence",
       "RANK() vs DENSE_RANK()",
       "Sorting inside the window with ORDER BY",
+      "Practice: Placements|Medium|https://www.hackerrank.com/challenges/placements",
+      "Practice: Department Top Three Salaries|Hard|https://leetcode.com/problems/department-top-three-salaries/",
+      "Practice: Rank Scores|Medium|https://leetcode.com/problems/rank-scores/",
+      "Practice: Nth Highest Salary|Medium|https://leetcode.com/problems/nth-highest-salary/",
     ],
   },
   {
@@ -492,6 +586,10 @@ const curriculumData: Task[] = [
       "Accessing previous row data with LAG()",
       "Accessing next row data with LEAD()",
       "Calculating Month-over-Month growth",
+      "Practice: Symmetric Pairs|Medium|https://www.hackerrank.com/challenges/symmetric-pairs",
+      "Practice: Interviews|Hard|https://www.hackerrank.com/challenges/interviews",
+      "Practice: Consecutive Numbers|Medium|https://leetcode.com/problems/consecutive-numbers/",
+      "Practice: Game Play Analysis IV|Medium|https://leetcode.com/problems/game-play-analysis-iv/",
     ],
   },
   {
@@ -546,6 +644,7 @@ const curriculumData: Task[] = [
       "Design a conceptual Star Schema on draw.io",
       "Implement the Star Schema in a local PostgreSQL database",
       "Write a Window Function query to calculate Monthly Sales Growth on the Fact table",
+      "Practice: 15 Days of Learning SQL (Ultimate Challenge)|Hard|https://www.hackerrank.com/challenges/15-days-of-learning-sql",
     ],
   },
 
@@ -1963,8 +2062,17 @@ export default function App() {
     }
   };
 
-  // --- Bookmarks View Render Helper ---
-  const renderBookmarksView = () => {
+  const getDiffColor = (diff: string) => {
+    if (diff === "Easy")
+      return "text-green-400 bg-green-400/10 border-green-400/20";
+    if (diff === "Medium")
+      return "text-yellow-400 bg-yellow-400/10 border-yellow-400/20";
+    if (diff === "Hard") return "text-red-400 bg-red-400/10 border-red-400/20";
+    return "text-slate-400 bg-slate-400/10 border-slate-400/20";
+  };
+
+  // --- Revision View Render Helper ---
+  const renderRevisionView = () => {
     if (bookmarkedSubtopics.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-20 text-slate-500">
@@ -1990,7 +2098,19 @@ export default function App() {
           const task = curriculumData.find((t) => t.id === taskId);
           if (!task || !task.subtopics || !task.subtopics[subIdx]) return null;
 
-          const subName = task.subtopics[subIdx];
+          const rawString = task.subtopics[subIdx];
+          const parts = rawString.split("|");
+          const subName = parts[0].trim();
+          let difficulty = null;
+          let directUrl = null;
+
+          if (parts.length === 3) {
+            difficulty = parts[1].trim();
+            directUrl = parts[2].trim();
+          } else if (parts.length === 2) {
+            directUrl = parts[1].trim();
+          }
+
           const isSubCompleted = completedSubtopics.includes(subId);
           const searchConfig = typeSearchMap[task.type] || {
             yt: task.type,
@@ -2042,11 +2162,20 @@ export default function App() {
                         />
                       )}
                     </div>
-                    <span
-                      className={`text-base font-medium leading-relaxed ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-200"}`}
-                    >
-                      {subName}
-                    </span>
+                    <div className="flex items-center flex-wrap gap-2">
+                      <span
+                        className={`text-base font-medium leading-relaxed ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-200"}`}
+                      >
+                        {subName}
+                      </span>
+                      {difficulty && (
+                        <span
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider ${getDiffColor(difficulty)}`}
+                        >
+                          {difficulty}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -2060,29 +2189,44 @@ export default function App() {
                     <BookmarkCheck size={16} className="fill-current" />
                   </button>
 
-                  <a
-                    href={videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30"
-                  >
-                    <Youtube size={14} /> Watch
-                  </a>
-                  <a
-                    href={readUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30"
-                  >
-                    <BookOpen size={14} /> Read
-                  </a>
+                  {/* HackerRank/LeetCode Solve Button OR Watch/Read */}
+                  {directUrl ? (
+                    <a
+                      href={directUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-green-500/10 hover:bg-green-500/20 text-green-400 text-xs font-bold transition-colors border border-green-500/30 shadow-sm"
+                    >
+                      <Code size={14} /> Solve
+                    </a>
+                  ) : (
+                    <>
+                      <a
+                        href={videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
+                      >
+                        <Youtube size={14} /> Watch
+                      </a>
+                      <a
+                        href={readUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
+                      >
+                        <BookOpen size={14} /> Read
+                      </a>
+                    </>
+                  )}
+
                   <button
                     onClick={(e) => openModal(e, subId, subName)}
-                    className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 ml-1"
+                    className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 shadow-sm ml-1"
                   >
                     <LinkIcon size={16} />
                     {resourceCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-1.5 -right-1.5 bg-[#a855f7] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">
                         {resourceCount}
                       </span>
                     )}
@@ -2247,7 +2391,7 @@ export default function App() {
         <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl mt-4">
           {activeMonth === "Revision" ? (
             <div className="max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {renderBookmarksView()}
+              {renderRevisionView()}
             </div>
           ) : (
             <>
@@ -2388,6 +2532,20 @@ export default function App() {
                             >
                               {task.subtopics.map((sub, idx) => {
                                 const subId = `${task.id}-${idx}`;
+
+                                // Parse strings looking for the HackerRank '|' delimiter
+                                const parts = sub.split("|");
+                                const subName = parts[0].trim();
+                                let difficulty = null;
+                                let directUrl = null;
+
+                                if (parts.length === 3) {
+                                  difficulty = parts[1].trim();
+                                  directUrl = parts[2].trim();
+                                } else if (parts.length === 2) {
+                                  directUrl = parts[1].trim();
+                                }
+
                                 const isSubCompleted =
                                   completedSubtopics.includes(subId);
                                 const isBookmarked =
@@ -2401,8 +2559,8 @@ export default function App() {
                                   /^Day \d+: /,
                                   "",
                                 );
-                                const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${sub}`)}`;
-                                const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${sub}`)}`;
+                                const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${subName}`)}`;
+                                const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${subName}`)}`;
 
                                 const subtopicResources =
                                   customResources[subId] || [];
@@ -2435,11 +2593,20 @@ export default function App() {
                                           />
                                         )}
                                       </div>
-                                      <span
-                                        className={`leading-relaxed transition-colors text-left ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-300"}`}
-                                      >
-                                        {sub}
-                                      </span>
+                                      <div className="flex items-center flex-wrap gap-2">
+                                        <span
+                                          className={`text-base font-medium leading-relaxed ${isSubCompleted ? "text-slate-500 line-through" : "text-slate-200"}`}
+                                        >
+                                          {subName}
+                                        </span>
+                                        {difficulty && (
+                                          <span
+                                            className={`px-1.5 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider ${getDiffColor(difficulty)}`}
+                                          >
+                                            {difficulty}
+                                          </span>
+                                        )}
+                                      </div>
                                     </div>
 
                                     {/* Resource Buttons (Stops click propagation) */}
@@ -2469,27 +2636,41 @@ export default function App() {
                                         )}
                                       </button>
 
-                                      <a
-                                        href={videoUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
-                                      >
-                                        <Youtube size={14} /> Watch
-                                      </a>
-                                      <a
-                                        href={readUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
-                                      >
-                                        <BookOpen size={14} /> Read
-                                      </a>
+                                      {/* Render HackerRank Solve button OR Standard Watch/Read buttons */}
+                                      {directUrl ? (
+                                        <a
+                                          href={directUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-green-500/10 hover:bg-green-500/20 text-green-400 text-xs font-bold transition-colors border border-green-500/30 shadow-sm"
+                                        >
+                                          <Code size={14} /> Solve
+                                        </a>
+                                      ) : (
+                                        <>
+                                          <a
+                                            href={videoUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-red-500/30 shadow-sm"
+                                          >
+                                            <Youtube size={14} /> Watch
+                                          </a>
+                                          <a
+                                            href={readUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-800 hover:bg-blue-500/20 hover:text-blue-400 text-slate-400 text-xs font-semibold transition-colors border border-slate-700 hover:border-blue-500/30 shadow-sm"
+                                          >
+                                            <BookOpen size={14} /> Read
+                                          </a>
+                                        </>
+                                      )}
 
                                       {/* Multiple Resources Badge Button */}
                                       <button
                                         onClick={(e) =>
-                                          openModal(e, subId, sub)
+                                          openModal(e, subId, subName)
                                         }
                                         className="relative flex items-center justify-center p-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors border border-slate-700 shadow-sm ml-1"
                                         title="Manage custom resources"
