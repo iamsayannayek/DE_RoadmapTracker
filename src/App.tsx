@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { MouseEvent, ElementType } from 'react';
-import { CheckCircle2, Circle, Database, Code, Workflow, Cloud, Trophy, Calendar, Clock, HeartHandshake, ChevronDown, ChevronUp, List, Youtube, BookOpen, Trash2, Link as LinkIcon, X, Plus, Bookmark, BookmarkCheck, Monitor, LayoutDashboard, Sparkles } from 'lucide-react';
+import { CheckCircle2, Circle, Database, Code, Server, Workflow, Cloud, Trophy, Activity, Calendar, Clock, Rocket, HeartHandshake, ChevronDown, ChevronUp, List, Youtube, BookOpen, Trash2, Link as LinkIcon, X, Plus, Bookmark, BookmarkCheck, Monitor, LayoutDashboard, Sparkles } from 'lucide-react';
 
-// --- Helper Functions for Dates ---
+// --- Helper Functions ---
 const addDays = (dateString: string, days: number): string => {
   const date = new Date(dateString);
   date.setDate(date.getDate() + days);
@@ -15,7 +15,7 @@ const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString('en-US', options);
 };
 
-// --- SMART INSTRUCTOR SEARCH ENGINE (Adapted for Primer Topics) ---
+// --- SMART INSTRUCTOR SEARCH ENGINE ---
 const typeSearchMap: Record<string, { yt: string, web: string }> = {
   'Software': { yt: 'Software Engineering Fundamentals tutorial', web: 'Software Engineering Fundamentals documentation' },
   'Web': { yt: 'HTML JavaScript jQuery tutorial', web: 'MDN Web Docs HTML JavaScript jQuery' },
@@ -29,11 +29,9 @@ const typeSearchMap: Record<string, { yt: string, web: string }> = {
 // --- TypeScript Interfaces ---
 interface Task {
   id: string;
-  week: number;
   phase: string;
   title: string;
   type: string;
-  estDays: number;
   subtopics?: string[];
 }
 
@@ -90,45 +88,43 @@ const CircularProgress = ({ percentage, color, label, icon: Icon }: CircularProg
   );
 };
 
-// --- Accenture PRIMER 21-Day Curriculum ---
+// --- Accenture PRIMER Topic-Based Curriculum ---
 const curriculumData: Task[] = [
-  // ==========================================
-  // WEEK 1: Software Fundamentals & Web Tech
-  // ==========================================
-  { id: 'w1d1', week: 1, phase: 'Software Fundamentals', title: 'Day 1: Logic & Algorithms', type: 'Software', estDays: 1, subtopics: ['1. Logic Development', '2. Introduction to Algorithms, Flowcharts & Pseudocode'] },
-  { id: 'w1d2', week: 1, phase: 'Software Fundamentals', title: 'Day 2: Core Programming Logic', type: 'Software', estDays: 1, subtopics: ['3. Selection statements', '4. Looping statements', '5. Arrays'] },
-  { id: 'w1d3', week: 1, phase: 'Software Fundamentals', title: 'Day 3: Software Engineering', type: 'Software', estDays: 1, subtopics: ['6. Software Engineering Fundamentals', '7. Phases of Software Engineering', '8. Software Testing', '9. Software Configuration Management'] },
-  { id: 'w1d4', week: 1, phase: 'Web Technologies', title: 'Day 4: HTML Essentials', type: 'Web', estDays: 1, subtopics: ['1. HTML', '2. Debug- HTML'] },
-  { id: 'w1d5', week: 1, phase: 'Web Technologies', title: 'Day 5: JavaScript Fundamentals', type: 'Web', estDays: 1, subtopics: ['3. JavaScript', '4. Javascript-debugging hands-on'] },
-  { id: 'w1d6', week: 1, phase: 'Web Technologies', title: 'Day 6: jQuery & Best Practices', type: 'Web', estDays: 1, subtopics: ['5. JQuery', '6. Jquery-Debugging hands-on', '7. Web Design-Best Practices'] },
-  { id: 'w1d7', week: 1, phase: 'Programming using Python', title: 'Day 7: Python Introduction', type: 'Python', estDays: 1, subtopics: ['1. Python programming - Course Introduction', '2. Introduction to Python'] },
+  // SOFTWARE
+  { id: 's1', phase: 'Software Fundamentals', title: 'Logic & Core Programming', type: 'Software', subtopics: ['1. Logic Development', '2. Introduction to Algorithms, Flowcharts & Pseudocode', '3. Selection statements', '4. Looping statements', '5. Arrays'] },
+  { id: 's2', phase: 'Software Fundamentals', title: 'Software Engineering & Testing', type: 'Software', subtopics: ['6. Software Engineering Fundamentals', '7. Phases of Software Engineering', '8. Software Testing', '9. Software Configuration Management'] },
+  
+  // WEB
+  { id: 'w1', phase: 'Web Technologies', title: 'HTML & Debugging', type: 'Web', subtopics: ['1. HTML', '2. Debug- HTML'] },
+  { id: 'w2', phase: 'Web Technologies', title: 'JavaScript Essentials', type: 'Web', subtopics: ['3. JavaScript', '4. Javascript-debugging hands-on'] },
+  { id: 'w3', phase: 'Web Technologies', title: 'jQuery & Best Practices', type: 'Web', subtopics: ['5. JQuery', '6. Jquery-Debugging hands-on', '7. Web Design-Best Practices'] },
 
-  // ==========================================
-  // WEEK 2: Python Mastery & RDBMS
-  // ==========================================
-  { id: 'w2d8', week: 2, phase: 'Programming using Python', title: 'Day 8: Python Control Flow', type: 'Python', estDays: 1, subtopics: ['3. Control Structures', '4. Collection Frameworks'] },
-  { id: 'w2d9', week: 2, phase: 'Programming using Python', title: 'Day 9: Functions & Files', type: 'Python', estDays: 1, subtopics: ['5. Functions and Modules', '6. File Handling'] },
-  { id: 'w2d10', week: 2, phase: 'Programming using Python', title: 'Day 10: Code Quality', type: 'Python', estDays: 1, subtopics: ['7. Code Analysis and Debugging'] },
-  { id: 'w2d11', week: 2, phase: 'RDBMS using MySQL', title: 'Day 11: RDBMS Concepts & ER', type: 'RDBMS', estDays: 1, subtopics: ['1. RDBMS Concepts', '2. ER and Normalization'] },
-  { id: 'w2d12', week: 2, phase: 'RDBMS using MySQL', title: 'Day 12: SQL Syntax & Queries', type: 'RDBMS', estDays: 1, subtopics: ['3. Data Definition Language', '4. Data Manipulation Language'] },
-  { id: 'w2d13', week: 2, phase: 'RDBMS using MySQL', title: 'Day 13: Filtering & Functions', type: 'RDBMS', estDays: 1, subtopics: ['5. SQL Select Statement', '6. Function-Scalar & Aggregate'] },
-  { id: 'w2d14', week: 2, phase: 'RDBMS using MySQL', title: 'Day 14: Joins & Database Objects', type: 'RDBMS', estDays: 1, subtopics: ['7. Joins & SubQuery', '8. DCL & Database Objects'] },
+  // PYTHON
+  { id: 'p1', phase: 'Programming using Python', title: 'Python Basics & Control Flow', type: 'Python', subtopics: ['1. Python programming - Course Introduction', '2. Introduction to Python', '3. Control Structures'] },
+  { id: 'p2', phase: 'Programming using Python', title: 'Data Structures & Functions', type: 'Python', subtopics: ['4. Collection Frameworks', '5. Functions and Modules'] },
+  { id: 'p3', phase: 'Programming using Python', title: 'Files & Debugging', type: 'Python', subtopics: ['6. File Handling', '7. Code Analysis and Debugging'] },
 
-  // ==========================================
-  // WEEK 3: Agile, Gen AI & AWS Cloud
-  // ==========================================
-  { id: 'w3d15', week: 3, phase: 'Agile & DevOps DevSecOps', title: 'Day 15: Agile Methodologies', type: 'Agile', estDays: 1, subtopics: ['1. Introduction to Agile', '2. Business Analytics and Design Thinking'] },
-  { id: 'w3d16', week: 3, phase: 'Agile & DevOps DevSecOps', title: 'Day 16: DevOps & Security', type: 'Agile', estDays: 1, subtopics: ['3. DevOps', '4. DevSecOps'] },
-  { id: 'w3d17', week: 3, phase: 'Gen AI', title: 'Day 17: Gen AI Foundations', type: 'GenAI', estDays: 1, subtopics: ['1. Introduction to Generative AI', '2. Brief History of Generative AI', '3. Fundamentals of Machine Learning and Neural Networks'] },
-  { id: 'w3d18', week: 3, phase: 'Gen AI', title: 'Day 18: Generative Models', type: 'GenAI', estDays: 1, subtopics: ['4. Introduction to Generative Models', '5. Variational Autoencoders', '6. Generative Adversarial Networks'] },
-  { id: 'w3d19', week: 3, phase: 'Gen AI', title: 'Day 19: Transformers & Applications', type: 'GenAI', estDays: 1, subtopics: ['7. Sequence Generation with RNNs', '8. Transformers and Attention Mechanisms', '9. Generative AI in Industry and Real-World Applications'] },
-  { id: 'w3d20', week: 3, phase: 'AWS', title: 'Day 20: AWS Core Services', type: 'AWS', estDays: 1, subtopics: ['1. Introduction to AWS Cloud', '2. Technology - Core Services', '3. AWS Resources for Technology Support'] },
-  { id: 'w3d21', week: 3, phase: 'AWS', title: 'Day 21: AWS Security & Arch', type: 'AWS', estDays: 1, subtopics: ['4. Security and Compliance', '5. AWS cloud architecture design principles', '6. Billing and Pricing'] },
+  // RDBMS
+  { id: 'r1', phase: 'RDBMS using MySQL', title: 'Database Design & Architecture', type: 'RDBMS', subtopics: ['1. RDBMS Concepts', '2. ER and Normalization'] },
+  { id: 'r2', phase: 'RDBMS using MySQL', title: 'SQL Language Fundamentals', type: 'RDBMS', subtopics: ['3. Data Definition Language', '4. Data Manipulation Language'] },
+  { id: 'r3', phase: 'RDBMS using MySQL', title: 'Advanced Queries & Joins', type: 'RDBMS', subtopics: ['5. SQL Select Statement', '6. Function-Scalar & Aggregate', '7. Joins & SubQuery', '8. DCL & Database Objects'] },
+
+  // AGILE
+  { id: 'a1', phase: 'Agile & DevOps DevSecOps', title: 'Agile & Design Thinking', type: 'Agile', subtopics: ['1. Introduction to Agile', '2. Business Analytics and Design Thinking'] },
+  { id: 'a2', phase: 'Agile & DevOps DevSecOps', title: 'DevOps & Security', type: 'Agile', subtopics: ['3. DevOps', '4. DevSecOps'] },
+
+  // GEN AI
+  { id: 'g1', phase: 'Gen AI', title: 'Generative AI Foundations', type: 'GenAI', subtopics: ['1. Introduction to Generative AI', '2. Brief History of Generative AI', '3. Fundamentals of Machine Learning and Neural Networks'] },
+  { id: 'g2', phase: 'Gen AI', title: 'Generative Models & Networks', type: 'GenAI', subtopics: ['4. Introduction to Generative Models', '5. Variational Autoencoders', '6. Generative Adversarial Networks'] },
+  { id: 'g3', phase: 'Gen AI', title: 'Transformers & Applications', type: 'GenAI', subtopics: ['7. Sequence Generation with RNNs', '8. Transformers and Attention Mechanisms', '9. Generative AI in Industry and Real-World Applications'] },
+
+  // AWS
+  { id: 'aw1', phase: 'AWS', title: 'AWS Core Services', type: 'AWS', subtopics: ['1. Introduction to AWS Cloud', '2. Technology - Core Services', '3. AWS Resources for Technology Support'] },
+  { id: 'aw2', phase: 'AWS', title: 'Architecture & Billing', type: 'AWS', subtopics: ['4. Security and Compliance', '5. AWS cloud architecture design principles', '6. Billing and Pricing'] },
 ];
 
 export default function App() {
   // --- State Management ---
-  // Default start date is May 14, 2026 based on user prompt
   const [startDate, setStartDate] = useState<string>(() => {
     const saved = localStorage.getItem('primer-tracker-start');
     return saved ? saved : '2026-05-14';
@@ -156,8 +152,8 @@ export default function App() {
 
   const [expandedTasks, setExpandedTasks] = useState<Record<string, boolean>>({});
   
-  // Navigation: Allows Weeks 1-3 OR 'Revision'
-  const [activeWeek, setActiveWeek] = useState<number | 'Revision'>(1);
+  // Navigation: Allows specific string tabs
+  const [activeTab, setActiveTab] = useState<string>('Software');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -265,52 +261,32 @@ export default function App() {
     }
   };
 
-  // --- Dynamic Timeline Calculations ---
-  const { enrichedCurriculum, projectedEndDate, totalProgress } = useMemo(() => {
-    let currentPointerDate = startDate; 
-    let dynamicPointerDate = new Date().toISOString().split('T')[0]; 
-    
-    if (new Date(dynamicPointerDate) < new Date(startDate)) {
-        dynamicPointerDate = startDate;
-    }
-
+  // --- Dynamic Progress Calculations ---
+  const { totalProgress, daysRemaining } = useMemo(() => {
     let totalSubCountOverall = 0;
     let completedSubCountOverall = 0;
     
-    const enriched = curriculumData.map(task => {
-      const taskIdealDate = currentPointerDate;
-      currentPointerDate = addDays(currentPointerDate, task.estDays);
-
-      let taskDisplayDate = '';
+    curriculumData.forEach(task => {
       const isCompleted = !!completedTasks[task.id];
-      
       const totalSubCount = task.subtopics ? task.subtopics.length : 1;
       const completedSubCount = task.subtopics ? task.subtopics.filter((_, idx) => completedSubtopics.includes(`${task.id}-${idx}`)).length : (isCompleted ? 1 : 0);
       
       totalSubCountOverall += totalSubCount;
       completedSubCountOverall += completedSubCount;
-
-      if (isCompleted) {
-        taskDisplayDate = completedTasks[task.id];
-      } else {
-        taskDisplayDate = dynamicPointerDate;
-        dynamicPointerDate = addDays(dynamicPointerDate, task.estDays);
-      }
-
-      return {
-        ...task,
-        idealDate: taskIdealDate,
-        displayDate: taskDisplayDate,
-        isCompleted
-      };
     });
 
+    const progress = totalSubCountOverall > 0 ? Math.round((completedSubCountOverall / totalSubCountOverall) * 100) : 0;
+    
+    // Calculate dynamic 21-day timeline
+    const totalGoalDays = 21;
+    const daysSpentEquiv = Math.round((progress / 100) * totalGoalDays);
+    const calculatedDaysRemaining = totalGoalDays - daysSpentEquiv;
+
     return {
-      enrichedCurriculum: enriched,
-      projectedEndDate: dynamicPointerDate, 
-      totalProgress: totalSubCountOverall > 0 ? Math.round((completedSubCountOverall / totalSubCountOverall) * 100) : 0
+      totalProgress: progress,
+      daysRemaining: calculatedDaysRemaining
     };
-  }, [startDate, completedTasks, completedSubtopics]);
+  }, [completedTasks, completedSubtopics]);
 
   // --- Dashboard Stats Calculations ---
   const stats = useMemo(() => {
@@ -364,6 +340,17 @@ export default function App() {
       default: return CheckCircle2;
     }
   };
+
+  // List of Navigation Tabs
+  const navTabs = [
+    { id: 'Software', label: 'Software' },
+    { id: 'Web', label: 'Web Tech' },
+    { id: 'Python', label: 'Python' },
+    { id: 'RDBMS', label: 'MySQL' },
+    { id: 'Agile', label: 'Agile' },
+    { id: 'GenAI', label: 'Gen AI' },
+    { id: 'AWS', label: 'AWS' },
+  ];
 
   // --- Revision View Render Helper ---
   const renderRevisionView = () => {
@@ -483,7 +470,7 @@ export default function App() {
                </h1>
             </div>
             <p className="mt-2 text-slate-400 flex items-center gap-2 max-w-xl">
-              21-Day rigorous completion tracker for your Primer modules.
+              Rigorous topic-based completion tracker for your Primer modules.
             </p>
           </div>
 
@@ -498,8 +485,8 @@ export default function App() {
               />
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-400 flex items-center gap-2"><Clock size={16}/> Projected End</span>
-              <span className="font-bold text-cyan-400">{formatDate(projectedEndDate)}</span>
+              <span className="text-slate-400 flex items-center gap-2"><Clock size={16}/> Motivation</span>
+              <span className="font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">{daysRemaining} Days Remaining</span>
             </div>
             {/* Progress Bar */}
             <div className="w-full bg-slate-900 rounded-full h-2.5 mt-2 border border-slate-700">
@@ -522,49 +509,49 @@ export default function App() {
 
         {/* Navigation Tabs (Horizontal scroll on small screens) */}
         <div className="flex overflow-x-auto gap-3 pb-2 pt-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {[1, 2, 3].map(week => (
+          {navTabs.map(tab => (
             <button
-              key={week}
-              onClick={() => setActiveWeek(week)}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
               className={`px-5 md:px-8 py-3 rounded-xl font-bold transition-all whitespace-nowrap text-sm md:text-base flex-shrink-0 ${
-                activeWeek === week 
+                activeTab === tab.id 
                   ? 'bg-[#a855f7] text-white shadow-lg shadow-purple-900/50' 
                   : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
               }`}
             >
-              Week {week}
+              {tab.label}
             </button>
           ))}
           {/* Revision Tab */}
           <button
-            onClick={() => setActiveWeek('Revision')}
+            onClick={() => setActiveTab('Revision')}
             className={`px-4 md:px-6 py-3 rounded-xl font-bold transition-all whitespace-nowrap text-sm md:text-base flex-shrink-0 flex items-center gap-2 ${
-              activeWeek === 'Revision' 
+              activeTab === 'Revision' 
                 ? 'bg-yellow-500 text-slate-900 shadow-lg shadow-yellow-500/20' 
                 : 'bg-slate-800 text-yellow-500/70 hover:bg-slate-700 hover:text-yellow-400'
             }`}
           >
-            <Bookmark size={18} className={activeWeek === 'Revision' ? 'fill-current' : ''} /> Revision
+            <Bookmark size={18} className={activeTab === 'Revision' ? 'fill-current' : ''} /> Revision
           </button>
         </div>
 
         {/* Dynamic List Area (Tasks OR Revision) */}
         <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl mt-4">
           
-          {activeWeek === 'Revision' ? (
+          {activeTab === 'Revision' ? (
             <div className="max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                {renderRevisionView()}
             </div>
           ) : (
             <>
-              <div className="p-4 md:p-6 bg-slate-800/50 border-b border-slate-700">
+              <div className="p-4 md:p-6 bg-slate-800/50 border-b border-slate-700 flex justify-between items-center">
                 <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
-                  {enrichedCurriculum.find(t => t.week === activeWeek)?.phase}
+                  {curriculumData.find(t => t.type === activeTab)?.phase || activeTab}
                 </h2>
               </div>
               
               <div className="divide-y divide-slate-700/50 max-h-[800px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                {enrichedCurriculum.filter(t => t.week === activeWeek).map((task) => {
+                {curriculumData.filter(t => t.type === activeTab).map((task) => {
                   const Icon = getTypeIcon(task.type);
                   const isExpanded = expandedTasks[task.id];
                   
@@ -572,12 +559,15 @@ export default function App() {
                   const completedSubCount = task.subtopics ? task.subtopics.filter((_, idx) => completedSubtopics.includes(`${task.id}-${idx}`)).length : 0;
                   const progressPercent = totalSubCount > 0 ? (completedSubCount / totalSubCount) * 100 : 0;
                   
+                  // Parent is completed if all subtopics are completed
+                  const isCompleted = totalSubCount > 0 && totalSubCount === completedSubCount;
+                  
                   return (
                     <div 
                       key={task.id}
                       onClick={() => handleParentClick(task)}
                       className={`flex flex-col p-4 sm:p-5 hover:bg-slate-700/30 transition-colors cursor-pointer group ${
-                        task.isCompleted ? 'bg-slate-800/40' : ''
+                        isCompleted ? 'bg-slate-800/40' : ''
                       }`}
                     >
                       
@@ -587,7 +577,7 @@ export default function App() {
                         {/* Left: Checkmark & Title */}
                         <div className="flex items-start gap-4 flex-grow text-left">
                           <div className="flex-shrink-0 mt-0.5">
-                            {task.isCompleted ? (
+                            {isCompleted ? (
                               <CheckCircle2 className="w-6 h-6 md:w-7 md:h-7 text-teal-500 transition-transform scale-110" />
                             ) : (
                               <Circle className="w-6 h-6 md:w-7 md:h-7 text-slate-500 group-hover:text-blue-400 transition-colors" />
@@ -596,17 +586,10 @@ export default function App() {
                           
                           <div className="flex-grow flex flex-col justify-start text-left">
                             <h3 className={`font-medium text-base md:text-lg text-left transition-colors leading-tight md:leading-normal pr-4 ${
-                              task.isCompleted ? 'text-slate-500 line-through' : 'text-slate-200'
+                              isCompleted ? 'text-slate-500 line-through' : 'text-slate-200'
                             }`}>
                               {task.title}
                             </h3>
-                            <p className="text-xs md:text-sm text-left text-slate-500 mt-1.5 flex items-center gap-2">
-                              {task.isCompleted ? (
-                                <span className="text-teal-500/80 font-medium">✔ Completed on {formatDate(task.displayDate)}</span>
-                              ) : (
-                                <span>Target: {formatDate(task.displayDate)} ({task.estDays} {task.estDays === 1 ? 'day' : 'days'})</span>
-                              )}
-                            </p>
                           </div>
                         </div>
 
@@ -618,11 +601,11 @@ export default function App() {
                             <div className="flex-grow w-full sm:w-36 flex flex-col gap-1.5">
                               <div className="flex justify-between text-xs font-bold text-slate-400 w-full">
                                 <span>Progress</span>
-                                <span className={task.isCompleted ? 'text-teal-400' : ''}>{completedSubCount}/{totalSubCount}</span>
+                                <span className={isCompleted ? 'text-teal-400' : ''}>{completedSubCount}/{totalSubCount}</span>
                               </div>
                               <div className="w-full bg-slate-900 rounded-full h-2 border border-slate-700 overflow-hidden">
                                 <div 
-                                  className={`h-full rounded-full transition-all duration-500 ${task.isCompleted ? 'bg-teal-500' : 'bg-blue-500'}`} 
+                                  className={`h-full rounded-full transition-all duration-500 ${isCompleted ? 'bg-teal-500' : 'bg-blue-500'}`} 
                                   style={{ width: `${progressPercent}%` }}
                                 ></div>
                               </div>
@@ -653,7 +636,7 @@ export default function App() {
                           <h4 className="text-xs font-bold text-slate-400 text-left uppercase tracking-wider mb-3 flex items-center gap-1.5">
                             <List size={14} /> Action Items & Resources
                           </h4>
-                          <ul className={`space-y-3 list-none mt-2 ${task.isCompleted ? 'opacity-50' : ''}`}>
+                          <ul className={`space-y-3 list-none mt-2 ${isCompleted ? 'opacity-50' : ''}`}>
                             {task.subtopics.map((sub, idx) => {
                               const subId = `${task.id}-${idx}`;
                               
@@ -664,7 +647,7 @@ export default function App() {
                               const isBookmarked = bookmarkedSubtopics.includes(subId);
                               
                               const searchConfig = typeSearchMap[task.type] || { yt: task.type, web: task.type };
-                              const cleanTaskTitle = task.title.replace(/^Day \d+: /, '');
+                              const cleanTaskTitle = task.title;
                               const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${subName}`)}`;
                               const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${subName}`)}`;
                               
@@ -753,7 +736,7 @@ export default function App() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={() => setIsModalOpen(false)}>
             <div 
               className="bg-[#1e2336] border border-slate-700 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
-              onClick={(e) => e.stopPropagation()} // Prevent clicking inside modal from closing it
+              onClick={(e) => e.stopPropagation()} 
             >
               
               <div className="flex justify-between items-center mb-6">
