@@ -1,21 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { MouseEvent, ElementType } from 'react';
-import { CheckCircle2, Circle, Database, Code, Server, Workflow, Cloud, Trophy, Activity, Calendar, Clock, Rocket, HeartHandshake, ChevronDown, ChevronUp, List, Youtube, BookOpen, Trash2, Link as LinkIcon, X, Plus, Bookmark, BookmarkCheck, Monitor, LayoutDashboard, Sparkles } from 'lucide-react';
+import { CheckCircle2, Circle, Database, Code, Workflow, Cloud, Trophy, Calendar, Clock, HeartHandshake, ChevronDown, ChevronUp, List, Youtube, BookOpen, Trash2, Link as LinkIcon, X, Plus, Bookmark, BookmarkCheck, Monitor, LayoutDashboard, Sparkles } from 'lucide-react';
 
-// --- Helper Functions ---
-const addDays = (dateString: string, days: number): string => {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0];
-};
-
-const formatDate = (dateString: string): string => {
-  if (!dateString) return '';
-  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
-};
-
-// --- SMART INSTRUCTOR SEARCH ENGINE ---
+// --- SMART INSTRUCTOR SEARCH ENGINE (Adapted for Primer Topics) ---
 const typeSearchMap: Record<string, { yt: string, web: string }> = {
   'Software': { yt: 'Software Engineering Fundamentals tutorial', web: 'Software Engineering Fundamentals documentation' },
   'Web': { yt: 'HTML JavaScript jQuery tutorial', web: 'MDN Web Docs HTML JavaScript jQuery' },
@@ -88,39 +75,93 @@ const CircularProgress = ({ percentage, color, label, icon: Icon }: CircularProg
   );
 };
 
-// --- Accenture PRIMER Topic-Based Curriculum ---
+// --- Accenture PRIMER Exact Curriculum Mapping ---
 const curriculumData: Task[] = [
-  // SOFTWARE
-  { id: 's1', phase: 'Software Fundamentals', title: 'Logic & Core Programming', type: 'Software', subtopics: ['1. Logic Development', '2. Introduction to Algorithms, Flowcharts & Pseudocode', '3. Selection statements', '4. Looping statements', '5. Arrays'] },
-  { id: 's2', phase: 'Software Fundamentals', title: 'Software Engineering & Testing', type: 'Software', subtopics: ['6. Software Engineering Fundamentals', '7. Phases of Software Engineering', '8. Software Testing', '9. Software Configuration Management'] },
-  
-  // WEB
-  { id: 'w1', phase: 'Web Technologies', title: 'HTML & Debugging', type: 'Web', subtopics: ['1. HTML', '2. Debug- HTML'] },
-  { id: 'w2', phase: 'Web Technologies', title: 'JavaScript Essentials', type: 'Web', subtopics: ['3. JavaScript', '4. Javascript-debugging hands-on'] },
-  { id: 'w3', phase: 'Web Technologies', title: 'jQuery & Best Practices', type: 'Web', subtopics: ['5. JQuery', '6. Jquery-Debugging hands-on', '7. Web Design-Best Practices'] },
-
-  // PYTHON
-  { id: 'p1', phase: 'Programming using Python', title: 'Python Basics & Control Flow', type: 'Python', subtopics: ['1. Python programming - Course Introduction', '2. Introduction to Python', '3. Control Structures'] },
-  { id: 'p2', phase: 'Programming using Python', title: 'Data Structures & Functions', type: 'Python', subtopics: ['4. Collection Frameworks', '5. Functions and Modules'] },
-  { id: 'p3', phase: 'Programming using Python', title: 'Files & Debugging', type: 'Python', subtopics: ['6. File Handling', '7. Code Analysis and Debugging'] },
-
-  // RDBMS
-  { id: 'r1', phase: 'RDBMS using MySQL', title: 'Database Design & Architecture', type: 'RDBMS', subtopics: ['1. RDBMS Concepts', '2. ER and Normalization'] },
-  { id: 'r2', phase: 'RDBMS using MySQL', title: 'SQL Language Fundamentals', type: 'RDBMS', subtopics: ['3. Data Definition Language', '4. Data Manipulation Language'] },
-  { id: 'r3', phase: 'RDBMS using MySQL', title: 'Advanced Queries & Joins', type: 'RDBMS', subtopics: ['5. SQL Select Statement', '6. Function-Scalar & Aggregate', '7. Joins & SubQuery', '8. DCL & Database Objects'] },
-
-  // AGILE
-  { id: 'a1', phase: 'Agile & DevOps DevSecOps', title: 'Agile & Design Thinking', type: 'Agile', subtopics: ['1. Introduction to Agile', '2. Business Analytics and Design Thinking'] },
-  { id: 'a2', phase: 'Agile & DevOps DevSecOps', title: 'DevOps & Security', type: 'Agile', subtopics: ['3. DevOps', '4. DevSecOps'] },
-
-  // GEN AI
-  { id: 'g1', phase: 'Gen AI', title: 'Generative AI Foundations', type: 'GenAI', subtopics: ['1. Introduction to Generative AI', '2. Brief History of Generative AI', '3. Fundamentals of Machine Learning and Neural Networks'] },
-  { id: 'g2', phase: 'Gen AI', title: 'Generative Models & Networks', type: 'GenAI', subtopics: ['4. Introduction to Generative Models', '5. Variational Autoencoders', '6. Generative Adversarial Networks'] },
-  { id: 'g3', phase: 'Gen AI', title: 'Transformers & Applications', type: 'GenAI', subtopics: ['7. Sequence Generation with RNNs', '8. Transformers and Attention Mechanisms', '9. Generative AI in Industry and Real-World Applications'] },
-
-  // AWS
-  { id: 'aw1', phase: 'AWS', title: 'AWS Core Services', type: 'AWS', subtopics: ['1. Introduction to AWS Cloud', '2. Technology - Core Services', '3. AWS Resources for Technology Support'] },
-  { id: 'aw2', phase: 'AWS', title: 'Architecture & Billing', type: 'AWS', subtopics: ['4. Security and Compliance', '5. AWS cloud architecture design principles', '6. Billing and Pricing'] },
+  { 
+    id: 'soft', type: 'Software', phase: 'Core Modules', title: 'Software Fundamentals', 
+    subtopics: [
+      '1. Logic Development', 
+      '2. Introduction to Algorithms , Flowcharts & Pseudocode', 
+      '3. Selection statements', 
+      '4. Looping statements', 
+      '5. Arrays', 
+      '6. Software Engineering Fundamentals', 
+      '7. Phases of Software Engineering', 
+      '8. Software Testing', 
+      '9. Software Configuration Management'
+    ] 
+  },
+  { 
+    id: 'web', type: 'Web', phase: 'Core Modules', title: 'Web Technologies', 
+    subtopics: [
+      '1. HTML', 
+      '2. Debug- HTML', 
+      '3. JavaScript', 
+      '4. Javascript-debugging hands-on', 
+      '5. JQuery', 
+      '6. Jquery-Debugging hands-on', 
+      '7. Web Design-Best Practices'
+    ] 
+  },
+  { 
+    id: 'py', type: 'Python', phase: 'Core Modules', title: 'Programming using Python', 
+    subtopics: [
+      '1. Python programming - Course Introduction', 
+      '2. Introduction to Python', 
+      '3. Control Structures', 
+      '4. Collection Frameworks', 
+      '5. Functions and Modules', 
+      '6. File Handling', 
+      '7. Code Analysis and Debugging'
+    ] 
+  },
+  { 
+    id: 'rdbms', type: 'RDBMS', phase: 'Core Modules', title: 'RDBMS using MySQL', 
+    subtopics: [
+      '1. RDBMS Concepts', 
+      '2. ER and Normalization', 
+      '3. Data Definition Language', 
+      '4. Data Manipulation Language', 
+      '5. SQL Select Statement', 
+      '6. Function-Scalar & Aggregate', 
+      '7. Joins & SubQuery', 
+      '8. DCL & Database Objects'
+    ] 
+  },
+  { 
+    id: 'agile', type: 'Agile', phase: 'Core Modules', title: 'Agile & DevOps DevSecOps', 
+    subtopics: [
+      '1. Introduction to Agile', 
+      '2. Business Analytics and Design Thinking', 
+      '3. DevOps', 
+      '4. DevSecOps'
+    ] 
+  },
+  { 
+    id: 'genai', type: 'GenAI', phase: 'Core Modules', title: 'Gen AI', 
+    subtopics: [
+      '1. Introduction to Generative AI', 
+      '2. Brief History of Generative AI', 
+      '3. Fundamentals of Machine Learning and Neural Networks', 
+      '4. Introduction to Generative Models', 
+      '5. Variational Autoencoders', 
+      '6. Generative Adversarial Networks', 
+      '7. Sequence Generation with RNNs', 
+      '8. Transformers and Attention Mechanisms', 
+      '9. Generative AI in Industry and Real-World Applications'
+    ] 
+  },
+  { 
+    id: 'aws', type: 'AWS', phase: 'Core Modules', title: 'AWS', 
+    subtopics: [
+      '1. Introduction to AWS Cloud', 
+      '2. Technology - Core Services', 
+      '3. AWS Resources for Technology Support', 
+      '4. Security and Compliance', 
+      '5. AWS cloud architecture design principles', 
+      '6. Billing and Pricing'
+    ] 
+  }
 ];
 
 export default function App() {
@@ -277,10 +318,13 @@ export default function App() {
 
     const progress = totalSubCountOverall > 0 ? Math.round((completedSubCountOverall / totalSubCountOverall) * 100) : 0;
     
-    // Calculate dynamic 21-day timeline
+    // Calculate dynamic 21-day timeline based on pure progress
     const totalGoalDays = 21;
     const daysSpentEquiv = Math.round((progress / 100) * totalGoalDays);
-    const calculatedDaysRemaining = totalGoalDays - daysSpentEquiv;
+    let calculatedDaysRemaining = totalGoalDays - daysSpentEquiv;
+    
+    // Ensure it doesn't drop below 0
+    if (calculatedDaysRemaining < 0) calculatedDaysRemaining = 0;
 
     return {
       totalProgress: progress,
@@ -374,13 +418,11 @@ export default function App() {
           const task = curriculumData.find(t => t.id === taskId);
           if (!task || !task.subtopics || !task.subtopics[subIdx]) return null;
 
-          const rawString = task.subtopics[subIdx];
-          const parts = rawString.split('|');
-          const subName = parts[0].trim();
+          const subName = task.subtopics[subIdx];
           
           const isSubCompleted = completedSubtopics.includes(subId);
           const searchConfig = typeSearchMap[task.type] || { yt: task.type, web: task.type };
-          const cleanTaskTitle = task.title.replace(/^Day \d+: /, '');
+          const cleanTaskTitle = task.title;
           const videoUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${searchConfig.yt} ${cleanTaskTitle} ${subName}`)}`;
           const readUrl = `https://www.google.com/search?q=${encodeURIComponent(`${searchConfig.web} ${cleanTaskTitle} ${subName}`)}`;
           const subtopicResources = customResources[subId] || [];
@@ -640,8 +682,7 @@ export default function App() {
                             {task.subtopics.map((sub, idx) => {
                               const subId = `${task.id}-${idx}`;
                               
-                              const parts = sub.split('|');
-                              const subName = parts[0].trim();
+                              const subName = sub;
                               
                               const isSubCompleted = completedSubtopics.includes(subId);
                               const isBookmarked = bookmarkedSubtopics.includes(subId);
